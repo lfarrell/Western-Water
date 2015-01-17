@@ -9,12 +9,12 @@ angular.module('westernWaterApp').config(function($routeProvider) {
             controller: 'mainController'
         })
         .when('/california', {
-            templateUrl: 'partials/dpla.html',
-            controller: 'dplaController'
+            templateUrl: 'partials/california.html',
+            controller: 'calController'
         })
         .when('/texas', {
-            templateUrl: 'partials/digital_nz.html',
-            controller: 'digitalNzController'
+            templateUrl: 'partials/texas.html',
+            controller: 'texasController'
         })
         .otherwise({
             redirectTo: '/'
