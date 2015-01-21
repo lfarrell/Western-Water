@@ -1,0 +1,12 @@
+h2 {
+    margin-top: 70px;
+    text-align: center;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    padding: 5px;
+    stroke: black;
+    shape-rendering: crispEdges;
+}

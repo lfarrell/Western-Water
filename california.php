@@ -2,8 +2,13 @@
 include 'functions.php';
 include 'simple_html_dom.php';
 
-$fh = fopen('data/california.csv', 'a');
-fputcsv($fh, array('reservoir', 'capacity', 'storage', 'storage_change', 'pct_capacity', 'avg_storage', 'pct_avg', 'storage_last_year'));
+$file = 'data/california.csv';
+$fh = fopen($file, 'a');
+
+if(!filesize($file)) {
+    fputcsv($fh, array('reservoir', 'capacity', 'storage', 'storage_change', 'pct_capacity', 'avg_storage', 'pct_avg', 'storage_last_year', 'date'));
+}
+
 
 // Data from California Data Exchange Center
 $path = 'http://cdec.water.ca.gov/cgi-progs/reservoirs/RES';
@@ -51,3 +56,5 @@ foreach($rows as $row) {
         fputcsv($fh, $reservoirs);
     }
 }
+
+fclose($fh);
