@@ -7,8 +7,13 @@ angular.module('westernWaterApp').controller('mainController', ['$scope', functi
 angular.module('westernWaterApp').controller('calController', ['$scope', function($scope) {
     $scope.header = 'California';
 
-    d3.json('js/maps/ca.geo.json', function(data) {
-        $scope.data = data;
+    d3.json('js/maps/contig_us.geo.json', function(map_data) {
+        $scope.map_data = map_data;
+
+        d3.csv('data/california.csv', function(data) {
+            $scope.data = data;
+            $scope.$apply();
+        });
         $scope.loading = false;
         $scope.loaded = true;
 

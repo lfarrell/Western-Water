@@ -10,3 +10,9 @@ h2 {
     stroke: black;
     shape-rendering: crispEdges;
 }
+
+#map path {
+    fill: lightgray;
+    stroke: white;
+    stroke-width: 2;
+}

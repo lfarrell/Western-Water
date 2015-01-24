@@ -1,45 +1,60 @@
 angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(tipService) {
     function link(scope, element, attrs) {
-        var height = 600,
+        var margin = {top: 20, right: 40, left: 100, bottom: 80},
+            height = 600 - margin.top - margin.bottom,
             width = 800,
-            graph_width = 500,
-            margin = {top: 20, right: 40, left: 70, bottom: 80},
-            format = d3.time.format("%d/%m/%Y").parse,
-            projection = d3.geo.mercator()
+            graph_width = 400 - margin.left - margin.right,
+            format = d3.time.format("%m/%d/%Y").parse,
+            projection = d3.geo.albers()
+                .rotate([96, 0])
+                .center([-.6, 38.7])
+                .parallels([29.5, 45.5])
+                .scale(1000)
                 .translate([width / 2, height / 2])
-                .scale([1]),
+                .precision(.1),
             path = d3.geo.path().projection(projection);
 
-        scope.$watch('data', function(data) {
-            if (!data) { return; }
+        scope.$watchGroup(['map', 'data'], function(values) {
+            if (!values[0] || !values[1]) { return; }
+
+            var map_data = values[0];
+            var data = values[1];
+
+            data.forEach(function(d) {
+                d.capacity = d.capacity.replace(/,/g, '');
+                d.storage = d.storage.replace(/,/g, '');
+            });
+
+            var ndx = crossfilter(data);
+            var datz = data.filter(function(d) { return d.reservoir === 'SHASTA'; });
+            console.log(datz)
 
             var map_svg = d3.select('#map').append('svg')
                 .attr('height', height)
-                .attr('width', width)
-                .attr("transform", "translate(0,500)");
+                .attr('width', width);
 
-            var map = map_svg.append('g') .attr("transform", "translate(100,1500)");
+            var map = map_svg.append('g');//.attr("transform", "translate(850,50)");
 
             map.selectAll("path")
-                .data(data.features)
+                .data(map_data.features)
                 .enter()
                 .append("path")
                 .attr("d", path);
 
             // Create scales
             var xScale = d3.time.scale()
-                .domain([format("1977-01-01"),format("2015-01-01")])
+                .domain([format("01/15/2015"),format("01/25/2015")])
                 .range([0, width]);
 
             var yScale = d3.scale.linear()
-                .domain([d3.max(data, function(d) { return d.magnitude; }), 0])
+                .domain([d3.max(datz, function(d) { return d.capacity; }), 0])
                 .range([0, height]);
 
             // Create Axis
             var xAxis = d3.svg.axis()
                 .scale(xScale)
                 .orient("bottom")
-                .tickFormat(d3.time.format("%b %Y"));
+               // .tickFormat(d3.time.format("%b %Y"));
 
             var yAxis = d3.svg.axis()
                 .scale(yScale)
@@ -72,12 +87,35 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
                 .text("Acre Feet");
+
+            chart.selectAll("rect")
+                .data(datz)
+                .enter()
+                .append("rect")
+                .attr("x", function(d) {
+                    return xScale(format(d.date));
+                })
+                .attr("y", function(d) {
+                    var store = d.storage;
+                 //   if(isNaN(d.storage)) { store = +d.storage; }
+                    return height - yScale(store);
+                })
+                .attr("width", 25)
+                .attr("height", function(d) {
+                    var store = +d.storage;
+                    return yScale(store);
+                })
+                .attr("fill", "steelblue")
         });
     }
 
     return {
         restrict: 'C',
-        link: link
+        link: link,
+        scope: {
+            'map': '=',
+            'data': '='
+        }
     }
 }]);
 
