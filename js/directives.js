@@ -3,7 +3,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
         var margin = {top: 20, right: 40, left: 100, bottom: 80},
             height = 600 - margin.top - margin.bottom,
             width = 800,
-            graph_width = 400 - margin.left - margin.right,
+            graph_width = 525 - margin.left - margin.right,
+            graph_height = 525 - margin.top - margin.bottom,
             format = d3.time.format("%m/%d/%Y").parse,
             projection = d3.geo.albers()
                 .rotate([96, 0])
@@ -14,98 +15,147 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 .precision(.1),
             path = d3.geo.path().projection(projection);
 
-        scope.$watchGroup(['map', 'data'], function(values) {
-            if (!values[0] || !values[1]) { return; }
+        scope.$watchGroup(['map', 'stations', 'data'], function(values) {
+            if (!values[0] || !values[1] || !values[2]) { return; }
 
             var map_data = values[0];
-            var data = values[1];
+            var stations = values[1];
+            var data = values[2];
 
             data.forEach(function(d) {
                 d.capacity = d.capacity.replace(/,/g, '');
                 d.storage = d.storage.replace(/,/g, '');
+                d.avg_storage = d.avg_storage.replace(/,/g, '');
             });
 
             var ndx = crossfilter(data);
             var datz = data.filter(function(d) { return d.reservoir === 'SHASTA'; });
-            console.log(datz)
-
-            var map_svg = d3.select('#map').append('svg')
-                .attr('height', height)
-                .attr('width', width);
-
-            var map = map_svg.append('g');//.attr("transform", "translate(850,50)");
-
-            map.selectAll("path")
-                .data(map_data.features)
-                .enter()
-                .append("path")
-                .attr("d", path);
 
             // Create scales
             var xScale = d3.time.scale()
-                .domain([format("01/15/2015"),format("01/25/2015")])
-                .range([0, width]);
+                .domain([format("01/15/2015"),format(d3.max(data, function(d) { return d.date; }))])
+                .range([0, graph_width]);
 
             var yScale = d3.scale.linear()
                 .domain([d3.max(datz, function(d) { return d.capacity; }), 0])
-                .range([0, height]);
+                .range([0, graph_height]);
+
+            chart_map();
+            var chart = chart_axis();
+            chart_data(chart);
+
+            function chart_map() {
+                var map_svg = d3.select('#map').append('svg')
+                    .attr('height', height)
+                    .attr('width', width);
+
+                var map = map_svg.append('g');
+
+                map.selectAll("path")
+                    .data(map_data.features)
+                    .enter()
+                    .append("path")
+                    .attr("d", path);
+
+                map.selectAll("circle")
+                    .data(stations)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "map-circle")
+                    .attr("cx", function(d) {
+                        return projection([d.lng, d.lat])[0]; })
+                    .attr("cy", function(d) {
+                        return projection([d.lng, d.lat])[1]; })
+                    .attr("r", function(d) {
+                        return 5;
+                    })
+                    .style("fill", function(d) {
+                        return 'steelblue';
+                    })
+                    .style("opacity", 0.5);
+            }
+
 
             // Create Axis
-            var xAxis = d3.svg.axis()
-                .scale(xScale)
-                .orient("bottom")
-               // .tickFormat(d3.time.format("%b %Y"));
+            function chart_axis() {
+                var xAxis = d3.svg.axis()
+                    .scale(xScale)
+                    .orient("bottom")
+                    .tickFormat(d3.time.format("%m/%d"));
 
-            var yAxis = d3.svg.axis()
-                .scale(yScale)
-                .orient("left");
+                var yAxis = d3.svg.axis()
+                    .scale(yScale)
+                    .orient("left");
 
-            var chart = d3.select("#graph").append("svg")
-                .attr("width", graph_width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom);
+                var chart = d3.select("#graph").append("svg")
+                    .attr("width", graph_width + margin.left + margin.right)
+                    .attr("height", graph_height + margin.top + margin.bottom);
 
-            chart.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate("+ margin.left + "," + (height + margin.top) + ")")
-                .call(xAxis);
+                chart.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate("+ margin.left + "," + (graph_height + margin.top) + ")")
+                    .call(xAxis);
 
-            chart.append("text")
-                .attr("x", width / 2)
-                .attr("y", height + margin.bottom)
-                .style("text-anchor", "end")
-                .text("Date");
+                chart.append("text")
+                    .attr("x", width / 2)
+                    .attr("y", graph_height + margin.bottom)
+                    .style("text-anchor", "end")
+                    .text("Date");
 
-            chart.append("g")
-                .attr("class", "y axis")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                .call(yAxis);
+                chart.append("g")
+                    .attr("class", "y axis")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                    .call(yAxis);
 
-            chart.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("x", -height /2)
-                .attr("y", 6)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .text("Acre Feet");
+                chart.append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("x", -height /2)
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text("Acre Feet");
 
-            chart.selectAll("rect")
-                .data(datz)
-                .enter()
-                .append("rect")
-                .attr("x", function(d) {
-                    return xScale(format(d.date));
-                })
-                .attr("y", function(d) {
-                    var store = d.storage;
-                 //   if(isNaN(d.storage)) { store = +d.storage; }
-                    return height - yScale(store);
-                })
-                .attr("width", 25)
-                .attr("height", function(d) {
-                    var store = +d.storage;
-                    return yScale(store);
-                })
-                .attr("fill", "steelblue")
+                return chart;
+            }
+
+            function chart_data(chart) {
+                var storage = d3.svg.line()
+                    .x(function(d) { return xScale(format(d.date)); })
+                    .y(function(d) { return yScale(d.storage); });
+
+                chart.append("g")
+                    .append("path")
+                    .attr("d", storage(datz))
+                    .attr("fill", "none")
+                    .attr("stroke", "black")
+                    .attr("stroke-width", 2)
+                    .attr("transform", "translate(" + margin.left + ",0)");
+
+                var avg_storage = d3.svg.line()
+                    .x(function(d) { return xScale(format(d.date)); })
+                    .y(function(d) { return yScale(d.avg_storage); });
+
+                chart.append("g")
+                    .append("path")
+                    .attr("d", avg_storage(datz))
+                    .attr("fill", "none")
+                    .attr("stroke", "steelblue")
+                    .attr("stroke-width", 2)
+                    .attr("stroke-dasharray", [5,5])
+                    .attr("transform", "translate(" + margin.left + ",0)");
+
+                var capacity = d3.svg.line()
+                    .x(function(d) { return xScale(format(d.date)); })
+                    .y(function(d) { return yScale(d.capacity); });
+
+                chart.append("g")
+                    .append("path")
+                    .attr("d", capacity(datz))
+                    .attr("fill", "none")
+                    .attr("stroke", "green")
+                    .attr("stroke-width", 2)
+                    .attr("transform", "translate(" + margin.left + ",0)");
+            }
         });
     }
 
@@ -114,7 +164,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
         link: link,
         scope: {
             'map': '=',
-            'data': '='
+            'data': '=',
+            'stations': '='
         }
     }
 }]);
