@@ -6,14 +6,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             graph_width = 525 - margin.left - margin.right,
             graph_height = 525 - margin.top - margin.bottom,
             format = d3.time.format("%m/%d/%Y").parse,
-            projection = d3.geo.albers()
-                .rotate([96, 0])
-                .center([-.6, 38.7])
-                .parallels([29.5, 45.5])
-                .scale(1000)
-                .translate([width / 2, height / 2])
-                .precision(.1),
-            path = d3.geo.path().projection(projection);
+            tip = tipService.tipDiv();
 
         scope.$watchGroup(['map', 'stations', 'data'], function(values) {
             if (!values[0] || !values[1] || !values[2]) { return; }
@@ -28,6 +21,15 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 d.avg_storage = d.avg_storage.replace(/,/g, '');
             });
 
+            var projection = d3.geo.albers()
+                    .rotate([96, 0])
+                    .center([-.6, 38.7])
+                    .parallels([29.5, 45.5])
+                    .scale(1000)
+                    .translate([width / 2, height / 2])
+                    .precision(.1),
+                path = d3.geo.path().projection(projection)
+
             var ndx = crossfilter(data);
             var datz = data.filter(function(d) { return d.reservoir === 'SHASTA'; });
 
@@ -41,13 +43,22 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 .range([0, graph_height]);
 
             chart_map();
-            var chart = chart_axis();
-            chart_data(chart);
+            charts();
 
             function chart_map() {
+                var zoom = d3.behavior.zoom()
+                    .scaleExtent([1, 10])
+                    .on("zoom", zooming);
+
+                var drag = d3.behavior.drag()
+                    .origin(function(d) { return d; })
+                    .on("drag", dragged);
+
                 var map_svg = d3.select('#map').append('svg')
                     .attr('height', height)
-                    .attr('width', width);
+                    .attr('width', width)
+                    .call(zoom)
+                    .call(drag);
 
                 var map = map_svg.append('g');
 
@@ -67,17 +78,34 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                     .attr("cy", function(d) {
                         return projection([d.lng, d.lat])[1]; })
                     .attr("r", function(d) {
-                        return 5;
+                        return 2.5;
                     })
                     .style("fill", function(d) {
                         return 'steelblue';
                     })
-                    .style("opacity", 0.5);
+                    .style("opacity", 0.5)
+                    .on("click", function (res) {
+                        var datz = data.filter(function(d) { return d.reservoir === res.reservoir; });
+                        var yScale = d3.scale.linear()
+                            .domain([d3.max(datz, function(d) { return d.capacity; }), 0])
+                            .range([0, graph_height]);
+                    })
+                    .on("mouseover", function(d) {
+                        var text = d.reservoir;
+                        tipService.tipShow(tip, text);
+                    })
+                    .on("mouseout", function(d) {
+                        tipService.tipHide(tip);
+                    });
+
+                function zooming() {
+                    map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                }
             }
 
 
             // Create Axis
-            function chart_axis() {
+            function charts() {
                 var xAxis = d3.svg.axis()
                     .scale(xScale)
                     .orient("bottom")
@@ -115,10 +143,11 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                     .style("text-anchor", "end")
                     .text("Acre Feet");
 
-                return chart;
-            }
+                d3.selectAll("g.x text").attr('transform', "rotate(35)")
+                    .attr('dx', 27)
+                    .attr('dy', 10);
 
-            function chart_data(chart) {
+
                 var storage = d3.svg.line()
                     .x(function(d) { return xScale(format(d.date)); })
                     .y(function(d) { return yScale(d.storage); });
@@ -155,6 +184,13 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                     .attr("stroke", "green")
                     .attr("stroke-width", 2)
                     .attr("transform", "translate(" + margin.left + ",0)");
+            }
+
+
+
+            function dragged(d) {
+                d3.event.sourceEvent.stopPropagation();
+                d3.select(this).attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             }
         });
     }

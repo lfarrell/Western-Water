@@ -10,7 +10,7 @@ angular.module('westernWaterApp').controller('calController', ['$scope', functio
     d3.json('js/maps/contig_us.geo.json', function(map_data) {
         $scope.map_data = map_data;
 
-        d3.csv('station_data/cal_resv.csv', function(stations) {
+        d3.csv('station_data/california_resv.csv', function(stations) {
             $scope.stations = stations;
             $scope.$apply();
         });
@@ -24,6 +24,10 @@ angular.module('westernWaterApp').controller('calController', ['$scope', functio
 
         $scope.$apply();
     });
+
+    $scope.stateChange = function() {
+
+    };
 
     $scope.siteChange = function() {
 

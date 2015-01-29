@@ -1,3 +1,8 @@
+body {
+    color: white;
+    background-color: #333;
+}
+
 h2 {
     margin-top: 70px;
     text-align: center;
@@ -7,7 +12,7 @@ h2 {
 .axis line {
     fill: none;
     padding: 5px;
-    stroke: black;
+    stroke: white;
     shape-rendering: crispEdges;
 }
 
@@ -15,4 +20,21 @@ h2 {
     fill: lightgray;
     stroke: white;
     stroke-width: 2;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    fill: black;
+    background: black;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+text {
+    fill: white;
 }
