@@ -87,8 +87,9 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                     .on("click", function (res) {
                         var datz = data.filter(function(d) { return d.reservoir === res.reservoir; });
                         var yScale = d3.scale.linear()
-                            .domain([d3.max(datz, function(d) { return d.capacity; }), 0])
-                            .range([0, graph_height]);
+                            .domain([d3.max(datz, function(d) { return d.capacity; }), 0]);
+
+                        charts();
                     })
                     .on("mouseover", function(d) {
                         var text = d.reservoir;
@@ -103,6 +104,9 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 }
             }
 
+            function chart_update() {
+
+            }
 
             // Create Axis
             function charts() {
@@ -156,7 +160,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                     .append("path")
                     .attr("d", storage(datz))
                     .attr("fill", "none")
-                    .attr("stroke", "black")
+                    .attr("stroke", "firebrick")
                     .attr("stroke-width", 2)
                     .attr("transform", "translate(" + margin.left + ",0)");
 
@@ -185,8 +189,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                     .attr("stroke-width", 2)
                     .attr("transform", "translate(" + margin.left + ",0)");
             }
-
-
 
             function dragged(d) {
                 d3.event.sourceEvent.stopPropagation();

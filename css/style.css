@@ -17,7 +17,7 @@ h2 {
 }
 
 #map path {
-    fill: lightgray;
+    fill: #EBEBEB;
     stroke: white;
     stroke-width: 2;
 }
