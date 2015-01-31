@@ -143,6 +143,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             chart.append("g")
                  .append("path")
                  .attr("d", storage(datz))
+                 .attr("id", "storage")
                  .attr("fill", "none")
                  .attr("stroke", "firebrick")
                  .attr("stroke-width", 2)
@@ -155,6 +156,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             chart.append("g")
                  .append("path")
                  .attr("d", avg_storage(datz))
+                 .attr("id", "avg_storage")
                  .attr("fill", "none")
                  .attr("stroke", "steelblue")
                  .attr("stroke-width", 2)
@@ -168,6 +170,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             chart.append("g")
                  .append("path")
                  .attr("d", capacity(datz))
+                 .attr("id", "capacity")
                  .attr("fill", "none")
                  .attr("stroke", "green")
                  .attr("stroke-width", 2)
@@ -176,7 +179,10 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             function chart_update(datz) {
                 yScale.domain([d3.max(datz, function(d) { return d.capacity; }), 0]);
 
-                d3.select("g.y").transition().duration(1500).ease("sin-in-out").call(yAxis);
+                d3.select("g.y").transition().duration(1200).ease("sin-in-out").call(yAxis);
+                d3.select("#storage").transition().duration(1200).attr("d", storage(datz));
+                d3.select("#avg_storage").transition().duration(1200).attr("d", avg_storage(datz));
+                d3.select("#capacity").transition().duration(1200).attr("d", capacity(datz));
             }
 
             function dragged(d) {
