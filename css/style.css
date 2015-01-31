@@ -35,6 +35,11 @@ div.tooltip {
     pointer-events: none;
 }
 
+.map-circle {
+    fill: steelblue;
+    opacity: 0.5;
+}
+
 text {
     fill: white;
 }

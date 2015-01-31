@@ -42,152 +42,141 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 .domain([d3.max(datz, function(d) { return d.capacity; }), 0])
                 .range([0, graph_height]);
 
-            chart_map();
-            charts();
+            var zoom = d3.behavior.zoom()
+                .scaleExtent([1, 10])
+                .on("zoom", zooming);
 
-            function chart_map() {
-                var zoom = d3.behavior.zoom()
-                    .scaleExtent([1, 10])
-                    .on("zoom", zooming);
+            var drag = d3.behavior.drag()
+                .origin(function(d) { return d; })
+                .on("drag", dragged);
 
-                var drag = d3.behavior.drag()
-                    .origin(function(d) { return d; })
-                    .on("drag", dragged);
+            var map_svg = d3.select('#map').append('svg')
+                .attr('height', height)
+                .attr('width', width)
+                .call(zoom)
+              //  .call(drag);
 
-                var map_svg = d3.select('#map').append('svg')
-                    .attr('height', height)
-                    .attr('width', width)
-                    .call(zoom)
-                    .call(drag);
+            var map = map_svg.append('g');
 
-                var map = map_svg.append('g');
+            map.selectAll("path")
+               .data(map_data.features)
+               .enter()
+               .append("path")
+               .attr("d", path);
 
-                map.selectAll("path")
-                    .data(map_data.features)
-                    .enter()
-                    .append("path")
-                    .attr("d", path);
+            map.selectAll("circle")
+               .data(stations)
+               .enter()
+               .append("circle")
+               .attr("class", "map-circle")
+               .attr("cx", function(d) {
+                   return projection([d.lng, d.lat])[0]; })
+               .attr("cy", function(d) {
+                    return projection([d.lng, d.lat])[1]; })
+               .attr("r", function(d) {
+                    return 2.5;
+               })
+               .on("click", function (res) {
+                    var datz = data.filter(function(d) { return d.reservoir === res.reservoir; });
 
-                map.selectAll("circle")
-                    .data(stations)
-                    .enter()
-                    .append("circle")
-                    .attr("class", "map-circle")
-                    .attr("cx", function(d) {
-                        return projection([d.lng, d.lat])[0]; })
-                    .attr("cy", function(d) {
-                        return projection([d.lng, d.lat])[1]; })
-                    .attr("r", function(d) {
-                        return 2.5;
-                    })
-                    .style("fill", function(d) {
-                        return 'steelblue';
-                    })
-                    .style("opacity", 0.5)
-                    .on("click", function (res) {
-                        var datz = data.filter(function(d) { return d.reservoir === res.reservoir; });
-                        var yScale = d3.scale.linear()
-                            .domain([d3.max(datz, function(d) { return d.capacity; }), 0]);
 
-                        charts();
-                    })
-                    .on("mouseover", function(d) {
-                        var text = d.reservoir;
-                        tipService.tipShow(tip, text);
-                    })
-                    .on("mouseout", function(d) {
-                        tipService.tipHide(tip);
-                    });
+                    chart_update(datz);
+                })
+                .on("mouseover", function(d) {
+                    var text = d.reservoir;
+                    tipService.tipShow(tip, text);
+                })
+                .on("mouseout", function(d) {
+                    tipService.tipHide(tip);
+                });
 
-                function zooming() {
-                    map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-                }
-            }
-
-            function chart_update() {
-
+            function zooming() {
+                map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
             }
 
             // Create Axis
-            function charts() {
-                var xAxis = d3.svg.axis()
-                    .scale(xScale)
-                    .orient("bottom")
-                    .tickFormat(d3.time.format("%m/%d"));
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient("bottom")
+                .tickFormat(d3.time.format("%m/%d"));
 
-                var yAxis = d3.svg.axis()
-                    .scale(yScale)
-                    .orient("left");
+            var yAxis = d3.svg.axis()
+                 .scale(yScale)
+                 .orient("left");
 
-                var chart = d3.select("#graph").append("svg")
-                    .attr("width", graph_width + margin.left + margin.right)
-                    .attr("height", graph_height + margin.top + margin.bottom);
+            var chart = d3.select("#graph").append("svg")
+                 .attr("width", graph_width + margin.left + margin.right)
+                 .attr("height", graph_height + margin.top + margin.bottom);
 
-                chart.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate("+ margin.left + "," + (graph_height + margin.top) + ")")
-                    .call(xAxis);
+            chart.append("g")
+                 .attr("class", "x axis")
+                 .attr("transform", "translate("+ margin.left + "," + (graph_height + margin.top) + ")")
+                 .call(xAxis);
 
-                chart.append("text")
-                    .attr("x", width / 2)
-                    .attr("y", graph_height + margin.bottom)
-                    .style("text-anchor", "end")
-                    .text("Date");
+            chart.append("text")
+                 .attr("x", width / 2)
+                 .attr("y", graph_height + margin.bottom)
+                 .style("text-anchor", "end")
+                 .text("Date");
 
-                chart.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                    .call(yAxis);
+            chart.append("g")
+                 .attr("class", "y axis")
+                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                 .call(yAxis);
 
-                chart.append("text")
-                    .attr("transform", "rotate(-90)")
-                    .attr("x", -height /2)
-                    .attr("y", 6)
-                    .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text("Acre Feet");
+            chart.append("text")
+                 .attr("transform", "rotate(-90)")
+                 .attr("x", -height/2)
+                 .attr("y", 6)
+                 .attr("dy", ".71em")
+                 .style("text-anchor", "end")
+                 .text("Acre Feet");
 
-                d3.selectAll("g.x text").attr('transform', "rotate(35)")
-                    .attr('dx', 27)
-                    .attr('dy', 10);
+            d3.selectAll("g.x text").attr('transform', "rotate(35)")
+              .attr('dx', 27)
+              .attr('dy', 10);
 
+            var storage = d3.svg.line()
+                  .x(function(d) { return xScale(format(d.date)); })
+                  .y(function(d) { return yScale(d.storage); });
 
-                var storage = d3.svg.line()
-                    .x(function(d) { return xScale(format(d.date)); })
-                    .y(function(d) { return yScale(d.storage); });
+            chart.append("g")
+                 .append("path")
+                 .attr("d", storage(datz))
+                 .attr("fill", "none")
+                 .attr("stroke", "firebrick")
+                 .attr("stroke-width", 2)
+                 .attr("transform", "translate(" + margin.left + ",0)");
 
-                chart.append("g")
-                    .append("path")
-                    .attr("d", storage(datz))
-                    .attr("fill", "none")
-                    .attr("stroke", "firebrick")
-                    .attr("stroke-width", 2)
-                    .attr("transform", "translate(" + margin.left + ",0)");
+            var avg_storage = d3.svg.line()
+                  .x(function(d) { return xScale(format(d.date)); })
+                  .y(function(d) { return yScale(d.avg_storage); });
 
-                var avg_storage = d3.svg.line()
-                    .x(function(d) { return xScale(format(d.date)); })
-                    .y(function(d) { return yScale(d.avg_storage); });
+            chart.append("g")
+                 .append("path")
+                 .attr("d", avg_storage(datz))
+                 .attr("fill", "none")
+                 .attr("stroke", "steelblue")
+                 .attr("stroke-width", 2)
+                 .attr("stroke-dasharray", [5,5])
+                 .attr("transform", "translate(" + margin.left + ",0)");
 
-                chart.append("g")
-                    .append("path")
-                    .attr("d", avg_storage(datz))
-                    .attr("fill", "none")
-                    .attr("stroke", "steelblue")
-                    .attr("stroke-width", 2)
-                    .attr("stroke-dasharray", [5,5])
-                    .attr("transform", "translate(" + margin.left + ",0)");
+            var capacity = d3.svg.line()
+                  .x(function(d) { return xScale(format(d.date)); })
+                  .y(function(d) { return yScale(d.capacity); });
 
-                var capacity = d3.svg.line()
-                    .x(function(d) { return xScale(format(d.date)); })
-                    .y(function(d) { return yScale(d.capacity); });
+            chart.append("g")
+                 .append("path")
+                 .attr("d", capacity(datz))
+                 .attr("fill", "none")
+                 .attr("stroke", "green")
+                 .attr("stroke-width", 2)
+                 .attr("transform", "translate(" + margin.left + ",0)");
 
-                chart.append("g")
-                    .append("path")
-                    .attr("d", capacity(datz))
-                    .attr("fill", "none")
-                    .attr("stroke", "green")
-                    .attr("stroke-width", 2)
-                    .attr("transform", "translate(" + margin.left + ",0)");
+            function chart_update(datz) {
+                yScale.domain([d3.max(datz, function(d) { return d.capacity; }), 0]);
+
+                d3.select("g.y").transition().duration(1500).ease("sin-in-out").call(yAxis);
             }
 
             function dragged(d) {
