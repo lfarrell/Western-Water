@@ -1,5 +1,4 @@
 <?php
-include 'functions.php';
 include 'simple_html_dom.php';
 
 $file = 'data/california.csv';
