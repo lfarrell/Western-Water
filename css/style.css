@@ -3,7 +3,7 @@ body {
     background-color: #333;
 }
 
-h2 {
+h1, h2 {
     margin-top: 70px;
     text-align: center;
 }
@@ -42,4 +42,8 @@ div.tooltip {
 
 text {
     fill: white;
+}
+
+a {
+    color: white;
 }

@@ -35,7 +35,10 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
 
             // Create scales
             var xScale = d3.time.scale()
-                .domain([format("01/15/2015"),format(d3.max(data, function(d) { return d.date; }))])
+                .domain([
+                    format(d3.min(data, function(d) { return d.date; })),
+                    format(d3.max(data, function(d) { return d.date; }))
+                ])
                 .range([0, graph_width]);
 
             var yScale = d3.scale.linear()
@@ -177,12 +180,17 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                  .attr("transform", "translate(" + margin.left + ",0)");
 
             function chart_update(datz) {
+                xScale.domain([
+                    format(d3.min(data, function(d) { return d.date; })),
+                    format(d3.max(data, function(d) { return d.date; }))
+                ]);
                 yScale.domain([d3.max(datz, function(d) { return d.capacity; }), 0]);
 
+                d3.select("g.x").transition().duration(1200).ease("sin-in-out").call(xAxis);
                 d3.select("g.y").transition().duration(1200).ease("sin-in-out").call(yAxis);
-                d3.select("#storage").transition().duration(1200).attr("d", storage(datz));
-                d3.select("#avg_storage").transition().duration(1200).attr("d", avg_storage(datz));
-                d3.select("#capacity").transition().duration(1200).attr("d", capacity(datz));
+                d3.select("#storage").transition().duration(1200).ease("sin-in-out").attr("d", storage(datz));
+                d3.select("#avg_storage").transition().duration(1200).ease("sin-in-out").attr("d", avg_storage(datz));
+                d3.select("#capacity").transition().duration(1200).ease("sin-in-out").attr("d", capacity(datz));
             }
 
             function dragged(d) {
