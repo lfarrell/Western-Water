@@ -125,20 +125,25 @@ foreach($reservoirs as $reservoir) {
     $file_name = 'raw_data/tx/' . $reservoir . ".csv";
     $action = (file_exists($file_name)) ? "a" : "wb";
     get_records($path, $file_name, $action);
-   // echo $reservoir . " downloaded\n";
+    echo $reservoir . " downloaded\n";
 
     // Clean up the data
     $fh = fopen('data/tx/'. $reservoir . ".csv", $action);
     if (($handle = fopen($file_name, "r")) !== FALSE) {
+        if($action != "a") {
+            fputcsv($fh, array("reservoir", "storage", "capacity", "pct_capacity", "date"));
+        }
+
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-            if(preg_match('/$\d+/', $data[0])) {
-                fputcsv($fh, array());
+            if(preg_match('/^\d+/', $data[0])) {
+                $date_parts = explode('-', $data[0]);
+                fputcsv($fh, array($reservoir, $data[4], $data[6], $data[5], $date_parts[1] . '/' . $date_parts[2] . '/' . $date_parts[0]));
             } else {
                 continue;
             }
-
         }
         fclose($handle);
     }
     fclose($fh);
+    echo $reservoir . " processed\n";
 }
