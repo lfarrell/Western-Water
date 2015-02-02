@@ -128,6 +128,7 @@ foreach($reservoirs as $reservoir) {
     echo $reservoir . " downloaded\n";
 
     // Clean up the data
+    $current_date = date("Y-m-d");
     $fh = fopen('data/tx/'. $reservoir . ".csv", $action);
     if (($handle = fopen($file_name, "r")) !== FALSE) {
         if($action != "a") {
@@ -135,15 +136,27 @@ foreach($reservoirs as $reservoir) {
         }
 
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-            if(preg_match('/^\d+/', $data[0])) {
-                $date_parts = explode('-', $data[0]);
-                fputcsv($fh, array($reservoir, $data[4], $data[6], $data[5], $date_parts[1] . '/' . $date_parts[2] . '/' . $date_parts[0]));
+            if($action == "a") {
+                if(preg_match('/^' . $current_date . '/', $data[0])) {
+                    csv_data($fh, $reservoir, $data);
+                } else {
+                    continue;
+                }
             } else {
-                continue;
+                if(preg_match('/^\d+/', $data[0])) {
+                    csv_data($fh, $reservoir, $data);
+                } else {
+                    continue;
+                }
             }
         }
         fclose($handle);
     }
     fclose($fh);
     echo $reservoir . " processed\n";
+}
+
+function csv_data($fh, $reservoir, $data) {
+    $date_parts = explode('-', $data[0]);
+    fputcsv($fh, array($reservoir, $data[4], $data[6], $data[5], $date_parts[1] . '/' . $date_parts[2] . '/' . $date_parts[0]));
 }
