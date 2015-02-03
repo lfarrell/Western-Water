@@ -15,7 +15,7 @@ angular.module('westernWaterApp').controller('calController', ['$scope', functio
             $scope.$apply();
         });
 
-        d3.csv('data/california.csv', function(data) {
+        d3.csv('data/all.csv', function(data) {
             $scope.data = data;
             $scope.$apply();
         });

@@ -1,5 +1,6 @@
 <?php
 include 'functions.php';
+date_default_timezone_set('America/New_York');
 
 $reservoirs = array(
     "abilene",
@@ -136,8 +137,12 @@ foreach($reservoirs as $reservoir) {
         }
 
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            $res = explode('-', $data[0]);
+
+            $data[0] = ucwords(implode(' ', $res));
+
             if($action == "a") {
-                if(preg_match('/^' . $current_date . '/', $data[0])) {
+                if(preg_match('/^' . $current_date . '/', $data[3])) {
                     csv_data($fh, $reservoir, $data);
                 } else {
                     continue;

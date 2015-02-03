@@ -18,7 +18,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             data.forEach(function(d) {
                 d.capacity = d.capacity.replace(/,/g, '');
                 d.storage = d.storage.replace(/,/g, '');
-                d.avg_storage = d.avg_storage.replace(/,/g, '');
+              //  d.avg_storage = d.avg_storage.replace(/,/g, '');
             });
 
             var projection = d3.geo.albers()
@@ -80,9 +80,9 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                     return 2.5;
                })
                .on("click", function (res) {
-                    var datz = data.filter(function(d) { return d.reservoir === res.reservoir; });
-
-
+                    var datz = data.filter(function(d) {
+                        return d.reservoir === res.reservoir;
+                    });
                     chart_update(datz);
                 })
                 .on("mouseover", function(d) {
@@ -152,7 +152,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                  .attr("stroke-width", 2)
                  .attr("transform", "translate(" + margin.left + ",0)");
 
-            var avg_storage = d3.svg.line()
+          /*  var avg_storage = d3.svg.line()
                   .x(function(d) { return xScale(format(d.date)); })
                   .y(function(d) { return yScale(d.avg_storage); });
 
@@ -164,7 +164,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                  .attr("stroke", "steelblue")
                  .attr("stroke-width", 2)
                  .attr("stroke-dasharray", [5,5])
-                 .attr("transform", "translate(" + margin.left + ",0)");
+                 .attr("transform", "translate(" + margin.left + ",0)"); */
 
             var capacity = d3.svg.line()
                   .x(function(d) { return xScale(format(d.date)); })
@@ -189,7 +189,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 d3.select("g.x").transition().duration(1200).ease("sin-in-out").call(xAxis);
                 d3.select("g.y").transition().duration(1200).ease("sin-in-out").call(yAxis);
                 d3.select("#storage").transition().duration(1200).ease("sin-in-out").attr("d", storage(datz));
-                d3.select("#avg_storage").transition().duration(1200).ease("sin-in-out").attr("d", avg_storage(datz));
+           //     d3.select("#avg_storage").transition().duration(1200).ease("sin-in-out").attr("d", avg_storage(datz));
                 d3.select("#capacity").transition().duration(1200).ease("sin-in-out").attr("d", capacity(datz));
             }
 
