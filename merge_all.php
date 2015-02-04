@@ -1,6 +1,7 @@
 <?php
-// Texas
-
+/**
+ * Texas
+ */
 $base = "data/tx";
 $files = scandir($base);
 $fh = fopen("all.csv", "wb");
@@ -14,7 +15,8 @@ foreach($files as $file) {
 
                 $res = explode('-', $data[0]);
                 $data[0] = ucwords(implode(' ', $res));
-                echo $data[0];
+                echo $data[0] . "\n";
+
                 fputcsv($fh, $data);
             }
             fclose($handle);
@@ -22,13 +24,15 @@ foreach($files as $file) {
     }
 }
 
+/**
+ * California
+ */
 if (($handle = fopen('data/california.csv', "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         if($data[0] == 'reservoir') continue;
-        print_r($data);
-
+ 
         fputcsv($fh, array($data[0], $data[2], $data[1], $data[4], $data[8]));
-
+        echo $data[0] . "--->" . $data[8] . "\n";
     }
     fclose($handle);
 };

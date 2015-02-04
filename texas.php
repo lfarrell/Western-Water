@@ -124,11 +124,12 @@ $reservoirs = array(
 foreach($reservoirs as $reservoir) {
     $path = "http://waterdatafortexas.org/reservoirs/individual/" . $reservoir . "-30day.csv";
     $file_name = 'raw_data/tx/' . $reservoir . ".csv";
-    $action = (file_exists($file_name)) ? "a" : "wb";
-    get_records($path, $file_name, $action);
+
+    get_records($path, $file_name, "wb");
     echo $reservoir . " downloaded\n";
 
     // Clean up the data
+    $action = (file_exists($file_name)) ? "a" : "wb";
     $current_date = date("Y-m-d");
     $fh = fopen('data/tx/'. $reservoir . ".csv", $action);
     if (($handle = fopen($file_name, "r")) !== FALSE) {
@@ -137,12 +138,12 @@ foreach($reservoirs as $reservoir) {
         }
 
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-            $res = explode('-', $data[0]);
-
-            $data[0] = ucwords(implode(' ', $res));
+            $raw_date = $data[0];
+            $res = explode('-', $reservoir);
+            $reservoir = ucwords(implode(' ', $res));
 
             if($action == "a") {
-                if(preg_match('/^' . $current_date . '/', $data[3])) {
+                if($current_date == $raw_date) {
                     csv_data($fh, $reservoir, $data);
                 } else {
                     continue;
