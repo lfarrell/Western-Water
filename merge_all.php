@@ -5,7 +5,7 @@
 $base = "data/tx";
 $files = scandir($base);
 $fh = fopen("all.csv", "wb");
-fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date'));
+fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date','state'));
 
 foreach($files as $file) {
     if(!preg_match('/^\./', $file)) {
@@ -16,6 +16,8 @@ foreach($files as $file) {
                 $res = explode('-', $data[0]);
                 $data[0] = ucwords(implode(' ', $res));
                 echo $data[0] . "\n";
+                $state = count($data);
+                $data[$state] = 'tx';
 
                 fputcsv($fh, $data);
             }
@@ -30,8 +32,8 @@ foreach($files as $file) {
 if (($handle = fopen('data/california.csv', "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         if($data[0] == 'reservoir') continue;
- 
-        fputcsv($fh, array($data[0], $data[2], $data[1], $data[4], $data[8]));
+
+        fputcsv($fh, array($data[0], $data[2], $data[1], $data[4], $data[8], 'ca'));
         echo $data[0] . "--->" . $data[8] . "\n";
     }
     fclose($handle);
