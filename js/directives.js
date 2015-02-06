@@ -32,6 +32,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
 
             var ndx = crossfilter(data);
             var datz = data.filter(function(d) { return d.reservoir === 'SHASTA'; });
+            scope.reservoir = 'SHASTA, ca';
 
             // Create scales
             var xScale = d3.time.scale()
@@ -191,6 +192,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 d3.select("#storage").transition().duration(1200).ease("sin-in-out").attr("d", storage(datz));
            //     d3.select("#avg_storage").transition().duration(1200).ease("sin-in-out").attr("d", avg_storage(datz));
                 d3.select("#capacity").transition().duration(1200).ease("sin-in-out").attr("d", capacity(datz));
+                var res = datz[0];
+                d3.select("#reservoir").text( res.reservoir + ', ' + res.state);
             }
 
             function dragged(d) {
@@ -208,6 +211,37 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             'data': '=',
             'stations': '='
         }
+    }
+}]);
+
+angular.module('westernWaterApp').directive('totalsCharts', ['tipService', function(tipService) {
+    function link(scope, element, attrs) {
+        var margin = {top: 20, right: 40, left: 100, bottom: 80},
+            width = 1000 - margin.left - margin.right,
+            height = 550 - margin.top - margin.bottom;
+
+        scope.$watch('data', function(data) {
+            if (!data) { return; }
+
+            data.forEach(function(d) {
+                d.capacity = d.capacity.replace(/,/g, '');
+                d.storage = d.storage.replace(/,/g, '');
+            });
+
+            var ndx = crossfilter(data);
+            var all_capacities = ndx.dimension(function(d) { return d.reservoir; });
+            var each_res = all_capacities.top(Infinity);
+            var res = _.uniq(data, function(d) { return d.reservoir; });
+
+            var chart = d3.selectAll("#capacities").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom);
+        });
+    }
+
+    return {
+        restrict: 'C',
+        link: link
     }
 }]);
 

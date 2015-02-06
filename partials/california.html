@@ -1,5 +1,8 @@
-<h2>{{ header }}</h2>
+<h2>Reservoir: <span id="reservoir">SHASTA, ca</span></h2>
 <div class="row" ng-show="loaded">
     <div class="col-md-7 map-graph" id="map" stations="stations" map="map_data" data="data"></div>
     <div class="col-md-5" id="graph"></div>
+</div>
+<div class="row" ng-show="loaded">
+    <div class="col-md-12 totals-charts" id="capacities"></div>
 </div>
