@@ -28,11 +28,11 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                     .scale(1000)
                     .translate([width / 2, height / 2])
                     .precision(.1),
-                path = d3.geo.path().projection(projection)
+                path = d3.geo.path().projection(projection);
 
-            var ndx = crossfilter(data);
-            var datz = data.filter(function(d) { return d.reservoir === 'SHASTA'; });
-            scope.reservoir = 'SHASTA, ca';
+         //   var ndx = crossfilter(data);
+            var datz = data.filter(function(d) { return d.reservoir === 'Shasta'; });
+            scope.reservoir = 'Shasta, CA';
 
             // Create scales
             var xScale = d3.time.scale()
@@ -57,7 +57,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             var map_svg = d3.select('#map').append('svg')
                 .attr('height', height)
                 .attr('width', width)
-                .call(zoom)
+                .call(zoom);
               //  .call(drag);
 
             var map = map_svg.append('g');

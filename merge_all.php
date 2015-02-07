@@ -17,7 +17,7 @@ foreach($files as $file) {
                 $data[0] = ucwords(implode(' ', $res));
                 echo $data[0] . "\n";
                 $state = count($data);
-                $data[$state] = 'tx';
+                $data[$state] = 'TX';
 
                 fputcsv($fh, $data);
             }
@@ -33,7 +33,8 @@ if (($handle = fopen('data/california.csv', "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         if($data[0] == 'reservoir') continue;
 
-        fputcsv($fh, array($data[0], $data[2], $data[1], $data[4], $data[8], 'ca'));
+        $data[0] = ucwords(strtolower($data[0]));
+        fputcsv($fh, array($data[0], $data[2], $data[1], $data[4], $data[8], 'CA'));
         echo $data[0] . "--->" . $data[8] . "\n";
     }
     fclose($handle);
