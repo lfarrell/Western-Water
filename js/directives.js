@@ -217,31 +217,97 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
 angular.module('westernWaterApp').directive('totalsCharts', ['tipService', function(tipService) {
     function link(scope, element, attrs) {
         var margin = {top: 20, right: 40, left: 100, bottom: 80},
-            width = 1000 - margin.left - margin.right,
-            height = 550 - margin.top - margin.bottom;
+            width = 600 - margin.left - margin.right,
+            height = 550 - margin.top - margin.bottom,
+            format = d3.time.format("%m/%d/%Y").parse;
 
-        scope.$watch('data', function(data) {
-            if (!data) { return; }
+        scope.$watchGroup(['data', 'state'], function(values) {
+            if(!values[0]) { return; }
+
+            var data = values[0];
+            var state = values[1];
 
             data.forEach(function(d) {
                 d.capacity = d.capacity.replace(/,/g, '');
                 d.storage = d.storage.replace(/,/g, '');
             });
 
-            var ndx = crossfilter(data);
-            var all_capacities = ndx.dimension(function(d) { return d.reservoir; });
-            var each_res = all_capacities.top(Infinity);
-            var res = _.uniq(data, function(d) { return d.reservoir; });
+            var datz = data.filter(function(d) { return d.state === state; });
+           // var ndx = crossfilter(datz);
+           // var all_capacities = ndx.dimension(function(d) { return d.reservoir; });
+           // var each_res = all_capacities.top(Infinity);
+            if(state === 'CA') {
+                compare('#ca_capacities');
+            } else {
+                compare('#tx_capacities');
+            }
 
-            var chart = d3.selectAll("#capacities").append("svg")
+
+            function compare(selector) {
+            var res = _.uniq(datz, function(d) { return d.reservoir; });
+            var total_capacity = d3.sum(_.pluck(res, 'capacity'));
+            var total_storage = d3.sum(_.pluck(res, 'storage'));
+
+            var chart = d3.selectAll(selector).append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom);
+
+            // Create scales
+            var xScale = d3.time.scale()
+                .domain([
+                    format(d3.min(datz, function(d) { return d.date; })),
+                    format(d3.max(datz, function(d) { return d.date; }))
+                ])
+                .range([0, width]);
+
+            var yScale = d3.scale.linear()
+                .domain([total_capacity, 0])
+                .range([0, height]);
+
+            // Create Axis
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient("bottom")
+                .tickFormat(d3.time.format("%m/%d"));
+
+            var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left");
+
+            chart.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate("+ margin.left + "," + (height + margin.top) + ")")
+                .call(xAxis);
+
+            chart.append("text")
+                .attr("x", width / 2)
+                .attr("y", height + margin.bottom)
+                .style("text-anchor", "end")
+                .text("Date");
+
+            chart.append("g")
+                .attr("class", "y axis")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                .call(yAxis);
+
+            chart.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("x", -height/2)
+                .attr("y", 6)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Acre Feet");
+            }
         });
     }
 
     return {
         restrict: 'C',
-        link: link
+        link: link,
+        scope: {
+            'data': '=',
+            'state': '@'
+        }
     }
 }]);
 

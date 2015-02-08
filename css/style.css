@@ -9,6 +9,10 @@ h1, h2 {
     text-align: center;
 }
 
+h3 {
+    text-align: center;
+}
+
 .axis path,
 .axis line {
     fill: none;

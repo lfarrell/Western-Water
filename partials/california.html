@@ -4,5 +4,11 @@
     <div class="col-md-5" id="graph"></div>
 </div>
 <div class="row" ng-show="loaded">
-    <div class="col-md-12 totals-charts" id="capacities"></div>
+    <h2>Capacities by State</h2>
+    <div class="col-md-6 totals-charts" data="data" state="CA" id="ca_capacities">
+        <h3>California</h3>
+    </div>
+    <div class="col-md-6 totals-charts" data="data" state="TX" id="tx_capacities">
+        <h3>Texas</h3>
+    </div>
 </div>

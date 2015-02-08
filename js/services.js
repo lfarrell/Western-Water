@@ -55,3 +55,20 @@ angular.module('westernWaterApp').service('tipService', function() {
             .style("opacity", 0);
     };
 });
+
+angular.module('westernWaterApp').service('axisService', function(data, format, graph_width) {
+    this.xAxis = function() {
+        d3.time.scale()
+          .domain([
+              format(d3.min(data, function(d) { return d.date; })),
+              format(d3.max(data, function(d) { return d.date; }))
+          ])
+          .range([0, graph_width]);
+    };
+
+    this.yAxis = function(datz, graph_height) {
+        d3.scale.linear()
+          .domain([d3.max(datz, function(d) { return d.capacity; }), 0])
+          .range([0, graph_height]);
+    };
+});
