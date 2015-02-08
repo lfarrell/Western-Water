@@ -232,6 +232,9 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                 d.storage = d.storage.replace(/,/g, '');
             });
 
+            var current_date = new Date();
+            d3.select("#date").html('(for '+ current_date.toDateString() + ')');
+
             var datz = data.filter(function(d) { return d.state === state; });
            // var ndx = crossfilter(datz);
            // var all_capacities = ndx.dimension(function(d) { return d.reservoir; });
@@ -242,61 +245,63 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                 compare('#tx_capacities');
             }
 
-
             function compare(selector) {
-            var res = _.uniq(datz, function(d) { return d.reservoir; });
-            var total_capacity = d3.sum(_.pluck(res, 'capacity'));
-            var total_storage = d3.sum(_.pluck(res, 'storage'));
+                var res = _.uniq(datz, function(d) { return d.reservoir; });
+                var total_capacity = d3.sum(_.pluck(res, 'capacity'));
+                var total_storage = d3.sum(_.pluck(res, 'storage'));
+                var pct_capacity = Math.round(total_storage / total_capacity * 100).toFixed(1);
 
-            var chart = d3.selectAll(selector).append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom);
+                d3.select(selector + ' span').html('(' + pct_capacity + '% of full capacity)');
 
-            // Create scales
-            var xScale = d3.time.scale()
-                .domain([
-                    format(d3.min(datz, function(d) { return d.date; })),
-                    format(d3.max(datz, function(d) { return d.date; }))
-                ])
-                .range([0, width]);
+                var chart = d3.selectAll(selector).append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom);
 
-            var yScale = d3.scale.linear()
-                .domain([total_capacity + 2500000, 0])
-                .range([0, height]);
+                // Create scales
+                var xScale = d3.time.scale()
+                    .domain([
+                        format(d3.min(datz, function(d) { return d.date; })),
+                        format(d3.max(datz, function(d) { return d.date; }))
+                    ])
+                    .range([0, width]);
 
-            // Create Axis
-            var xAxis = d3.svg.axis()
-                .scale(xScale)
-                .orient("bottom")
-                .tickFormat(d3.time.format("%m/%d"));
+                var yScale = d3.scale.linear()
+                    .domain([total_capacity + 2500000, 0])
+                    .range([0, height]);
 
-            var yAxis = d3.svg.axis()
-                .scale(yScale)
-                .orient("left");
+                // Create Axis
+                var xAxis = d3.svg.axis()
+                    .scale(xScale)
+                    .orient("bottom")
+                    .tickFormat(d3.time.format("%m/%d"));
 
-            chart.append("g")
-                .attr("class", "x axis")
-                .attr("transform", "translate("+ margin.left + "," + (height + margin.top) + ")")
-                .call(xAxis);
+                var yAxis = d3.svg.axis()
+                    .scale(yScale)
+                    .orient("left");
 
-            chart.append("text")
-                .attr("x", width / 2)
-                .attr("y", height + margin.bottom)
-                .style("text-anchor", "end")
-                .text("Date");
+                chart.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate("+ margin.left + "," + (height + margin.top) + ")")
+                    .call(xAxis);
 
-            chart.append("g")
-                .attr("class", "y axis")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                .call(yAxis);
+                chart.append("text")
+                    .attr("x", width / 2)
+                    .attr("y", height + margin.bottom)
+                    .style("text-anchor", "end")
+                    .text("Date");
 
-            chart.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("x", -height/2)
-                .attr("y", 6)
-                .attr("dy", ".71em")
-                .style("text-anchor", "end")
-                .text("Acre Feet");
+                chart.append("g")
+                    .attr("class", "y axis")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                    .call(yAxis);
+
+                chart.append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("x", -height/2)
+                    .attr("y", 6)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .text("Acre Feet");
 
                 var storage = d3.svg.line()
                     .x(function(d) { return xScale(format(d.date)); })
