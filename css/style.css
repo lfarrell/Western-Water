@@ -52,3 +52,9 @@ text {
 a {
     color: white;
 }
+
+path.capacity {
+    fill: none;
+    stroke: green;
+    stroke-width: 2;
+}

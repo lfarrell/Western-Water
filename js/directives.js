@@ -43,7 +43,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 .range([0, graph_width]);
 
             var yScale = d3.scale.linear()
-                .domain([d3.max(datz, function(d) { return d.capacity; }), 0])
+                .domain([d3.max(datz, function(d) { return d.capacity ; }) * 1.1, 0])
                 .range([0, graph_height]);
 
             var zoom = d3.behavior.zoom()
@@ -261,7 +261,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                 .range([0, width]);
 
             var yScale = d3.scale.linear()
-                .domain([total_capacity, 0])
+                .domain([total_capacity + 2500000, 0])
                 .range([0, height]);
 
             // Create Axis
@@ -297,6 +297,29 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                 .attr("dy", ".71em")
                 .style("text-anchor", "end")
                 .text("Acre Feet");
+
+                var storage = d3.svg.line()
+                    .x(function(d) { return xScale(format(d.date)); })
+                    .y(function(d) { return yScale(total_storage); });
+
+                chart.append("g")
+                    .append("path")
+                    .attr("d", storage(datz))
+                    .attr("class", "storage")
+                    .attr("fill", "none")
+                    .attr("stroke", "firebrick")
+                    .attr("stroke-width", 2)
+                    .attr("transform", "translate(" + margin.left + ",0)");
+
+                var capacity = d3.svg.line()
+                    .x(function(d) { return xScale(format(d.date)); })
+                    .y(function(d) { return yScale(total_capacity); });
+
+                chart.append("g")
+                    .append("path")
+                    .attr("d", capacity(datz))
+                    .attr("class", "capacity")
+                    .attr("transform", "translate(" + margin.left + ",0)");
             }
         });
     }
