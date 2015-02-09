@@ -232,8 +232,11 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                 d.storage = d.storage.replace(/,/g, '');
             });
 
-            var current_date = new Date();
-            d3.select("#date").html('(for '+ current_date.toDateString() + ')');
+            var current_date = moment().subtract(1, 'days');
+            var today = current_date.format('MM/DD/YYYY');
+            var today_words = current_date.format('MMMM Do YYYY');
+
+            d3.select("#date").html('('+ today_words + ')');
 
             var datz = data.filter(function(d) { return d.state === state; });
            // var ndx = crossfilter(datz);
@@ -248,7 +251,10 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
             function compare(selector) {
                 var res = _.uniq(datz, function(d) { return d.reservoir; });
                 var total_capacity = d3.sum(_.pluck(res, 'capacity'));
-                var total_storage = d3.sum(_.pluck(res, 'storage'));
+                var todays_total = datz.filter(function(d) {
+                    return d.date === today;
+                });
+                var total_storage = d3.sum(_.pluck(todays_total, 'storage'));
                 var pct_capacity = Math.round(total_storage / total_capacity * 100).toFixed(1);
 
                 d3.select(selector + ' span').html('(' + pct_capacity + '% of full capacity)');
@@ -305,7 +311,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
 
                 var storage = d3.svg.line()
                     .x(function(d) { return xScale(format(d.date)); })
-                    .y(function(d) { return yScale(total_storage); });
+                    .y(function(d) { return yScale(todays_total); });
 
                 chart.append("g")
                     .append("path")
