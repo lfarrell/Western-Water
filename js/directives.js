@@ -249,16 +249,20 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                     return d.storage;
                 });
                 var each_res = storage_total.top(Infinity).sort(function(a,b) {
-                    if(a.key < b.key) {
+                    var date_one_parts = a.key.split('/');
+                    var date_two_parts = b.key.split('/');
+                    var date_one = new Date(date_one_parts[1], date_one_parts[0] - 1);
+                    var date_two = new Date(date_two_parts[1], date_two_parts[0] - 1);
+
+                    if(date_one < date_two) {
                         return -1;
-                    } else if(a. key  > b.key) {
+                    } else if(date_one > date_two) {
                         return 1;
                     } else {
                         return 0;
                     }
-
                 });
-            //    console.log(each_res)
+              //  console.log(each_res)
 
                 var todays_total = each_res.filter(function(d) {
                     return d.key === today;
