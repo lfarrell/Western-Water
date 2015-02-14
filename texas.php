@@ -122,7 +122,7 @@ $reservoirs = array(
 );
 
 foreach($reservoirs as $reservoir) {
-    $path = "http://waterdatafortexas.org/reservoirs/individual/" . $reservoir . "-30day.csv";
+    $path = "http://waterdatafortexas.org/reservoirs/individual/" . $reservoir . ".csv";
     $file_name = 'raw_data/tx/' . $reservoir . ".csv";
 
     get_records($path, $file_name, "wb");
@@ -143,7 +143,7 @@ foreach($reservoirs as $reservoir) {
             $reservoir = ucwords(implode(' ', $res));
 
             if($action == "a") {
-                if($current_date == $raw_date) {
+                if(preg_match('/^\d/', $raw_date)) {
                     csv_data($fh, $reservoir, $data);
                 } else {
                     continue;
