@@ -43,7 +43,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 .range([0, graph_width]);
 
             var yScale = d3.scale.linear()
-                .domain([d3.max(datz, function(d) { return d.capacity ; }) * 1.1, 0])
+                .domain([d3.max(datz, function(d) { return d.capacity ; }) * 1.2, 0])
                 .range([0, graph_height]);
 
             var zoom = d3.behavior.zoom()
@@ -101,8 +101,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             // Create Axis
             var xAxis = d3.svg.axis()
                 .scale(xScale)
-                .orient("bottom")
-               // .tickFormat(d3.time.format("%m/%d"));
+                .orient("bottom");
 
             var yAxis = d3.svg.axis()
                  .scale(yScale)
@@ -149,7 +148,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                  .attr("d", storage(datz))
                  .attr("id", "storage")
                  .attr("fill", "none")
-                 .attr("stroke", "firebrick")
+                 .attr("stroke", "steelblue")
                  .attr("stroke-width", 2)
                  .attr("transform", "translate(" + margin.left + ",0)");
 
@@ -227,15 +226,8 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
             var data = values[0];
             var state = values[1];
 
-            data.forEach(function(d) {
-                d.capacity = d.capacity.replace(/,/g, '');
-                d.storage = d.storage.replace(/,/g, '');
-
-            //    if(typeof d.storage !== "number") d.storage = 0;
-            });
-
-            var current_date = moment().subtract(6, 'days');
-            var today = current_date.format('MM/DD/YYYY');
+            var current_date = moment().subtract(1, 'month');
+            var today = current_date.format('MM/YYYY');
             var today_words = current_date.format('MMMM Do YYYY');
 
             d3.select("#date").html('('+ today_words + ')');
@@ -295,8 +287,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                 // Create Axis
                 var xAxis = d3.svg.axis()
                     .scale(xScale)
-                    .orient("bottom")
-                    .tickFormat(d3.time.format("%m/%d"));
+                    .orient("bottom");
 
                 var yAxis = d3.svg.axis()
                     .scale(yScale)
