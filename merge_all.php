@@ -2,43 +2,36 @@
 /**
  * Texas
  */
-$base = "data/tx";
-$files = scandir($base);
+$tx_base = "data/tx_m";
+$tx_files = scandir($tx_base);
+
+$cal_base = "data/ca_month";
+$cal_files = scandir($cal_base);
+
 $fh = fopen("all.csv", "wb");
 fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date','state'));
 
-foreach($files as $file) {
-    if(!preg_match('/^\./', $file)) {
-        if (($handle = fopen($base . '/' . $file, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                if($data[0] == 'reservoir') continue;
+function merge($base, $fh, $files, $state = 'CA') {
+    foreach($files as $file) {
+        if(!preg_match('/^\./', $file)) {
+            if (($handle = fopen($base . '/' . $file, "r")) !== FALSE) {
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                    $year = preg_split('/\//', $data[4])[1];
+                    if($data[0] == 'reservoir' || $year < 1990) continue;
 
-                $res = explode('-', $data[0]);
-                $data[0] = ucwords(implode(' ', $res));
-                echo $data[0] . "\n";
-                $state = count($data);
-                $data[$state] = 'TX';
+                    $res = explode('-', $data[0]);
+                    $data[0] = ucwords(implode(' ', $res));
+                    echo $data[0] . "\n";
 
-                fputcsv($fh, $data);
-            }
-            fclose($handle);
-        };
+                    $data[$state] = $state;
+
+                    fputcsv($fh, $data);
+                }
+                fclose($handle);
+            };
+        }
     }
 }
 
-/**
- * California
- */
-if (($handle = fopen('data/california.csv', "r")) !== FALSE) {
-    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-        if($data[0] == 'reservoir') continue;
-
-        $data[0] = ucwords(strtolower($data[0]));
-        fputcsv($fh, array($data[0], $data[2], $data[1], $data[4], $data[8], 'CA'));
-        echo $data[0] . "--->" . $data[8] . "\n";
-    }
-    fclose($handle);
-};
-
-
-fclose($fh);
+merge($tx_base, $fh, $tx_files, 'TX');
+merge($cal_base, $fh, $cal_files);

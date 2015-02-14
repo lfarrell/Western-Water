@@ -5,7 +5,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             width = 800,
             graph_width = 525 - margin.left - margin.right,
             graph_height = 525 - margin.top - margin.bottom,
-            format = d3.time.format("%m/%d/%Y").parse,
+            format = d3.time.format("%m/%Y").parse,
             tip = tipService.tipDiv();
 
         scope.$watchGroup(['map', 'stations', 'data'], function(values) {
@@ -15,11 +15,11 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             var stations = values[1];
             var data = values[2];
 
-            data.forEach(function(d) {
+           /* data.forEach(function(d) {
                 d.capacity = d.capacity.replace(/,/g, '');
                 d.storage = d.storage.replace(/,/g, '');
               //  d.avg_storage = d.avg_storage.replace(/,/g, '');
-            });
+            }); */
 
             var projection = d3.geo.albers()
                     .rotate([96, 0])
@@ -31,8 +31,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 path = d3.geo.path().projection(projection);
 
          //   var ndx = crossfilter(data);
-            var datz = data.filter(function(d) { return d.reservoir === 'Shasta'; });
-            scope.reservoir = 'Shasta, CA';
+            var datz = data.filter(function(d) { return d.reservoir === 'Shasta Dam'; });
+            scope.reservoir = 'Shasta Dam, CA';
 
             // Create scales
             var xScale = d3.time.scale()
@@ -102,7 +102,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             var xAxis = d3.svg.axis()
                 .scale(xScale)
                 .orient("bottom")
-                .tickFormat(d3.time.format("%m/%d"));
+               // .tickFormat(d3.time.format("%m/%d"));
 
             var yAxis = d3.svg.axis()
                  .scale(yScale)
@@ -219,7 +219,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
         var margin = {top: 20, right: 40, left: 100, bottom: 80},
             width = 600 - margin.left - margin.right,
             height = 550 - margin.top - margin.bottom,
-            format = d3.time.format("%m/%d/%Y").parse;
+            format = d3.time.format("%m/%Y").parse;
 
         scope.$watchGroup(['data', 'state'], function(values) {
             if(!values[0]) { return; }
@@ -230,18 +230,16 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
             data.forEach(function(d) {
                 d.capacity = d.capacity.replace(/,/g, '');
                 d.storage = d.storage.replace(/,/g, '');
+
+            //    if(typeof d.storage !== "number") d.storage = 0;
             });
 
-            var current_date = moment().subtract(1, 'days');
+            var current_date = moment().subtract(6, 'days');
             var today = current_date.format('MM/DD/YYYY');
             var today_words = current_date.format('MMMM Do YYYY');
 
             d3.select("#date").html('('+ today_words + ')');
 
-            var datz = data.filter(function(d) { return d.state === state; });
-           // var ndx = crossfilter(datz);
-           // var all_capacities = ndx.dimension(function(d) { return d.reservoir; });
-           // var each_res = all_capacities.top(Infinity);
             if(state === 'CA') {
                 compare('#ca_capacities');
             } else {
@@ -249,12 +247,31 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
             }
 
             function compare(selector) {
+                var datz = data.filter(function(d) { return d.state === state; });
                 var res = _.uniq(datz, function(d) { return d.reservoir; });
                 var total_capacity = d3.sum(_.pluck(res, 'capacity'));
-                var todays_total = datz.filter(function(d) {
-                    return d.date === today;
+
+                var ndx = crossfilter(datz);
+                var all_storage = ndx.dimension(function(d) { return d.date; });
+                var storage_total = all_storage.group().reduceSum(function(d) {
+                    return d.storage;
                 });
-                var total_storage = d3.sum(_.pluck(todays_total, 'storage'));
+                var each_res = storage_total.top(Infinity).sort(function(a,b) {
+                    if(a.key < b.key) {
+                        return -1;
+                    } else if(a. key  > b.key) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+
+                });
+            //    console.log(each_res)
+
+                var todays_total = each_res.filter(function(d) {
+                    return d.key === today;
+                });
+                var total_storage = d3.sum(_.pluck(todays_total, 'value'));
                 var pct_capacity = Math.round(total_storage / total_capacity * 100).toFixed(1);
 
                 d3.select(selector + ' span').html('(' + pct_capacity + '% of full capacity)');
@@ -266,8 +283,8 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                 // Create scales
                 var xScale = d3.time.scale()
                     .domain([
-                        format(d3.min(datz, function(d) { return d.date; })),
-                        format(d3.max(datz, function(d) { return d.date; }))
+                        format(d3.min(each_res, function(d) { return d.key; })),
+                        format(d3.max(each_res, function(d) { return d.key; }))
                     ])
                     .range([0, width]);
 
@@ -310,12 +327,14 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                     .text("Acre Feet");
 
                 var storage = d3.svg.line()
-                    .x(function(d) { return xScale(format(d.date)); })
-                    .y(function(d) { return yScale(todays_total); });
+                    .x(function(d) { return xScale(format(d.key)); })
+                    .y(function(d) {
+                        return yScale(d.value);
+                    });
 
                 chart.append("g")
                     .append("path")
-                    .attr("d", storage(datz))
+                    .attr("d", storage(each_res))
                     .attr("class", "storage")
                     .attr("fill", "none")
                     .attr("stroke", "firebrick")
