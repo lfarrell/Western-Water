@@ -17,7 +17,7 @@ function merge($base, $fh, $files, $state = 'CA') {
             if (($handle = fopen($base . '/' . $file, "r")) !== FALSE) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     $year = preg_split('/\//', $data[4])[1];
-                    if($data[0] == 'reservoir' || $year < 1990) continue;
+                    if($data[0] == 'reservoir' || $year < 2000) continue;
 
                     $res = explode('-', $data[0]);
                     $data[0] = ucwords(implode(' ', $res));

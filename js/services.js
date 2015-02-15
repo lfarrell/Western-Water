@@ -24,6 +24,17 @@ angular.module('westernWaterApp').service('LoadService', function() {
     };
 });
 
+angular.module('westernWaterApp').service('StatsService', function() {
+    /**
+     * Add , to make numbers easier to read
+     * @param number
+     * @returns {string}
+     */
+    this.numFormat = function(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+});
+
 angular.module('westernWaterApp').service('tipService', function() {
     this.tipDiv = function() {
         var tip = document.querySelectorAll(".tooltip"); // check that there's not already a tip div

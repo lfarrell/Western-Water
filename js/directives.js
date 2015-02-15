@@ -1,4 +1,4 @@
-angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(tipService) {
+angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsService', function(tipService, StatsService) {
     function link(scope, element, attrs) {
         var margin = {top: 20, right: 40, left: 100, bottom: 80},
             height = 600 - margin.top - margin.bottom,
@@ -15,12 +15,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             var stations = values[1];
             var data = values[2];
 
-           /* data.forEach(function(d) {
-                d.capacity = d.capacity.replace(/,/g, '');
-                d.storage = d.storage.replace(/,/g, '');
-              //  d.avg_storage = d.avg_storage.replace(/,/g, '');
-            }); */
-
             var projection = d3.geo.albers()
                     .rotate([96, 0])
                     .center([-.6, 38.7])
@@ -35,12 +29,11 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
             scope.reservoir = 'Shasta Dam, CA';
 
             // Create scales
-            var xScale = d3.time.scale()
-                .domain([
+            var xScale = d3.time.scale().range([0, graph_width]);
+            xScale.domain([
                     format(d3.min(data, function(d) { return d.date; })),
                     format(d3.max(data, function(d) { return d.date; }))
-                ])
-                .range([0, graph_width]);
+                ]);
 
             var yScale = d3.scale.linear()
                 .domain([d3.max(datz, function(d) { return d.capacity ; }) * 1.2, 0])
@@ -98,6 +91,11 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
             }
 
+            /**
+             * Chart
+             */
+            var bisectDate = d3.bisector(function(d) { return format(d.date); }).left;
+
             // Create Axis
             var xAxis = d3.svg.axis()
                 .scale(xScale)
@@ -143,8 +141,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                   .x(function(d) { return xScale(format(d.date)); })
                   .y(function(d) { return yScale(d.storage); });
 
-            chart.append("g")
-                 .append("path")
+            chart.append("path")
                  .attr("d", storage(datz))
                  .attr("id", "storage")
                  .attr("fill", "none")
@@ -152,19 +149,43 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                  .attr("stroke-width", 2)
                  .attr("transform", "translate(" + margin.left + ",0)");
 
-          /*  var avg_storage = d3.svg.line()
-                  .x(function(d) { return xScale(format(d.date)); })
-                  .y(function(d) { return yScale(d.avg_storage); });
+            /**
+             * Show values on mouseover
+             */
+            var focus = chart.append("g")
+                .attr("class", "focus")
+                .style("display", "none");
 
-            chart.append("g")
-                 .append("path")
-                 .attr("d", avg_storage(datz))
-                 .attr("id", "avg_storage")
-                 .attr("fill", "none")
-                 .attr("stroke", "steelblue")
-                 .attr("stroke-width", 2)
-                 .attr("stroke-dasharray", [5,5])
-                 .attr("transform", "translate(" + margin.left + ",0)"); */
+            focus.append("circle")
+                .attr("r", 4.5);
+
+            focus.append("text")
+                .attr("x", 9)
+                .attr("dy", ".35em");
+
+            chart.append("rect")
+                .attr("class", "overlay")
+                .attr("width", graph_width)
+                .attr("height", graph_height)
+                .on("mouseover", function() { focus.style("display", null); })
+                .on("mouseout", function() { focus.style("display", "none"); })
+                .on("mousemove", mousemove)
+                .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+
+
+            /*  var avg_storage = d3.svg.line()
+                    .x(function(d) { return xScale(format(d.date)); })
+                    .y(function(d) { return yScale(d.avg_storage); });
+
+              chart.append("g")
+                   .append("path")
+                   .attr("d", avg_storage(datz))
+                   .attr("id", "avg_storage")
+                   .attr("fill", "none")
+                   .attr("stroke", "steelblue")
+                   .attr("stroke-width", 2)
+                   .attr("stroke-dasharray", [5,5])
+                   .attr("transform", "translate(" + margin.left + ",0)"); */
 
             var capacity = d3.svg.line()
                   .x(function(d) { return xScale(format(d.date)); })
@@ -178,6 +199,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                  .attr("stroke", "green")
                  .attr("stroke-width", 2)
                  .attr("transform", "translate(" + margin.left + ",0)");
+
+
 
             function chart_update(datz) {
                 xScale.domain([
@@ -193,11 +216,23 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', function(
                 d3.select("#capacity").transition().duration(1200).ease("sin-in-out").attr("d", capacity(datz));
                 var res = datz[0];
                 d3.select("#reservoir").text( res.reservoir + ', ' + res.state);
+
+                //d3.select("#rect").on("mousemove", mousemove);
             }
 
             function dragged(d) {
                 d3.event.sourceEvent.stopPropagation();
                 d3.select(this).attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
+            }
+
+            function mousemove() {
+                var x0 = xScale.invert(d3.mouse(this)[0]),
+                    i = bisectDate(datz, x0, 1),
+                    d0 = datz[i - 1],
+                    d1 = datz[i],
+                    d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+                focus.attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + yScale(d.storage) + ")");
+                focus.select("text").text("Vol on (" + d.date + "): " + StatsService.numFormat(d.storage) + " acre feet");
             }
         });
     }

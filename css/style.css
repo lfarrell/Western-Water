@@ -58,3 +58,13 @@ path.capacity {
     stroke: green;
     stroke-width: 2;
 }
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.focus circle {
+    fill: none;
+    stroke: white;
+}
