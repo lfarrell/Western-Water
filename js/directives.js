@@ -198,7 +198,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 focus.attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")");
                 focus.select("text").tspans([
                     "Date: " + d.date + ")",
-                    "Vol:" + StatsService.numFormat(d.storage) + " acre feet",
+                    "Vol: " + StatsService.numFormat(d.storage) + " acre feet",
                     "Pct Full: " + d.pct_capacity + "%"
                 ]);
             }
@@ -227,15 +227,13 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
             if(!values[0]) { return; }
 
             var data = values[0];
-            var state = values[1];
-
-            var bisectDate = d3.bisector(function(d) { return format(d.date); }).left;
+            var state = values[1]
 
             var current_date = moment().subtract(1, 'month');
             var today = current_date.format('MM/YYYY');
-            var today_words = current_date.format('MMMM Do YYYY');
+            var today_words = current_date.format('MMMM YYYY');
 
-            d3.select("#date").html('('+ today_words + ')');
+            d3.select("#date").html('(for Month Ending '+ today_words + ')');
 
             if(state === 'CA') {
                 compare('#ca_capacities');
@@ -278,6 +276,8 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                 d3.select(selector + ' span').html('(' + pct_capacity + '% of full capacity)');
 
                 // Create scales
+                var bisectDate = d3.bisector(function(d) { return format(d.key); }).left;
+
                 var xScale = d3.time.scale()
                     .domain([
                         format(d3.min(each_res, function(d) { return d.key; })),
@@ -349,9 +349,9 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                 //    focus.select("text").tspans(["Vol on (" + d.key + ")", StatsService.numFormat(d.value) + " acre feet"]);
                     focus.select("text").tspans([
                         "Date: " + d.key + ")",
-                        "Vol:" + StatsService.numFormat(d.value) + " acre feet",
+                        "Vol: " + StatsService.numFormat(d.value) + " acre feet",
                         "Pct Full: " + (d.value / total_capacity * 100).toFixed(1) + "%"
-                    ])
+                    ]);
                 }
             }
         });
