@@ -105,7 +105,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                  .scale(yScale)
                  .orient("left");
 
-            var chart = chartService.chart(graph_height, graph_width, margin, xAxis, yAxis);
+            var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis);
 
             d3.selectAll("g.x text").attr('transform', "rotate(35)")
               .attr('dx', 27)
@@ -221,7 +221,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
     }
 }]);
 
-angular.module('westernWaterApp').directive('totalsCharts', ['tipService', function(tipService) {
+angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'StatsService', 'chartService', function(tipService, StatsService, chartService) {
     function link(scope, element, attrs) {
         var margin = {top: 20, right: 40, left: 100, bottom: 80},
             width = 600 - margin.left - margin.right,
@@ -280,10 +280,6 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
 
                 d3.select(selector + ' span').html('(' + pct_capacity + '% of full capacity)');
 
-                var chart = d3.selectAll(selector).append("svg")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom);
-
                 // Create scales
                 var xScale = d3.time.scale()
                     .domain([
@@ -305,29 +301,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                     .scale(yScale)
                     .orient("left");
 
-                chart.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate("+ margin.left + "," + (height + margin.top) + ")")
-                    .call(xAxis);
-
-                chart.append("text")
-                    .attr("x", width / 2)
-                    .attr("y", height + margin.bottom)
-                    .style("text-anchor", "end")
-                    .text("Date");
-
-                chart.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                    .call(yAxis);
-
-                chart.append("text")
-                    .attr("transform", "rotate(-90)")
-                    .attr("x", -height/2)
-                    .attr("y", 6)
-                    .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text("Acre Feet");
+                var chart = chartService.chart(selector, height, width, margin, xAxis, yAxis);
 
                 var storage = d3.svg.line()
                     .x(function(d) { return xScale(format(d.key)); })
@@ -342,7 +316,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                     .attr("fill", "none")
                     .attr("stroke", "firebrick")
                     .attr("stroke-width", 2)
-                    .attr("transform", "translate(" + margin.left + ",0)");
+                    .attr("transform", "translate(" + margin.left + "," + margin.top +")");
 
                 var capacity = d3.svg.line()
                     .x(function(d) { return xScale(format(d.date)); })
@@ -352,7 +326,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', funct
                     .append("path")
                     .attr("d", capacity(datz))
                     .attr("class", "capacity")
-                    .attr("transform", "translate(" + margin.left + ",0)");
+                    .attr("transform", "translate(" + margin.left + "," + margin.top +")");
             }
         });
     }
