@@ -1,6 +1,6 @@
 angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsService', 'chartService', function(tipService, StatsService, chartService) {
     function link(scope, element, attrs) {
-        var margin = {top: 20, right: 40, left: 100, bottom: 80},
+        var margin = {top: 20, right: 130, left: 100, bottom: 80},
             height = 600 - margin.top - margin.bottom,
             width = 800,
             graph_width = 525 - margin.left - margin.right,
@@ -198,7 +198,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 focus.attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")");
                 focus.select("text").tspans([
                     "Date: " + d.date + ")",
-                    "Vol: " + StatsService.numFormat(d.storage) + " acre feet",
+                    "Vol: " + StatsService.numFormat(d.storage) + " acre ft",
                     "Pct Full: " + d.pct_capacity + "%"
                 ]);
             }
@@ -218,7 +218,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
 
 angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'StatsService', 'chartService', function(tipService, StatsService, chartService) {
     function link(scope, element, attrs) {
-        var margin = {top: 20, right: 40, left: 100, bottom: 80},
+        var margin = {top: 20, right: 130, left: 100, bottom: 80},
             width = 600 - margin.left - margin.right,
             height = 550 - margin.top - margin.bottom,
             format = d3.time.format("%m/%Y").parse;
@@ -349,7 +349,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                 //    focus.select("text").tspans(["Vol on (" + d.key + ")", StatsService.numFormat(d.value) + " acre feet"]);
                     focus.select("text").tspans([
                         "Date: " + d.key + ")",
-                        "Vol: " + StatsService.numFormat(d.value) + " acre feet",
+                        "Vol: " + StatsService.numFormat(d.value) + " acre ft",
                         "Pct Full: " + (d.value / total_capacity * 100).toFixed(1) + "%"
                     ]);
                 }

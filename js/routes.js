@@ -8,13 +8,9 @@ angular.module('westernWaterApp').config(function($routeProvider) {
             templateUrl: 'partials/main.html',
             controller: 'mainController'
         })
-        .when('/california', {
-            templateUrl: 'partials/california.html',
-            controller: 'calController'
-        })
-        .when('/texas', {
-            templateUrl: 'partials/texas.html',
-            controller: 'texasController'
+        .when('/about', {
+            templateUrl: 'partials/about.html',
+            controller: 'aboutController'
         })
         .otherwise({
             redirectTo: '/'

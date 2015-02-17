@@ -1,15 +1,14 @@
-<h1>Western Water - Introduction</h1>
-<div class="row">
-    <div class="col-md-offset-1 col-md-10 col-md-offset-1">
-        <p>Data courtesy of the following locations:</p>
-        <ul class="no-style">
-            <li><a href="http://cdec.water.ca.gov">California Data Exchange Center</a></li>
-            <li><a href="http://waterdatafortexas.org/">Water Data for Texas</a></li>
-            <li><a href="http://waterdata.usgs.gov/">United States Geological Survey - National Water Information System</a></li>
-            <li><a href="http://www.usbr.gov/">United States Bureau of Reclamation</a></li>
-            <li><a href="http://en.wikipedia.org/">Wikipedia</a></li>
-            <li><a href="http://tools.wmflabs.org/geohack/">GeoHack</a></li>
-            <li><a href="http://www.lat-long.com/">http://www.lat-long.com</a></li>
-        </ul>
+<h2>Reservoir: <span id="reservoir">Shasta, CA</span></h2>
+<div class="row" ng-show="loaded">
+    <div class="col-md-7 map-graph" id="map" stations="stations" map="map_data" data="data"></div>
+    <div class="col-md-5" id="graph"></div>
+</div>
+<div class="row" ng-show="graphloaded">
+    <h2>Capacities by State <span id="date"></span></h2>
+    <div class="col-md-6 totals-charts" data="data" state="CA" id="ca_capacities">
+        <h3>California <span></span></h3>
+    </div>
+    <div class="col-md-6 totals-charts" data="data" state="TX" id="tx_capacities">
+        <h3>Texas <span></span></h3>
     </div>
 </div>

@@ -49,6 +49,10 @@ text {
     fill: white;
 }
 
+g.focus text {
+    font-size: .8em;
+}
+
 a {
     color: white;
 }
