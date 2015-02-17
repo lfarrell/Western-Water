@@ -25,7 +25,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 path = d3.geo.path().projection(projection);
 
          //   var ndx = crossfilter(data);
-            var datz = data.filter(function(d) { return d.reservoir === 'Shasta Dam'; });
+            datz = data.filter(function(d) { return d.reservoir === 'Shasta Dam'; });
             scope.reservoir = 'Shasta Dam, CA';
 
             // Create scales
@@ -36,7 +36,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 ]);
 
             var yScale = d3.scale.linear()
-                .domain([d3.max(datz, function(d) { return d.capacity ; }) * 1.2, 0])
+                .domain([d3.max(datz, function(d) { return d.capacity ; }) * 1.1, 0])
                 .range([0, graph_height]);
 
             var zoom = d3.behavior.zoom()
@@ -51,7 +51,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 .attr('height', height)
                 .attr('width', width)
                 .call(zoom);
-              //  .call(drag);
 
             var map = map_svg.append('g');
 
@@ -74,9 +73,10 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     return 2.5;
                })
                .on("click", function (res) {
-                    var datz = data.filter(function(d) {
+                    datz = data.filter(function(d) {
                         return d.reservoir === res.reservoir;
                     });
+
                     chart_update(datz);
                 })
                 .on("mouseover", function(d) {
@@ -207,7 +207,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     format(d3.min(data, function(d) { return d.date; })),
                     format(d3.max(data, function(d) { return d.date; }))
                 ]);
-                yScale.domain([d3.max(datz, function(d) { return d.capacity; }), 0]);
+                yScale.domain([d3.max(datz, function(d) { return d.capacity; }) * 1.1, 0]);
 
                 d3.select("g.x").transition().duration(1200).ease("sin-in-out").call(xAxis);
                 d3.select("g.y").transition().duration(1200).ease("sin-in-out").call(yAxis);
@@ -216,8 +216,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 d3.select("#capacity").transition().duration(1200).ease("sin-in-out").attr("d", capacity(datz));
                 var res = datz[0];
                 d3.select("#reservoir").text( res.reservoir + ', ' + res.state);
-
-                //d3.select("#rect").on("mousemove", mousemove);
+                d3.select("rect").on("mousemove", mousemove);
             }
 
             function dragged(d) {
