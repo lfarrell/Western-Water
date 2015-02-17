@@ -99,4 +99,19 @@ angular.module('westernWaterApp').service('chartService', function() {
 
         return chart;
     };
+
+    this.focus = function(chart) {
+        var focus = chart.append("g")
+            .attr("class", "focus")
+            .style("display", "none");
+
+        focus.append("circle")
+            .attr("r", 4.5);
+
+        focus.append("text")
+            .attr("x", 9)
+            .attr("dy", ".35em");
+
+        return focus;
+    }
 });

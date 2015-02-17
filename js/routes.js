@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('westernWaterApp', ["ngRoute", "pageslide-directive", "ui.bootstrap"]);
+angular.module('westernWaterApp', ["ngRoute", "ui.bootstrap"]);
 
 angular.module('westernWaterApp').config(function($routeProvider) {
     $routeProvider
