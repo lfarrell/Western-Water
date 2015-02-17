@@ -1,4 +1,4 @@
-angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsService', function(tipService, StatsService) {
+angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsService', 'chartService', function(tipService, StatsService, chartService) {
     function link(scope, element, attrs) {
         var margin = {top: 20, right: 40, left: 100, bottom: 80},
             height = 600 - margin.top - margin.bottom,
@@ -105,33 +105,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                  .scale(yScale)
                  .orient("left");
 
-            var chart = d3.select("#graph").append("svg")
-                 .attr("width", graph_width + margin.left + margin.right)
-                 .attr("height", graph_height + margin.top + margin.bottom);
-
-            chart.append("g")
-                 .attr("class", "x axis")
-                 .attr("transform", "translate("+ margin.left + "," + (graph_height + margin.top) + ")")
-                 .call(xAxis);
-
-            chart.append("text")
-                 .attr("x", width / 2)
-                 .attr("y", graph_height + margin.bottom)
-                 .style("text-anchor", "end")
-                 .text("Date");
-
-            chart.append("g")
-                 .attr("class", "y axis")
-                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                 .call(yAxis);
-
-            chart.append("text")
-                 .attr("transform", "rotate(-90)")
-                 .attr("x", -height/2)
-                 .attr("y", 6)
-                 .attr("dy", ".71em")
-                 .style("text-anchor", "end")
-                 .text("Acre Feet");
+            var chart = chartService.chart(graph_height, graph_width, margin, xAxis, yAxis);
 
             d3.selectAll("g.x text").attr('transform', "rotate(35)")
               .attr('dx', 27)
@@ -147,7 +121,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                  .attr("fill", "none")
                  .attr("stroke", "steelblue")
                  .attr("stroke-width", 2)
-                 .attr("transform", "translate(" + margin.left + ",0)");
+                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             /**
              * Show values on mouseover
@@ -230,7 +204,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     d0 = datz[i - 1],
                     d1 = datz[i],
                     d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-                focus.attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + yScale(d.storage) + ")");
+                focus.attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")");
                 focus.select("text").text("Vol on (" + d.date + "): " + StatsService.numFormat(d.storage) + " acre feet");
             }
         });

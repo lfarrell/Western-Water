@@ -67,19 +67,36 @@ angular.module('westernWaterApp').service('tipService', function() {
     };
 });
 
-angular.module('westernWaterApp').service('axisService', function(data, format, graph_width) {
-    this.xAxis = function() {
-        d3.time.scale()
-          .domain([
-              format(d3.min(data, function(d) { return d.date; })),
-              format(d3.max(data, function(d) { return d.date; }))
-          ])
-          .range([0, graph_width]);
-    };
+angular.module('westernWaterApp').service('chartService', function() {
+    this.chart = function(graph_height, graph_width, margin, xAxis, yAxis) {
+        var chart = d3.select("#graph").append("svg")
+            .attr("width", graph_width + margin.left + margin.right)
+            .attr("height", graph_height + margin.top + margin.bottom);
 
-    this.yAxis = function(datz, graph_height) {
-        d3.scale.linear()
-          .domain([d3.max(datz, function(d) { return d.capacity; }), 0])
-          .range([0, graph_height]);
+        chart.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate("+ margin.left + "," + (graph_height + margin.top) + ")")
+            .call(xAxis);
+
+        chart.append("text")
+            .attr("x", graph_width / 2)
+            .attr("y", graph_height + margin.bottom)
+            .style("text-anchor", "end")
+            .text("Date");
+
+        chart.append("g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+            .call(yAxis);
+
+        chart.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("x", -graph_height/2)
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Acre Feet");
+
+        return chart;
     };
 });
