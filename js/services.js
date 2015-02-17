@@ -68,8 +68,8 @@ angular.module('westernWaterApp').service('tipService', function() {
 });
 
 angular.module('westernWaterApp').service('chartService', function() {
-    this.chart = function(graph_height, graph_width, margin, xAxis, yAxis) {
-        var chart = d3.select("#graph").append("svg")
+    this.chart = function(selector, graph_height, graph_width, margin, xAxis, yAxis) {
+        var chart = d3.select(selector).append("svg")
             .attr("width", graph_width + margin.left + margin.right)
             .attr("height", graph_height + margin.top + margin.bottom);
 
