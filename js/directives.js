@@ -247,7 +247,13 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
 
               //  var res = _.uniq(datz, function(d) { return d.reservoir; });
               //  var total_capacity = d3.sum(_.pluck(res, 'capacity'));
-                var sorting = function(a, b) {
+
+                var all_storage = ndx.dimension(function(d) { return d.date; });
+
+                var capacity_total = all_storage.group().reduceSum(function(d) {
+                    return d.capacity;
+                });
+                var each_capacity = capacity_total.top(Infinity).sort(function(a,b) {
                     var date_one_parts = a.key.split('/');
                     var date_two_parts = b.key.split('/');
                     var date_one = new Date(date_one_parts[1], date_one_parts[0] - 1);
@@ -260,14 +266,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     } else {
                         return 0;
                     }
-                };
-
-                var all_storage = ndx.dimension(function(d) { return d.date; });
-
-                var capacity_total = all_storage.group().reduceSum(function(d) {
-                    return d.capacity;
                 });
-                var each_capacity = capacity_total.top(Infinity).sort(sorting(a,b));
 
                 var storage_total = all_storage.group().reduceSum(function(d) {
                     return d.storage;
@@ -365,12 +364,16 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                         d0 = each_res[i - 1],
                         d1 = each_res[i],
                         d = x0 - d0.key > d1.key - x0 ? d1 : d0;
+
+                    // Get total capacity for the month/year moused over
+                    var total_cap = _.filter(each_capacity, function(g) { return g.key === d.key; });
+
                     focus.attr("transform", "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")");
                 //    focus.select("text").tspans(["Vol on (" + d.key + ")", StatsService.numFormat(d.value) + " acre feet"]);
                     focus.select("text").tspans([
                         "Date: " + d.key + ")",
                         "Vol: " + StatsService.numFormat(d.value) + " acre ft",
-                        "Pct Full: " + (d.value / total_capacity * 100).toFixed(1) + "%"
+                        "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%"
                     ]);
                 }
             }
