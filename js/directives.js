@@ -32,7 +32,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             var xScale = d3.time.scale().range([0, graph_width]);
             xScale.domain([
                     format(d3.min(data, function(d) { return d.date; })),
-                    format(d3.max(data, function(d) { return d.date; }))
+                    format(d3.max(data, function(d) { return chartService.graphPadding(); }))
                 ]);
 
             var yScale = d3.scale.linear()
@@ -170,7 +170,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             function chart_update(datz) {
                 xScale.domain([
                     format(d3.min(data, function(d) { return d.date; })),
-                    format(d3.max(data, function(d) { return d.date; }))
+                    format(d3.max(data, function(d) { return chartService.graphPadding(); }))
                 ]);
                 yScale.domain([d3.max(datz, function(d) { return d.capacity; }) * 1.2, 0]);
 
@@ -300,7 +300,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                 var xScale = d3.time.scale()
                     .domain([
                         format(d3.min(each_res, function(d) { return d.key; })),
-                        format(d3.max(each_res, function(d) { return d.key; }))
+                        format(d3.max(each_res, function(d) { return chartService.graphPadding(); }))
                     ])
                     .range([0, width]);
 
@@ -369,7 +369,6 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     var total_cap = _.filter(each_capacity, function(g) { return g.key === d.key; });
 
                     focus.attr("transform", "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")");
-                //    focus.select("text").tspans(["Vol on (" + d.key + ")", StatsService.numFormat(d.value) + " acre feet"]);
                     focus.select("text").tspans([
                         "Date: " + d.key + ")",
                         "Vol: " + StatsService.numFormat(d.value) + " acre ft",

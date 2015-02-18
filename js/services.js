@@ -113,5 +113,10 @@ angular.module('westernWaterApp').service('chartService', function() {
             .attr("dy", ".35em");
 
         return focus;
-    }
+    };
+
+    this.graphPadding = function() {
+        var graph_padding = moment().add(8, 'month');
+        return graph_padding.format('MM/YYYY');
+    };
 });
