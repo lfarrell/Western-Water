@@ -101,14 +101,31 @@ angular.module('westernWaterApp').service('chartService', function() {
     };
 
     this.focus = function(chart) {
+      /*  var focus = chart.selectAll(".focus")
+            .data(key_values).enter().append("g")
+            .attr("class", "focus")
+            .attr("id", function (d) { return "focus-" + d; })
+            .style("display", "none"); */
+
         var focus = chart.append("g")
             .attr("class", "focus")
             .style("display", "none");
 
         focus.append("circle")
+            .attr("class", "y0")
             .attr("r", 4.5);
 
         focus.append("text")
+            .attr("class", "y0")
+            .attr("x", 9)
+            .attr("dy", ".35em");
+
+        focus.append("circle")
+            .attr("class", "y1")
+            .attr("r", 4.5);
+
+        focus.append("text")
+            .attr("class", "y1")
             .attr("x", 9)
             .attr("dy", ".35em");
 

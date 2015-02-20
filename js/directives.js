@@ -163,7 +163,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                  .attr("fill", "none")
                  .attr("stroke", "green")
                  .attr("stroke-width", 2)
-                 .attr("transform", "translate(" + margin.left + ",0)");
+                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
 
@@ -174,14 +174,14 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 ]);
                 yScale.domain([d3.max(datz, function(d) { return d.capacity; }) * 1.2, 0]);
 
-                d3.select("g.x").transition().duration(1200).ease("sin-in-out").call(xAxis);
-                d3.select("g.y").transition().duration(1200).ease("sin-in-out").call(yAxis);
-                d3.select("#storage").transition().duration(1200).ease("sin-in-out").attr("d", storage(datz));
+                d3.select("g.x").transition().duration(1000).ease("sin-in-out").call(xAxis);
+                d3.select("g.y").transition().duration(1000).ease("sin-in-out").call(yAxis);
+                d3.select("#storage").transition().duration(1000).ease("sin-in-out").attr("d", storage(datz));
            //     d3.select("#avg_storage").transition().duration(1200).ease("sin-in-out").attr("d", avg_storage(datz));
-                d3.select("#capacity").transition().duration(1200).ease("sin-in-out").attr("d", capacity(datz));
+                d3.select("#capacity").transition().duration(1000).ease("sin-in-out").attr("d", capacity(datz));
                 var res = datz[0];
                 d3.select("#reservoir").text( res.reservoir + ', ' + res.state);
-                d3.select("rect").on("mousemove", mousemove);
+              //  d3.select("rect").on("mousemove", mousemove);
             }
 
             function dragged(d) {
@@ -195,12 +195,20 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     d0 = datz[i - 1],
                     d1 = datz[i],
                     d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-                focus.attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")");
-                focus.select("text").tspans([
-                    "Date: " + d.date + ")",
-                    "Vol: " + StatsService.numFormat(d.storage) + " acre ft",
-                    "Pct Full: " + d.pct_capacity + "%"
-                ]);
+                d3.select("circle.y0").attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")");
+                d3.select("text.y0").attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")")
+                    .tspans([
+                        "Date: " + d.date + ")",
+                        "Vol: " + StatsService.numFormat(d.storage) + " acre ft",
+                        "Pct Full: " + d.pct_capacity + "%"
+                    ]);
+
+                d3.select("circle.y1").attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.capacity) + margin.top) + ")");
+                d3.select("text.y1").attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.capacity) + margin.top) + ")")
+                    .tspans([
+                        "Date: " + d.date + ")",
+                        "Vol: " + StatsService.numFormat(d.capacity) + " acre ft"
+                    ]);
             }
         });
     }
@@ -365,12 +373,23 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                         d1 = each_res[i],
                         d = x0 - d0.key > d1.key - x0 ? d1 : d0;
 
+                    var j = bisectDate(each_capacity, x0, 1),
+                        d2 = each_capacity[j - 1],
+                        d4 = each_capacity[j],
+                        e = x0 - d2.key > d4.key - x0 ? d4 : d2;
+
+                    d3.select(".y1").attr("transform", "translate(" + (xScale(format(e.key)) + margin.left) + "," + (yScale(e.value) + margin.top) + ")");
+                    d3.select("text.y1").tspans([
+                        "Date: " + e.key,
+                        "Vol: " + StatsService.numFormat(e.value) + " acre ft"
+                    ]);
+
                     // Get total capacity for the month/year moused over
                     var total_cap = _.filter(each_capacity, function(g) { return g.key === d.key; });
 
-                    focus.attr("transform", "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")");
-                    focus.select("text").tspans([
-                        "Date: " + d.key + ")",
+                    d3.select(".y0").attr("transform", "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")");
+                    d3.select("text.y0").tspans([
+                        "Date: " + d.key,
                         "Vol: " + StatsService.numFormat(d.value) + " acre ft",
                         "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%"
                     ]);
@@ -386,16 +405,5 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
             'data': '=',
             'state': '@'
         }
-    }
-}]);
-
-angular.module('westernWaterApp').directive('smallCharts', ['tipService', function(tipService) {
-    function link(scope, element, attrs) {
-
-    }
-
-    return {
-        restrict: 'C',
-        link: link
     }
 }]);
