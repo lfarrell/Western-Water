@@ -195,19 +195,22 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     d0 = datz[i - 1],
                     d1 = datz[i],
                     d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-                d3.select("circle.y0").attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")");
-                d3.select("text.y0").attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")")
+
+                var res_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")";
+                d3.select("circle.y0").attr("transform", res_transform);
+                d3.select("text.y0").attr("transform", res_transform)
                     .tspans([
                         "Date: " + d.date + ")",
                         "Vol: " + StatsService.numFormat(d.storage) + " acre ft",
                         "Pct Full: " + d.pct_capacity + "%"
                     ]);
 
-                d3.select("circle.y1").attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.capacity) + margin.top) + ")");
-                d3.select("text.y1").attr("transform", "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.capacity) + margin.top) + ")")
+                var cap_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.capacity) + margin.top) + ")";
+                d3.select("#graph circle.y1").attr("transform", cap_transform);
+                d3.select("#graph text.y1").attr("transform", cap_transform)
                     .tspans([
                         "Date: " + d.date + ")",
-                        "Vol: " + StatsService.numFormat(d.capacity) + " acre ft"
+                        "Capacity: " + StatsService.numFormat(d.capacity) + " acre ft"
                     ]);
             }
         });
@@ -294,6 +297,10 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     }
                 });
 
+                each_res.forEach(function(d) {
+                    d.cap = _.find(each_capacity, function(e) { return d.key === e.key; }).value;
+                });
+
                 var todays_total = each_res.filter(function(d) {
                     return d.key === today;
                 });
@@ -373,26 +380,25 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                         d1 = each_res[i],
                         d = x0 - d0.key > d1.key - x0 ? d1 : d0;
 
-                    var j = bisectDate(each_capacity, x0, 1),
-                        d2 = each_capacity[j - 1],
-                        d4 = each_capacity[j],
-                        e = x0 - d2.key > d4.key - x0 ? d4 : d2;
-
-                    d3.select(".y1").attr("transform", "translate(" + (xScale(format(e.key)) + margin.left) + "," + (yScale(e.value) + margin.top) + ")");
-                    d3.select("text.y1").tspans([
-                        "Date: " + e.key,
-                        "Vol: " + StatsService.numFormat(e.value) + " acre ft"
-                    ]);
-
                     // Get total capacity for the month/year moused over
                     var total_cap = _.filter(each_capacity, function(g) { return g.key === d.key; });
 
-                    d3.select(".y0").attr("transform", "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")");
-                    d3.select("text.y0").tspans([
-                        "Date: " + d.key,
-                        "Vol: " + StatsService.numFormat(d.value) + " acre ft",
-                        "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%"
-                    ]);
+                    var res_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")";
+                    d3.select(selector + " circle.y0").attr("transform", res_transform);
+                    d3.select(selector + " text.y0").attr("transform", res_transform)
+                        .tspans([
+                            "Date: " + d.key,
+                            "Vol: " + StatsService.numFormat(d.value) + " acre ft",
+                            "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%"
+                        ]);
+
+                    var cap_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.cap) + margin.top) + ")";
+                    d3.select(selector + " circle.y1").attr("transform", cap_transform);
+                    d3.select(selector + " text.y1").attr("transform", cap_transform)
+                        .tspans([
+                            "Date: " + d.key,
+                            "Vol: " + StatsService.numFormat(d.cap) + " acre ft"
+                        ]);
                 }
             }
         });
