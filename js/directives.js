@@ -70,7 +70,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                .attr("cy", function(d) {
                     return projection([d.lng, d.lat])[1]; })
                .attr("r", function(d) {
-                    return 2.5;
+                    return 2.4;
                })
                .on("click", function (res) {
                     datz = data.filter(function(d) {
@@ -89,7 +89,13 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
 
             function zooming() {
                 map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                if(d3.event.scale > 2) {
+                    d3.selectAll('#map circle').attr("r", 1.5);
+                }
+
             }
+
+
 
             /**
              * Chart
