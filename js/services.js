@@ -100,6 +100,47 @@ angular.module('westernWaterApp').service('chartService', function() {
         return chart;
     };
 
+    this.legend = function(selector, check) {
+        var keys = ['Capacity', 'Current Storage'];
+        var colors = ['green', 'steelblue'];
+        var width = 225;
+        var compare = document.querySelectorAll('#compare_legend .legend');
+        if(check && compare.length) return;
+
+        var legend = d3.select(selector)
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 55)
+            .attr("class", "legend")
+            .attr("transform", "translate(" + width/3.5 + ",0)");
+
+        var j = 0;
+
+        legend.selectAll('g').data(keys)
+            .enter()
+            .append('g').attr("width",width)
+            .attr('class', 'legend')
+            .each(function(d, i) {
+                var g = d3.select(this);
+
+                g.append("rect")
+                    .attr("x", j)
+                    .attr("y", 15)
+                    .attr("width", 10)
+                    .attr("height", 10)
+                    .style("fill", colors[i]);
+
+                g.append("text")
+                    .attr("x", j + 15)
+                    .attr("y", 25)
+                    .attr("height",30)
+                    .attr("width", d.length * 50)
+                    .text(d);
+
+                j += (d.length * 5) + 50;
+            });
+    };
+
     this.focus = function(chart) {
       /*  var focus = chart.selectAll(".focus")
             .data(key_values).enter().append("g")
