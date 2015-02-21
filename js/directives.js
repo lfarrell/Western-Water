@@ -211,7 +211,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     .tspans([
                         "Date: " + d.date + ")",
                         "Capacity: " + StatsService.numFormat(d.capacity) + " acre ft"
-                    ]);
+                    ], -15);
             }
         });
     }
@@ -398,7 +398,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                         .tspans([
                             "Date: " + d.key,
                             "Vol: " + StatsService.numFormat(d.cap) + " acre ft"
-                        ]);
+                        ], -15);
                 }
             }
         });
