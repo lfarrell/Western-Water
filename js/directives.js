@@ -95,8 +95,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
 
             }
 
-
-
             /**
              * Chart
              */
@@ -111,6 +109,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                  .scale(yScale)
                  .orient("left");
 
+            chartService.legend('#graph');
             var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis);
 
             d3.selectAll("g.x text").attr('transform', "rotate(35)")
@@ -240,11 +239,13 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
             height = 550 - margin.top - margin.bottom,
             format = d3.time.format("%m/%Y").parse;
 
+        chartService.legend('#compare_legend', true);
+
         scope.$watchGroup(['data', 'state'], function(values) {
             if(!values[0]) { return; }
 
             var data = values[0];
-            var state = values[1]
+            var state = values[1];
 
             var current_date = moment().subtract(1, 'month');
             var today = current_date.format('MM/YYYY');
