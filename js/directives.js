@@ -109,7 +109,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                  .scale(yScale)
                  .orient("left");
 
-            chartService.legend('#graph');
+            chartService.legend('#res_legend');
             var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis);
 
             d3.selectAll("g.x text").attr('transform', "rotate(35)")

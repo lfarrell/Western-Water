@@ -1,12 +1,9 @@
 "use strict";
 
 angular.module('westernWaterApp').controller('aboutController', ['$scope', function($scope) {
-    $scope.header = 'Western Water';
 }]);
 
 angular.module('westernWaterApp').controller('mainController', ['$scope', function($scope) {
-    $scope.header = 'California';
-
     d3.json('js/maps/contig_us.geo.json', function(map_data) {
         $scope.map_data = map_data;
 
@@ -21,8 +18,6 @@ angular.module('westernWaterApp').controller('mainController', ['$scope', functi
             $scope.graphloaded = true;
             $scope.$apply();
         });
-        $scope.loading = false;
-        $scope.loaded = true;
 
         $scope.$apply();
     });

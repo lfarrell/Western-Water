@@ -119,7 +119,6 @@ angular.module('westernWaterApp').service('chartService', function() {
         legend.selectAll('g').data(keys)
             .enter()
             .append('g').attr("width",width)
-            .attr('class', 'legend')
             .each(function(d, i) {
                 var g = d3.select(this);
 
