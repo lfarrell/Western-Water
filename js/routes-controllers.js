@@ -29,6 +29,9 @@ angular.module('westernWaterApp').controller('mainController', ['$scope', functi
             $scope.$apply();
         });
 
+        $scope.graphloading = true;
+        $scope.graphloaded = false;
+
         d3.csv('data/all.csv', function(data) {
             $scope.data = data;
             $scope.graphloading = false;
