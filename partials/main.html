@@ -1,24 +1,26 @@
 <div class="loader" ng-show="graphloading">Loading...</div>
 <h2 ng-show="graphloaded">The Water of the West - California and Texas</h2>
 <div class="row" ng-show="graphloaded">
-    <div class="col-md-7 map-graph" id="map" stations="stations" map="map_data" data="data">
+    <div class="col-sm-12 col-lg-7 map-graph" id="map" stations="stations" map="map_data" data="data">
         <h3>Reservoirs</h3>
     </div>
-    <div class="col-md-5" id="graph">
+    <div class="col-sm-12 col-lg-5" id="graph">
         <h3>Selected Reservoir: <span id="reservoir">Shasta, CA</span></h3>
         <p id="res_legend"></p>
     </div>
-    <div class="col-md-offset-2 col-md-8 col-md-offset-2">
+</div>
+<div class="row" ng-show="graphloaded">
+    <div class="col-lg-offset-2 col-md-8 col-lg-offset-2">
         <p class="center">One acre foot is the amount of water it takes to cover one acre in one foot of water, or about 325,851 gallons.</p>
     </div>
 </div>
 <div class="row" ng-show="graphloaded">
     <h2 class="offset">Capacities by State <span id="date"></span></h2>
     <p id="compare_legend"></p>
-    <div class="col-md-6 totals-charts" data="data" state="CA" id="ca_capacities">
+    <div class="col-sm-12 col-md-6 totals-charts" data="data" state="CA" id="ca_capacities">
         <h3>California <span></span></h3>
     </div>
-    <div class="col-md-6 totals-charts" data="data" state="TX" id="tx_capacities">
+    <div class="col-sm-12 col-md-6 totals-charts" data="data" state="TX" id="tx_capacities">
         <h3>Texas <span></span></h3>
     </div>
 </div>

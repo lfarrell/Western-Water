@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('westernWaterApp').controller('aboutController', ['$scope', function($scope) {
+angular.module('westernWaterApp').controller('aboutController', ['$scope', '$window', function($scope, $window) {
 }]);
 
 angular.module('westernWaterApp').controller('mainController', ['$scope', function($scope) {

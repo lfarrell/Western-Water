@@ -2,9 +2,9 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
     function link(scope, element, attrs) {
         var margin = {top: 20, right: 130, left: 100, bottom: 80},
             height = 600 - margin.top - margin.bottom,
-            width = 800,
-            graph_width = 525 - margin.left - margin.right,
-            graph_height = 525 - margin.top - margin.bottom,
+            width = 900 - margin.left - margin.right,
+            graph_width = 600 - margin.left - margin.right,
+            graph_height = 500 - margin.top - margin.bottom,
             format = d3.time.format("%m/%Y").parse,
             tip = tipService.tipDiv();
 
@@ -19,7 +19,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     .rotate([96, 0])
                     .center([-.6, 38.7])
                     .parallels([29.5, 45.5])
-                    .scale(1000)
+                        .scale(925)
                     .translate([width / 2, height / 2])
                     .precision(.1),
                 path = d3.geo.path().projection(projection);
