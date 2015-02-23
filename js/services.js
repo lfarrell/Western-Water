@@ -79,9 +79,9 @@ angular.module('westernWaterApp').service('chartService', function() {
             .call(xAxis);
 
         chart.append("text")
-            .attr("x", graph_width / 2)
+            .attr("x", graph_width / 1.5)
             .attr("y", graph_height + margin.bottom)
-            .style("text-anchor", "end")
+            .style("text-anchor", "zs")
             .text("Date");
 
         chart.append("g")
