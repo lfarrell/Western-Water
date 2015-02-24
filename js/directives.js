@@ -30,7 +30,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             var xScale = d3.time.scale().range([0, graph_width]);
             xScale.domain([
                 d3.min(datz, function(d) { return format(d.date); }),
-               d3.max(datz, function(d) { return format(d.date); })
+               d3.max(datz, function(d) { return format(chartService.graphPadding()); })
             ]);
 
 
@@ -174,7 +174,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             function chart_update(datz) {
                 xScale.domain([
                     d3.min(datz, function(d) { return format(d.date); }),
-                    d3.max(datz, function(d) { return format(d.date); })
+                    d3.max(datz, function(d) { return format(chartService.graphPadding()); })
                 ]);
                 yScale.domain([d3.max(datz, function(d) { return d.capacity; }) * 1.2, 0]);
 
@@ -197,7 +197,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     i = bisectDate(datz, x0, 1),
                     d0 = datz[i - 1],
                     d1 = datz[i];
-                console.log(d1)
 
                  if(d1 === undefined) d1 = Infinity;
                  var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
