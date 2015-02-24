@@ -3,7 +3,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
         var margin = {top: 20, right: 130, left: 100, bottom: 80},
             height = 600 - margin.top - margin.bottom,
             width = 900 - margin.left - margin.right,
-            graph_width = 600 - margin.left - margin.right,
+            graph_width = 550 - margin.left - margin.right,
             graph_height = 500 - margin.top - margin.bottom,
             format = d3.time.format("%m/%Y").parse,
             tip = tipService.tipDiv();
@@ -24,16 +24,15 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     .precision(.1),
                 path = d3.geo.path().projection(projection);
 
-         //   var ndx = crossfilter(data);
             datz = data.filter(function(d) { return d.reservoir === 'Shasta Dam'; });
-            scope.reservoir = 'Shasta Dam, CA';
 
             // Create scales
             var xScale = d3.time.scale().range([0, graph_width]);
             xScale.domain([
-                    format(d3.min(data, function(d) { return d.date; })),
-                    format(d3.max(data, function(d) { return chartService.graphPadding(); }))
-                ]);
+                d3.min(datz, function(d) { return format(d.date); }),
+               d3.max(datz, function(d) { return format(d.date); })
+            ]);
+
 
             var yScale = d3.scale.linear()
                 .domain([d3.max(datz, function(d) { return d.capacity ; }) * 1.2, 0])
@@ -98,7 +97,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             /**
              * Chart
              */
-            var bisectDate = d3.bisector(function(d) { return format(d.date); }).left;
+            var bisectDate = d3.bisector(function(d) { return format(d.date); }).right;
 
             // Create Axis
             var xAxis = d3.svg.axis()
@@ -174,8 +173,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
 
             function chart_update(datz) {
                 xScale.domain([
-                    format(d3.min(data, function(d) { return d.date; })),
-                    format(d3.max(data, function(d) { return chartService.graphPadding(); }))
+                    d3.min(datz, function(d) { return format(d.date); }),
+                    d3.max(datz, function(d) { return format(d.date); })
                 ]);
                 yScale.domain([d3.max(datz, function(d) { return d.capacity; }) * 1.2, 0]);
 
@@ -186,7 +185,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 d3.select("#capacity").transition().duration(1000).ease("sin-in-out").attr("d", capacity(datz));
                 var res = datz[0];
                 d3.select("#reservoir").text( res.reservoir + ', ' + res.state);
-              //  d3.select("rect").on("mousemove", mousemove);
             }
 
             function dragged(d) {
@@ -198,8 +196,11 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 var x0 = xScale.invert(d3.mouse(this)[0]),
                     i = bisectDate(datz, x0, 1),
                     d0 = datz[i - 1],
-                    d1 = datz[i],
-                    d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+                    d1 = datz[i];
+                console.log(d1)
+
+                 if(d1 === undefined) d1 = Infinity;
+                 var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
 
                 var res_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")";
                 d3.select("circle.y0").attr("transform", res_transform);
@@ -227,7 +228,9 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
         scope: {
             'map': '=',
             'data': '=',
-            'stations': '='
+            'stations': '=',
+            'rwidth': '=',
+            'rheight': '='
         }
     }
 }]);
@@ -317,7 +320,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                 d3.select(selector + ' span').html('(' + pct_capacity + '% of full capacity)');
 
                 // Create scales
-                var bisectDate = d3.bisector(function(d) { return format(d.key); }).left;
+                var bisectDate = d3.bisector(function(d) { return format(d.key); }).right;
 
                 var xScale = d3.time.scale()
                     .domain([
@@ -384,8 +387,10 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     var x0 = xScale.invert(d3.mouse(this)[0]),
                         i = bisectDate(each_res, x0, 1),
                         d0 = each_res[i - 1],
-                        d1 = each_res[i],
-                        d = x0 - d0.key > d1.key - x0 ? d1 : d0;
+                        d1 = each_res[i];
+
+                    if(d1 === undefined) d1 = Infinity;
+                    var d = x0 - d0.key > d1.key - x0 ? d1 : d0;
 
                     // Get total capacity for the month/year moused over
                     var total_cap = _.filter(each_capacity, function(g) { return g.key === d.key; });
