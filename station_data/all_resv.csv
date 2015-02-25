@@ -2,7 +2,7 @@ reservoir,lat,lng,state
 "Upper Klamath",42.25,-121.815,CA
 Gerber,42.205,-121.13,CA
 "Iron Gate Reservoir",41.934,-122.436,CA
-"Clear Lk",41.927,-121.075,CA
+"Clear Lk   Klamath R",41.927,-121.075,CA
 Dwinnell,41.541,-122.376,CA
 "Trinity Lake",40.801,-122.762,CA
 Lewiston,40.727,-122.793,CA
@@ -22,13 +22,11 @@ Chabot,37.73,-122.122,CA
 "Del Valle",37.614,-121.745,CA
 "San Antonio Reservoir",37.573,-121.848,CA
 Calaveras,37.492,-121.818,CA
-Austrian,37.132,-121.93,CA
 "Lexington Reservoir",37.202,-121.988,CA
 "Leroy Anderson",37.165,-121.632,CA
-"Coyote Res-sta Clara",37.118,-121.549,CA
+"Coyote Res Sta Clara",37.118,-121.549,CA
 "Lower Crystal Springs Reservoir",37.53,-122.36,CA
 "San Pablo",37.958,-122.333,CA
-Lafayette,37.885,-122.138,CA
 "San Andreas",37.578,-122.412,CA
 "Lake San Antonio",35.798,-120.883,CA
 "Whale Rock",35.45,-120.883,CA
@@ -50,7 +48,6 @@ Castaic,34.5152,-118.6101,CA
 Perris,33.858,-117.183,CA
 "Lake Hemet",33.666,-116.705,CA
 "Bear Valley Dam",34.242,-116.978,CA
-"Villa Park",33.815,-117.832,CA
 "Santiago Creek Res",33.785,-117.723,CA
 "Railroad Canyon",33.675,-117.272,CA
 "Diamond Valley",33.67,-117.066,CA
@@ -75,8 +72,6 @@ Barrett,32.678,-116.669,CA
 "Lake Mccloud",41.135,-122.074,CA
 "Iron Canyon",41.045,-121.981,CA
 "Lake Britton",41.022,-121.676,CA
-"Pit R Ph #7",40.843,-122.015,CA
-"Pit R Ph #6",40.842,-122.001,CA
 "Black Butte",39.808,-122.329,CA
 "Stony Gorge Reservoir",39.583,-122.533,CA
 "East Park Reservoir",39.367,-122.517,CA
@@ -90,10 +85,9 @@ Barrett,32.678,-116.669,CA
 "Little Grass Valley",39.724,-121.019,CA
 "Sly Creek",39.584,-121.116,CA
 "Oroville Dam",39.54,-121.493,CA
-"Thermalito Total",39.458,-121.638,CA
-"Jackson Meadows",39.509,-120.552,CA
+"Thermalito  Total",39.458,-121.638,CA
 "Bowman Lake",39.45,-120.652,CA
-"Lake Spaulding",39.441,-120.658,CA
+"Lake Spaulding S Yuba System",39.441,-120.658,CA
 "French Lake",39.44,-120.544,CA
 "New Bullards Bar",39.393,-121.14,CA
 "Spaulding Lake",39.329,-120.641,CA
@@ -101,24 +95,18 @@ Barrett,32.678,-116.669,CA
 "Englebright",39.239,-121.267,CA
 Rollins,39.135,-120.948,CA
 "Bear River At Camp Far West Dam",39.05,-121.317,CA
-"Combie Lake",39.017,-121.05,CA
-"Lake Valley Reservoir",39.3,-120.583,CA
 "French Meadows",39.112,-120.468,CA
 "Hell Hole",39.058,-120.407,CA
 "Loon Lake",38.983,-120.323,CA
-"Stumpy Meadows Reservoir",38.903,-120.603,CA
 "Union Valley",38.864,-120.438,CA
 "Ice House",38.824,-120.359,CA
 "Slab Creek",38.7725,-120.6994,CA
 "Caples Lake",38.707,-120.048,CA
 "Folsom Lake",38.683,-121.183,CA
-"Silver Lake Reservoir",38.669,-120.121,CA
 "Lake Natoma",38.65,-121.183,CA
 "Indian Valley",39.083,-122.533,CA
-"Clear Lk - Cache Creek",38.957,-122.642,CA
+"Clear Lk   Cache Creek",38.957,-122.642,CA
 Berryessa,38.513,-122.104,CA
-"Lake Solano",38.5,-122,CA
-"Bethany Forebay",37.785,-121.617,CA
 "Los Vaqueros Reservoir",37.838,-121.726,CA
 "Jenkinson Lake",38.713,-120.56,CA
 "Lower Bear",38.538,-120.257,CA
@@ -140,9 +128,8 @@ Tulloch,37.875,-120.603,CA
 "Modesto Reservoir",37.657,-120.675,CA
 "Turlock Lake",37.6,-120.583,CA
 "Lake Mcclure",37.584,-120.267,CA
-"Lake Mc Swain",37.52,-120.309,CA
 "Buchanan Dam",37.213,-119.97,CA
-"Hidden Dam (hensley)",37.2,-119.917,CA
+"Hidden Dam",37.2,-119.917,CA
 "Thomas A Edison",37.37,-118.987,CA
 "Mammoth Pool",37.329,-119.328,CA
 "Crane Valley",37.283,-119.517,CA
@@ -150,8 +137,7 @@ Tulloch,37.875,-120.603,CA
 "Huntington Lake",37.228,-119.221,CA
 "Shaver Lake",37.145,-119.302,CA
 "Redinger Lake",37.145,-119.449,CA
-"Kerckhoff Dam",37.128,-119.524,CA
-"Friant Dam (millerton)",37.001,-119.705,CA
+"Friant Dam",37.001,-119.705,CA
 "San Luis Reservoir",37.033,-121.133,CA
 "Oneill Forebay",37.067,-121.067,CA
 "San Luis Reservoir",37.001,-121.002,CA
@@ -163,10 +149,8 @@ Wishon,37.005,-118.969,CA
 "Success Dam",36.061,-118.922,CA
 "Isabella Dam",35.646,-118.473,CA
 Stampede,39.471,-120.103,CA
-"Independence Lake",39.45,-120.283,CA
 "Boca Reservoir",39.383,-120.1,CA
 "Prosser Creek Reservoir",39.3794,-120.1367,CA
-"Martis Creek Reservoir",39.327,-120.113,CA
 "Lake Tahoe",39.181,-120.118,CA
 "Bridgeport Reservoir",38.325,-119.211,CA
 "Saddlebag Lake Reservoir",37.966,-119.272,CA
