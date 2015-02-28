@@ -205,7 +205,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 d3.select("circle.y0").attr("transform", res_transform);
                 d3.select("text.y0").attr("transform", res_transform)
                     .tspans([
-                        "Date: " + d.date + ")",
+                        "Date: " + d.date,
                         "Vol: " + StatsService.numFormat(d.storage) + " acre ft",
                         "Pct Full: " + d.pct_capacity + "%"
                     ]);
@@ -214,7 +214,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 d3.select("#graph circle.y1").attr("transform", cap_transform);
                 d3.select("#graph text.y1").attr("transform", cap_transform)
                     .tspans([
-                        "Date: " + d.date + ")",
+                        "Date: " + d.date,
                         "Capacity: " + StatsService.numFormat(d.capacity) + " acre ft"
                     ], -15);
             }
