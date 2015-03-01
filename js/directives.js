@@ -227,9 +227,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
         scope: {
             'map': '=',
             'data': '=',
-            'stations': '=',
-            'rwidth': '=',
-            'rheight': '='
+            'stations': '='
         }
     }
 }]);

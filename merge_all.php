@@ -8,6 +8,9 @@ $tx_files = scandir($tx_base);
 $cal_base = "data/ca_month";
 $cal_files = scandir($cal_base);
 
+$oc_base = "data/uc_mf";
+$oc_files = scandir($oc_base);
+
 $fh = fopen("all.csv", "wb");
 fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date','state'));
 
@@ -23,7 +26,9 @@ function merge($base, $fh, $files, $state = 'CA') {
                     $data[0] = ucwords(implode(' ', $res));
                     echo $data[0] . "\n";
 
-                    $data[$state] = $state;
+                    if($state) {
+                        $data[$state] = $state;
+                    }
 
                     fputcsv($fh, $data);
                 }
@@ -35,3 +40,4 @@ function merge($base, $fh, $files, $state = 'CA') {
 
 merge($tx_base, $fh, $tx_files, 'TX');
 merge($cal_base, $fh, $cal_files);
+merge($oc_base, $fh, $oc_files, false);
