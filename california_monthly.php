@@ -169,7 +169,7 @@ $reservoirs = array(
 $day = date('d-M-Y+H:i');
 
 foreach($reservoirs as $key => $reservoir) {
-    $full_link = "http://cdec.water.ca.gov/cgi-progs/queryMonthly?$key&d=$day&span=50years";
+    $full_link = "http://cdec.water.ca.gov/cgi-progs/queryMonthly?$key&d=$day&span=20years";
     try {
         $html = new simple_html_dom();
         $html->load_file($full_link);

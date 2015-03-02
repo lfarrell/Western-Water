@@ -121,8 +121,10 @@ $reservoirs = array(
     "wright-patman"
 );
 
+$last_month = date("Y-m", strtotime("first day of previous month"));
+
 foreach($reservoirs as $reservoir) {
-    $path = "http://waterdatafortexas.org/reservoirs/individual/" . $reservoir . ".csv";
+    $path = "http://waterdatafortexas.org/reservoirs/individual/" . $reservoir . "-1year.csv";
     $file_name = 'raw_data/tx/' . $reservoir . ".csv";
 
     get_records($path, $file_name, "wb");
@@ -143,13 +145,13 @@ foreach($reservoirs as $reservoir) {
             $reservoir = ucwords(implode(' ', $res));
 
             if($action == "a") {
-                if(preg_match('/^\d/', $raw_date)) {
+                if(preg_match('/^'. $last_month . '/', $raw_date)) {
                     csv_data($fh, $reservoir, $data);
                 } else {
                     continue;
                 }
             } else {
-                if(preg_match('/^\d+/', $data[0])) {
+                if(preg_match('/^'. $last_month . '/', $data[0])) {
                     csv_data($fh, $reservoir, $data);
                 } else {
                     continue;
