@@ -166,10 +166,10 @@ $reservoirs = array(
 "SLW" => 78000
 );
 
-$day = date('d-M-Y+H:i');
+$last_month = date("m/Y", strtotime("first day of previous month"));
 
 foreach($reservoirs as $key => $reservoir) {
-    $full_link = "http://cdec.water.ca.gov/cgi-progs/queryMonthly?$key&d=$day&span=20years";
+    $full_link = "http://cdec.water.ca.gov/cgi-progs/queryMonthly?$key";
     try {
         $html = new simple_html_dom();
         $html->load_file($full_link);
@@ -178,8 +178,8 @@ foreach($reservoirs as $key => $reservoir) {
         $name = ucwords(strtolower(preg_replace('/\(.+$/', '', trim($res_name[0]->plaintext))));
         $file_name = preg_replace('/\s+/', '_', strtolower($name));
 
-        $fh = fopen("data/ca_month/$file_name.csv", "wb");
-        fputcsv($fh, array("reservoir", "storage", "capacity", "pct_capacity", "date"));
+        $fh = fopen("data/ca_month/$file_name.csv", "a");
+    //    fputcsv($fh, array("reservoir", "storage", "capacity", "pct_capacity", "date"));
 
         $rows = $html->find('tr');
         foreach($rows as $row) {
@@ -190,7 +190,7 @@ foreach($reservoirs as $key => $reservoir) {
             $vol = trim($volume->plaintext);
 
             $regx = '/^\d/';
-            if(preg_match($regx, $d) && preg_match($regx, $vol)) {
+            if($d == $last_month && preg_match($regx, $vol)) {
                 $pct = round(($vol / $reservoir) * 100, 1);
                 fputcsv($fh, array(trim($name), $vol, $reservoir, $pct, $d));
             }
