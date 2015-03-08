@@ -88,36 +88,80 @@ angular.module('westernWaterApp').controller('arizonaController', ['$scope', fun
 }]);
 
 angular.module('westernWaterApp').controller('californiaController', ['$scope', function($scope) {
-    $scope.graphloading = false;
-    $scope.graphloaded = true;
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+    d3.csv('data/cal_snow/all_cal.csv', function(data) {
+        $scope.data = data;
+        $scope.graphloading = false;
+        $scope.graphloaded = true;
+        $scope.$apply();
+    });
 }]);
 
 angular.module('westernWaterApp').controller('coloradoController', ['$scope', function($scope) {
-    $scope.graphloading = false;
-    $scope.graphloaded = true;
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+    d3.csv('data/co_snow/all_co.csv', function(data) {
+        $scope.data = data;
+        $scope.graphloading = false;
+        $scope.graphloaded = true;
+        $scope.$apply();
+    });
 }]);
 
 angular.module('westernWaterApp').controller('nevadaController', ['$scope', function($scope) {
-    $scope.graphloading = false;
-    $scope.graphloaded = true;
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+    d3.csv('data/nv_snow/all_nv.csv', function(data) {
+        $scope.data = data;
+        $scope.graphloading = false;
+        $scope.graphloaded = true;
+        $scope.$apply();
+    });
 }]);
 
 angular.module('westernWaterApp').controller('newmexicoController', ['$scope', function($scope) {
-    $scope.graphloading = false;
-    $scope.graphloaded = true;
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+    d3.csv('data/nm_snow/all_nm.csv', function(data) {
+        $scope.data = data;
+        $scope.graphloading = false;
+        $scope.graphloaded = true;
+        $scope.$apply();
+    });
 }]);
 
 angular.module('westernWaterApp').controller('texasController', ['$scope', function($scope) {
-    $scope.graphloading = false;
-    $scope.graphloaded = true;
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+
 }]);
 
 angular.module('westernWaterApp').controller('utahController', ['$scope', function($scope) {
-    $scope.graphloading = false;
-    $scope.graphloaded = true;
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+    d3.csv('data/utah_snow/all_utah.csv', function(data) {
+        $scope.data = data;
+        $scope.graphloading = false;
+        $scope.graphloaded = true;
+        $scope.$apply();
+    });
 }]);
 
 angular.module('westernWaterApp').controller('wyomingController', ['$scope', function($scope) {
-    $scope.graphloading = false;
-    $scope.graphloaded = true;
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+    d3.csv('data/wy_snow/all_wy.csv', function(data) {
+        $scope.data = data;
+        $scope.graphloading = false;
+        $scope.graphloaded = true;
+        $scope.$apply();
+    });
 }]);

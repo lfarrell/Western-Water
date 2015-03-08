@@ -425,7 +425,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
 angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'chartService', function(StatsService, chartService) {
     function link(scope, element, attrs) {
         var margin = {top: 20, right: 100, left: 100, bottom: 80},
-            width = 1050 - margin.left - margin.right,
+            width = 1250 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom,
             format = d3.time.format("%Y-%m-%d").parse;
 

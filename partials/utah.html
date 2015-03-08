@@ -5,12 +5,8 @@
         <p class="center">Zoom and pan the map to move around in it. Click a point to view the water levels for a particular reservoir. Hover over
             the line graphs to see the levels for a particular month.</p>
     </div>
-    <div class="col-sm-12 col-lg-7 map-graph" id="map" stations="stations" map="map_data" data="data">
-        <h3>Reservoirs</h3>
-    </div>
-    <div class="col-sm-12 col-lg-5" id="graph">
-        <h3>Selected Reservoir: <span id="reservoir">Shasta, CA</span></h3>
-        <p id="res_legend"></p>
+    <div class="col-sm-12 col-lg-12 snow-charts" state="ut" data="data" id="snow_level">
+        <h3>Snow Pack Levels</h3>
     </div>
 </div>
 <div class="row" ng-show="graphloaded">
@@ -21,15 +17,5 @@
         <p>Much of the American West is in a prolonged drought. Notice that for many reservoirs, particularly those in California, the seeming inexorable decline in stored water levels
             over the past several years. Then notice as many California reservoirs tick up after the heavy rains in December 2014. A number of
             reservoirs also exhibit wild oscillations in water level, presumably due to scheduled releases.</p>
-    </div>
-</div>
-<div class="row" ng-show="graphloaded">
-    <h2 class="offset">Capacities by State <span id="date"></span></h2>
-    <p id="compare_legend"></p>
-    <div class="col-sm-12 col-md-6 totals-charts" data="data" state="CA" id="ca_capacities">
-        <h3>California <span></span></h3>
-    </div>
-    <div class="col-sm-12 col-md-6 totals-charts" data="data" state="TX" id="tx_capacities">
-        <h3>Texas <span></span></h3>
     </div>
 </div>
