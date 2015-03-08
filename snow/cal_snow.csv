@@ -1,0 +1,59 @@
+Site_Name,Station,Ntwk,Elev,Lat,Lon,installed,state,County,Url
+Adin Mountains,20H08,SNOW ,6190,41.23,-120.79,1930,CA,MODOC,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20H08&report=snowmonth_hist
+Adin Mtn,20H13S,SNTL ,6190,41.24,-120.79,1984,CA,MODOC,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20H13S&report=snowmonth_hist
+Blue Lake Ranch,20H14,SNOW ,6830,41.15,-120.25,1997,CA,LASSEN,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20H14&report=snowmonth_hist
+Blue Lakes,19L05S,SNTL ,8057,38.61,-119.92,1980,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L05S&report=snowmonth_hist
+Burnside Lake,19L41S,SNTL ,8129,38.72,-119.89,2003,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L41S&report=snowmonth_hist
+Caples Lakes (Ca),20L11,SNOW ,8000,38.72,-120.05,1984,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20L11&report=snowmonth_hist
+Carson Pass,19L45S,SNTL ,8353,38.69,-119.99,2004,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L45S&report=snowmonth_hist
+"Carson Pass, Upper",19L04,SNOW ,8522,38.7,-119.99,1930,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L04&report=snowmonth_hist
+Castle Creek,20K28,SNOW ,7400,39.35,-120.35,1946,CA,NEVADA,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K28&report=snowmonth_hist
+Cedar Pass,20H06,SNOW ,7050,41.58,-120.3,1930,CA,MODOC,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20H06&report=snowmonth_hist
+Cedar Pass,20H06S,SNTL ,7030,41.58,-120.3,1979,CA,MODOC,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20H06S&report=snowmonth_hist
+Crowder Flat,20H02S,SNTL ,5170,41.89,-120.75,2000,CA,MODOC,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20H02S&report=snowmonth_hist
+Css Lab,20K31S,SNTL ,6855,39.33,-120.37,1981,CA,NEVADA,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K31S&report=snowmonth_hist
+Dismal Swamp,20H12S,SNTL ,7360,41.99,-120.18,1980,CA,MODOC,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20H12S&report=snowmonth_hist
+Donner Summit,20K10,SNOW ,6900,39.32,-120.33,1910,CA,NEVADA,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K10&report=snowmonth_hist
+Ebbetts Pass,19L19S,SNTL ,8765,38.55,-119.8,1979,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L19S&report=snowmonth_hist
+Echo Peak,20L06S,SNTL ,7670,38.85,-120.08,1979,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20L06S&report=snowmonth_hist
+Echo Summit,20L05,SNOW ,7500,38.83,-120.03,1940,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20L05&report=snowmonth_hist
+Fallen Leaf,20L10S,SNTL ,6236,38.93,-120.05,1979,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20L10S&report=snowmonth_hist
+Fordyce Lake,20K07,SNOW ,6500,39.35,-120.5,1918,CA,NEVADA,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K07&report=snowmonth_hist
+Forestdale Creek,19L43S,SNTL ,8017,38.68,-119.96,2003,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L43S&report=snowmonth_hist
+Freel Bench,19L02,SNOW ,7132,38.87,-119.96,1930,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L02&report=snowmonth_hist
+Furnace Flat,20K08,SNOW ,6600,39.35,-120.5,1918,CA,NEVADA,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K08&report=snowmonth_hist
+Hagan's Meadow,19L03S,SNTL ,7776,38.85,-119.94,1979,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L03S&report=snowmonth_hist
+Heavenly Valley,19L24S,SNTL ,8582,38.92,-119.92,1979,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L24S&report=snowmonth_hist
+Horse Meadow,19L44S,SNTL ,8557,38.84,-119.89,2003,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L44S&report=snowmonth_hist
+Independence Camp,20K04S,SNTL ,7003,39.45,-120.29,1979,CA,SIERRA,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K04S&report=snowmonth_hist
+Independence Creek,20K03S,SNTL ,6456,39.49,-120.28,1980,CA,SIERRA,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K03S&report=snowmonth_hist
+Independence Lake,20K05S,SNTL ,8352,39.43,-120.31,1979,CA,NEVADA,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K05S&report=snowmonth_hist
+Lake Lucille,20L04,SNOW ,8188,38.86,-120.11,1913,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20L04&report=snowmonth_hist
+Leavitt Lake,19L38,SNOW ,9630,38.28,-119.61,1961,CA,MONO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L38&report=snowmonth_hist
+Leavitt Lake,19L38S,SNTL ,9617,38.28,-119.61,1989,CA,MONO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L38S&report=snowmonth_hist
+Leavitt Meadows,19L08S,SNTL ,7198,38.3,-119.55,1980,CA,MONO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L08S&report=snowmonth_hist
+Lobdell Lake,19L17S,SNTL ,9233,38.44,-119.37,1979,CA,MONO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L17S&report=snowmonth_hist
+Monitor Pass,19L40S,SNTL ,8310,38.67,-119.61,1990,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L40S&report=snowmonth_hist
+Poison Flat,19L06S,SNTL ,7736,38.51,-119.63,1980,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L06S&report=snowmonth_hist
+Richardsons #2,20L03,SNOW ,6553,38.92,-120.04,1944,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20L03&report=snowmonth_hist
+Rubicon #1,20L01,SNOW ,8100,38.99,-120.13,1910,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20L01&report=snowmonth_hist
+Rubicon #2,20L02S,SNTL ,7689,39,-120.13,1980,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20L02S&report=snowmonth_hist
+Sawmill Ridge,19L34,SNOW ,8761,38.21,-119.35,1976,CA,MONO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L34&report=snowmonth_hist
+Sonora Pass,19L07,SNOW ,8779,38.32,-119.61,1932,CA,MONO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L07&report=snowmonth_hist
+Sonora Pass,19L07S,SNTL ,8827,38.31,-119.6,1979,CA,MONO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L07S&report=snowmonth_hist
+Spratt Creek,19L39S,SNTL ,6115,38.67,-119.82,1980,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L39S&report=snowmonth_hist
+Squaw Valley #2,20K19,SNOW ,7694,39.18,-120.25,1954,CA,PLACER,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K19&report=snowmonth_hist
+Squaw Valley G.C.,20K30S,SNTL ,8029,39.19,-120.26,1980,CA,PLACER,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K30S&report=snowmonth_hist
+State Line,20H01S,SNTL ,5680,41.99,-120.72,2014,CA,MODOC,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20H01S&report=snowmonth_hist
+State Line Am (Ca),20H01,SNOW ,5690,41.99,-120.72,1958,CA,MODOC,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20H01&report=snowmonth_hist
+Summit Meadow,19L42S,SNTL ,9313,38.4,-119.54,2003,CA,ALPINE,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L42S&report=snowmonth_hist
+Tahoe City Cross,20K27S,SNTL ,6797,39.17,-120.15,1980,CA,PLACER,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K27S&report=snowmonth_hist
+Tioga Pass,19M01,SNOW ,9900,37.92,-119.25,1926,CA,MONO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19M01&report=snowmonth_hist
+Truckee #2,20K13S,SNTL ,6509,39.3,-120.18,1980,CA,PLACER,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K13S&report=snowmonth_hist
+"Truckee, Upper",19L01,SNOW ,6396,38.88,-119.98,1930,CA,EL DORADO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L01&report=snowmonth_hist
+Virginia Lakes Ridge,19L13S,SNTL ,9445,38.07,-119.23,1979,CA,MONO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L13S&report=snowmonth_hist
+Ward Creek #2,20K17,SNOW ,7100,39.14,-120.23,1913,CA,PLACER,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K17&report=snowmonth_hist
+Ward Creek #3,20K25S,SNTL ,6655,39.14,-120.22,1979,CA,PLACER,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K25S&report=snowmonth_hist
+Webber Lake,20K02,SNOW ,7000,39.48,-120.43,1925,CA,SIERRA,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K02&report=snowmonth_hist
+Webber Peak,20K01,SNOW ,8000,39.48,-120.43,1922,CA,SIERRA,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=20K01&report=snowmonth_hist
+Willow Flat,19L09,SNOW ,8231,38.26,-119.46,1925,CA,MONO,http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=19L09&report=snowmonth_hist
