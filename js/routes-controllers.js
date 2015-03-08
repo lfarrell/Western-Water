@@ -138,8 +138,6 @@ angular.module('westernWaterApp').controller('newmexicoController', ['$scope', f
 angular.module('westernWaterApp').controller('texasController', ['$scope', function($scope) {
     $scope.graphloading = true;
     $scope.graphloaded = false;
-
-
 }]);
 
 angular.module('westernWaterApp').controller('utahController', ['$scope', function($scope) {

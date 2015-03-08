@@ -140,7 +140,8 @@ angular.module('westernWaterApp').service('chartService', function() {
             });
     };
 
-    this.focus = function(chart) {
+    this.focus = function(chart, single) {
+        if(single !== undefined) false;
       /*  var focus = chart.selectAll(".focus")
             .data(key_values).enter().append("g")
             .attr("class", "focus")
@@ -160,14 +161,16 @@ angular.module('westernWaterApp').service('chartService', function() {
             .attr("x", 9)
             .attr("dy", ".35em");
 
-        focus.append("circle")
-            .attr("class", "y1")
-            .attr("r", 4.5);
+        if(!single) {
+            focus.append("circle")
+                .attr("class", "y1")
+                .attr("r", 4.5);
 
-        focus.append("text")
-            .attr("class", "y1")
-            .attr("x", 9)
-            .attr("dy", ".35em");
+            focus.append("text")
+                .attr("class", "y1")
+                .attr("x", 9)
+                .attr("dy", ".35em");
+        }
 
         return focus;
     };
