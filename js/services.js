@@ -68,7 +68,7 @@ angular.module('westernWaterApp').service('tipService', function() {
 });
 
 angular.module('westernWaterApp').service('chartService', function() {
-    this.chart = function(selector, graph_height, graph_width, margin, xAxis, yAxis) {
+    this.chart = function(selector, graph_height, graph_width, margin, xAxis, yAxis, y_text) {
         var chart = d3.select(selector).append("svg")
             .attr("width", graph_width + margin.left + margin.right)
             .attr("height", graph_height + margin.top + margin.bottom);
@@ -95,7 +95,7 @@ angular.module('westernWaterApp').service('chartService', function() {
             .attr("y", 6)
             .attr("dy", ".71em")
             .style("text-anchor", "end")
-            .text("Acre Feet");
+            .text(y_text);
 
         return chart;
     };

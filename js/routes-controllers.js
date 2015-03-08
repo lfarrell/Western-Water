@@ -76,8 +76,15 @@ angular.module('westernWaterApp').controller('mainController', ['$scope', functi
 }]);
 
 angular.module('westernWaterApp').controller('arizonaController', ['$scope', function($scope) {
-    $scope.graphloading = false;
-    $scope.graphloaded = true;
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+    d3.csv('data/az_snow/all_az.csv', function(data) {
+        $scope.data = data;
+        $scope.graphloading = false;
+        $scope.graphloaded = true;
+        $scope.$apply();
+    });
 }]);
 
 angular.module('westernWaterApp').controller('californiaController', ['$scope', function($scope) {

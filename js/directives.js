@@ -30,9 +30,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             var xScale = d3.time.scale().range([0, graph_width]);
             xScale.domain([
                 d3.min(datz, function(d) { return format(d.date); }),
-               d3.max(datz, function(d) { return format(chartService.graphPadding()); })
+                d3.max(datz, function(d) { return format(chartService.graphPadding()); })
             ]);
-
 
             var yScale = d3.scale.linear()
                 .domain([d3.max(datz, function(d) { return d.capacity ; }) * 1.2, 0])
@@ -109,7 +108,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                  .orient("left");
 
             chartService.legend('#res_legend');
-            var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis);
+            var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
 
             d3.selectAll("g.x text").attr('transform', "rotate(35)")
               .attr('dx', 27)
@@ -339,7 +338,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     .scale(yScale)
                     .orient("left");
 
-                var chart = chartService.chart(selector, height, width, margin, xAxis, yAxis);
+                var chart = chartService.chart(selector, height, width, margin, xAxis, yAxis, 'Acre Feet');
 
                 var storage = d3.svg.line()
                     .x(function(d) { return xScale(format(d.key)); })
@@ -410,6 +409,87 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                         ], -15);
                 }
             }
+        });
+    }
+
+    return {
+        restrict: 'C',
+        link: link,
+        scope: {
+            'data': '=',
+            'state': '@'
+        }
+    }
+}]);
+
+angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'chartService', function(StatsService, chartService) {
+    function link(scope, element, attrs) {
+        var margin = {top: 20, right: 100, left: 100, bottom: 80},
+            width = 1050 - margin.left - margin.right,
+            height = 500 - margin.top - margin.bottom,
+            format = d3.time.format("%Y-%m-%d").parse;
+
+        scope.$watchGroup(['data', 'state'], function(values) {
+            if(!values[0]) { return; }
+
+            var data = values[0];
+            var state = values[1];
+            var ndx = crossfilter(data);
+            var bisectDate = d3.bisector(function(d) { return format(d.key); }).right;
+
+            var dim = ndx.dimension(function(d) { return d.date; });
+            var snow_group = dim.group().reduceSum(function(d) {
+               return d.snow_water_equivalent;
+            });
+
+            var snow_water = snow_group.top(Infinity);
+
+            snow_water.sort(function(a,b) {
+                var date_one_parts = a.key.split('-');
+                var date_two_parts = b.key.split('-');
+                var date_one = new Date(date_one_parts[0], date_one_parts[1] - 1, date_one_parts[2]);
+                var date_two = new Date(date_two_parts[0], date_two_parts[1] - 1, date_two_parts[2]);
+
+                if(date_one < date_two) {
+                    return -1;
+                } else if(date_one > date_two) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+
+            var xScale = d3.time.scale()
+                .domain([
+                    format(d3.min(snow_water, function(d) { return d.key; })),
+                    format(d3.max(snow_water, function(d) { return d.key; }))
+                ])
+                .range([0, width]);
+
+            var yScale = d3.scale.linear()
+                .domain([d3.max(snow_water, function(d) { return d.value; }), 0])
+                .range([0, height]);
+
+            // Create Axis
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient("bottom");
+
+            var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left");
+
+            var chart = chartService.chart('#snow_level', height, width, margin, xAxis, yAxis, 'Snow Water Equivalent');
+
+            var snow = d3.svg.line()
+                .x(function(d) { return xScale(format(d.key)); })
+                .y(function(d) { return yScale(d.value); });
+
+            chart.append("g")
+                .append("path")
+                .attr("d", snow(snow_water))
+                .attr("class", "snow")
+                .attr("transform", "translate(" + margin.left + "," + margin.top +")");
         });
     }
 

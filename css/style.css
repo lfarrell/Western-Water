@@ -82,3 +82,9 @@ path.capacity {
     fill: none;
     stroke: white;
 }
+
+path.snow {
+    fill: none;
+    stroke: white;
+    stroke-width: 2;
+}
