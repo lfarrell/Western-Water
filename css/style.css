@@ -85,6 +85,10 @@ path.capacity {
 
 path.snow {
     fill: none;
-    stroke: white;
+    stroke: steelblue;
     stroke-width: 1;
+}
+
+.center {
+    text-align: center;
 }
