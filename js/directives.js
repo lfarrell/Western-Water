@@ -453,20 +453,18 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             var bounds  = path.bounds(map_data);
             var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
             var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
-            var scale   = (hscale < vscale) ? hscale : vscale;
+            scale   = (hscale < vscale) ? hscale : vscale;
             var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
                 height - (bounds[0][1] + bounds[1][1])/2];
 
             // new projection
             projection = d3.geo.mercator().center(center)
-                .scale(scale).translate(offset);
+                .scale(scale / 1.2).translate(offset);
             path = path.projection(projection);
 
             state_data = data.filter(function(d) { return d.reservoir === res; });
 
             // Create scales
-
-
             var zoom = d3.behavior.zoom()
                 .scaleExtent([1, 5])
                 .on("zoom", zooming);
