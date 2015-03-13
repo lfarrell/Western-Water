@@ -422,6 +422,127 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
     }
 }]);
 
+angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsService', 'chartService', function(tipService, StatsService, chartService) {
+    function link(scope, element, attrs) {
+        var margin = {top: 20, right: 130, left: 100, bottom: 80},
+            height = 600 - margin.top - margin.bottom,
+            width = 900 - margin.left - margin.right,
+            graph_width = 550 - margin.left - margin.right,
+            graph_height = 500 - margin.top - margin.bottom,
+            format = d3.time.format("%m/%Y").parse,
+            tip = tipService.tipDiv();
+
+        scope.$watchGroup(['map', 'stations', 'data', 'res', 'state'], function(values) {
+            if (!values[0] || !values[1] || !values[2] || !values[3] || !values[4]) { return; }
+
+            var map_data = values[0];
+            var stations = values[1];
+            var data = values[2];
+            var res = values[3];
+            var state = values[4];
+
+            var scale = 1,
+                projection = d3.geo.mercator()
+                    .scale(scale)
+                    .translate([width/2, height/2]),
+                center = d3.geo.centroid(map_data),
+                path = d3.geo.path().projection(projection);
+
+            // using the path determine the bounds of the current map and use
+            // these to determine better values for the scale and translation
+            var bounds  = path.bounds(map_data);
+            var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
+            var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
+            var scale   = (hscale < vscale) ? hscale : vscale;
+            var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
+                height - (bounds[0][1] + bounds[1][1])/2];
+
+            // new projection
+            projection = d3.geo.mercator().center(center)
+                .scale(scale).translate(offset);
+            path = path.projection(projection);
+
+            state_data = data.filter(function(d) { return d.reservoir === res; });
+
+            // Create scales
+
+
+            var zoom = d3.behavior.zoom()
+                .scaleExtent([1, 5])
+                .on("zoom", zooming);
+
+            var drag = d3.behavior.drag()
+                .origin(function(d) { return d; })
+                .on("drag", dragged);
+
+            var map_svg = d3.select('#map').append('svg')
+                .attr('height', height)
+                .attr('width', width)
+                .call(zoom);
+
+            var map = map_svg.append('g');
+
+            map.selectAll("path")
+                .data(map_data.features)
+                .enter()
+                .append("path")
+                .attr("d", path);
+
+            map.selectAll("circle")
+                .data(stations)
+                .enter()
+                .append("circle")
+                .attr("class", "map-circle")
+                .attr("cx", function(d) {
+                    return projection([d.lng, d.lat])[0]; })
+                .attr("cy", function(d) {
+                    return projection([d.lng, d.lat])[1]; })
+                .attr("r", function(d) {
+                    return 5;
+                })
+                .on("click", function (res) {
+                    state_data = data.filter(function(d) {
+                        return d.reservoir === res.reservoir;
+                    });
+
+                    chart_update(state_data);
+                })
+                .on("mouseover", function(d) {
+                    var text = d.reservoir;
+                    tipService.tipShow(tip, text);
+                })
+                .on("mouseout", function(d) {
+                    tipService.tipHide(tip);
+                });
+
+            function zooming() {
+                map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                if(d3.event.scale > 2) {
+                    d3.selectAll('#map circle').attr("r", 5);
+                }
+            }
+
+            function dragged(d) {
+                d3.event.sourceEvent.stopPropagation();
+                d3.select(this).attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
+            }
+
+        });
+     }
+
+    return {
+        restrict: 'C',
+        link: link,
+        scope: {
+            'map': '=',
+            'data': '=',
+            'stations': '=',
+            'res': '@',
+            'state': '@'
+        }
+    }
+}]);
+
 angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'chartService', function(StatsService, chartService) {
     function link(scope, element, attrs) {
         var margin = {top: 20, right: 100, left: 100, bottom: 80},
@@ -429,7 +550,7 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
             height = 500 - margin.top - margin.bottom,
             format = d3.time.format("%Y-%m-%d").parse;
 
-        scope.$watchGroup(['data', 'state'], function(values) {
+        scope.$watchGroup(['snowdata', 'state'], function(values) {
             if(!values[0]) { return; }
 
             var data = values[0];
@@ -516,7 +637,7 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
                 d3.select("#snow_level text.y0").attr("transform", res_transform)
                     .tspans([
                         "Date: " + d.key,
-                        "Snow Water Eqv: " + StatsService.numFormat(d.value) + " inches"
+                        "Snow Water Eqv: " + StatsService.numFormat(d.value.toFixed(1)) + " inches"
                     ]);
             }
         });
@@ -526,7 +647,7 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
         restrict: 'C',
         link: link,
         scope: {
-            'data': '=',
+            'snowdata': '=',
             'state': '@'
         }
     }

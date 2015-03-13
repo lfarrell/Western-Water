@@ -144,10 +144,29 @@ angular.module('westernWaterApp').controller('utahController', ['$scope', functi
     $scope.graphloading = true;
     $scope.graphloaded = false;
 
-    d3.csv('data/utah_snow/all_utah.csv', function(data) {
-        $scope.data = data;
-        $scope.graphloading = false;
-        $scope.graphloaded = true;
+    d3.json('js/maps/ut.counties.json', function(map_data) {
+        $scope.map_data = map_data;
+
+        d3.csv('station_data/utah.csv', function(stations) {
+            $scope.stations = stations;
+            $scope.$apply();
+        });
+
+        d3.csv('data/utah_month/all.csv', function(data) {
+            $scope.data = data;
+            $scope.$apply();
+        })
+
+        $scope.graphloading = true;
+        $scope.graphloaded = false;
+
+        d3.csv('data/utah_snow/all_utah.csv', function(data) {
+            $scope.snowdata = data;
+            $scope.graphloading = false;
+            $scope.graphloaded = true;
+            $scope.$apply();
+        });
+
         $scope.$apply();
     });
 }]);
