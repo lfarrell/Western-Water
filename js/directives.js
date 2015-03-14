@@ -541,12 +541,13 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
     }
 }]);
 
-angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'chartService', function(StatsService, chartService) {
+angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'chartService', 'tipService', function(StatsService, chartService, tipService) {
     function link(scope, element, attrs) {
         var margin = {top: 20, right: 100, left: 100, bottom: 80},
             width = 1250 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom,
-            format = d3.time.format("%Y-%m-%d").parse;
+            format = d3.time.format("%Y-%m").parse,
+            tip = tipService.tipDiv();
 
         scope.$watchGroup(['snowdata', 'state'], function(values) {
             if(!values[0]) { return; }
@@ -554,8 +555,6 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
             var data = values[0];
             var state = values[1];
             var ndx = crossfilter(data);
-            var bisectDate = d3.bisector(function(d) { return format(d.key); }).right;
-
             var dim = ndx.dimension(function(d) { return d.date; });
             var snow_group = dim.group().reduceSum(function(d) {
                return d.snow_water_equivalent;
@@ -566,8 +565,8 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
             snow_water.sort(function(a,b) {
                 var date_one_parts = a.key.split('-');
                 var date_two_parts = b.key.split('-');
-                var date_one = new Date(date_one_parts[0], date_one_parts[1] - 1, date_one_parts[2]);
-                var date_two = new Date(date_two_parts[0], date_two_parts[1] - 1, date_two_parts[2]);
+                var date_one = new Date(date_one_parts[0], date_one_parts[1] - 1);
+                var date_two = new Date(date_two_parts[0], date_two_parts[1] - 1);
 
                 if(date_one < date_two) {
                     return -1;
@@ -600,44 +599,25 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
 
             var chart = chartService.chart('#snow_level', height, width, margin, xAxis, yAxis, 'Snow Water Equivalent');
 
-            var snow = d3.svg.line()
-                .x(function(d) { return xScale(format(d.key)); })
-                .y(function(d) { return yScale(d.value); });
+            var circle = chart.append("g")
+                .selectAll("circle")
+                .data(snow_water)
+                .enter()
+                .append("circle")
+                .attr("transform", "translate("+ margin.left + "," + margin.top + ")")
+                .attr("cx", function(d) { return xScale(format(d.key)); })
+                .attr("cy", function(d) { return yScale(d.value); })
+                .attr("r", 3.5)
+                .style("fill", "none")
+                .style("stroke", "steelblue")
+                .style("stroke-width", 2);
 
-            chart.append("g")
-                .append("path")
-                .attr("d", snow(snow_water))
-                .attr("class", "snow")
-                .attr("transform", "translate(" + margin.left + "," + margin.top +")");
-
-            var focus = chartService.focus(chart, true);
-
-            chart.append("rect")
-                .attr("class", "overlay")
-                .attr("width", width)
-                .attr("height", height)
-                .on("mouseover", function() { focus.style("display", null); })
-                .on("mouseout", function() { focus.style("display", "none"); })
-                .on("mousemove", mousemove)
-                .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
-
-            function mousemove() {
-                var x0 = xScale.invert(d3.mouse(this)[0]),
-                    i = bisectDate(snow_water, x0, 1),
-                    d0 = snow_water[i - 1],
-                    d1 = snow_water[i];
-
-                if(d1 === undefined) d1 = Infinity;
-                var d = x0 - d0.key > d1.key - x0 ? d1 : d0;
-
-                var res_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")";
-                d3.select("#snow_level circle.y0").attr("transform", res_transform);
-                d3.select("#snow_level text.y0").attr("transform", res_transform)
-                    .tspans([
-                        "Date: " + d.key,
-                        "Snow Water Eqv: " + StatsService.numFormat(d.value.toFixed(1)) + " inches"
-                    ]);
-            }
+            circle.on("mouseover", function(d) {
+                var text = d.key + ': ' + d.value.toFixed(1);
+                tipService.tipShow(tip, text);
+            }).on("mouseout", function(d) {
+                tipService.tipHide(tip);
+            });
         });
     }
 

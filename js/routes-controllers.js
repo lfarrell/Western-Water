@@ -110,17 +110,10 @@ angular.module('westernWaterApp').controller('californiaController', ['$scope', 
     $scope.graphloading = true;
     $scope.graphloaded = false;
 
-    d3.csv('data/cal_snow/all_cal.csv', function(data) {
-        $scope.data = data;
-        $scope.graphloading = false;
-        $scope.graphloaded = true;
-        $scope.$apply();
-    });
-
     d3.json('js/maps/ca.counties.json', function(map_data) {
         $scope.map_data = map_data;
 
-        d3.csv('station_data/california_resv.csv', function(stations) {
+        d3.csv('station_data/ca.csv', function(stations) {
             $scope.stations = stations;
             $scope.$apply();
         });
