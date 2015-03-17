@@ -62,5 +62,3 @@ foreach($states as $state) {
         $file . " processed\n";
     }
 }
-
-

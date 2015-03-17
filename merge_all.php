@@ -16,7 +16,7 @@ fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date','state
 
 function merge($base, $fh, $files, $state = 'CA') {
     foreach($files as $file) {
-        if(!preg_match('/^\./', $file)) {
+        if(!preg_match('/^\./', $file) || $file != 'all.csv') {
             if (($handle = fopen($base . '/' . $file, "r")) !== FALSE) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     $year = preg_split('/\//', $data[4])[1];

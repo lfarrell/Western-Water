@@ -459,7 +459,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
 
             // new projection
             projection = d3.geo.mercator().center(center)
-                .scale(scale / 1.2).translate(offset);
+                .scale(scale / 1.15).translate(offset);
             path = path.projection(projection);
 
             state_data = data.filter(function(d) { return d.reservoir === res; });
