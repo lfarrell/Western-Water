@@ -50,7 +50,7 @@ foreach($states as $state) {
 
                         foreach($unique_measurements as $measurement) {
                             if(!preg_match('/^[A-Z]/', $measurement[0])) { continue; }
-                            $date = date('Y-m-d', strtotime(strtolower($measurement[0]) . ' ' . $year));
+                            $date = date('m/Y', strtotime(strtolower($measurement[0]) . ' ' . $year));
                             fputcsv($fh, array($name, $measurement[1], $measurement[2], $provider, $date));
                         }
                     }

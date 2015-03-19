@@ -1,73 +1,63 @@
 <?php
 include 'functions.php';
 include 'simple_html_dom.php';
-
+date_default_timezone_set('America/Los_Angeles');
 /**
  * Lower Colorado Basin Reservoirs
  * AF of water
  */
-$capacities = array(
-    'lake_mead' => 25877000,
-    'lake_mohave' => 1809800,
-    'lake_havasu' => 619400
+$reservoirs = array(
+    'MEA' => array('capacity' => 25877000, 'state' => 'AZ & NV'),
+    'MHV' => array('capacity' => 1809800, 'state' => 'AZ & NV'),
+    'HVS' => array('capacity' => 619400, 'state' => 'AZ & CA'),
+);
+/*
+$reservoirs = array(
+    "KLM" => 486800,
+    "GBR" => 94300,
+    "CLK" => 451000
 );
 
 $states = array(
     'lake_mead' => 'AZ & NV',
     'lake_mohave' => 'AZ & NV',
     'lake_havasu' => 'AZ & CA'
-);
-
-/*
-$reservoirs = array(
-    'lake_mead' => 'http://www.usbr.gov/lc/region/g4000/riverdata/gage-last-month-table.cfm?GAGE=30',
-    'lake_mohave' => 'http://www.usbr.gov/lc/region/g4000/riverdata/gage-last-month-table.cfm?GAGE=60',
-    'lake_havasu' => 'http://www.usbr.gov/lc/region/g4000/riverdata/gage-last-month-table.cfm?GAGE=110'
 ); */
 
-$reservoirs = array(
-    'lake_mead' => 'http://www.usbr.gov/lc/region/g4000/riverdata/gage-month-table.cfm?GAGE=30',
-    'lake_mohave' => 'http://www.usbr.gov/lc/region/g4000/riverdata/gage-month-table.cfm?GAGE=60',
-    'lake_havasu' => 'http://www.usbr.gov/lc/region/g4000/riverdata/gage-month-table.cfm?GAGE=110'
-);
-
-$html = new simple_html_dom();
+$day = date('d-M-Y+H:i');
 
 foreach($reservoirs as $key => $reservoir) {
-    $raw_data = "raw_data/$key.html";
-    get_records($reservoir, $raw_data, 'wb');
+  //  $full_link = "http://cdec.water.ca.gov/cgi-progs/queryMonthly?$key";
+    $full_link = "http://cdec.water.ca.gov/cgi-progs/queryMonthly?$key&d=$day&span=20years";
 
- /*   $values = array();
-    $file = "data/$key.csv";
-    $fh = fopen($file, 'a');
+    try {
+        $html = new simple_html_dom();
+        $html->load_file($full_link);
 
-    if(!filesize($file)) {
-        fputcsv($fh, array('reservoir','storage',' capacity','pct_capacity','date' ,'state'));
-    }
+        $res_name = $html->find('h1');
+        $name = ucwords(strtolower(preg_replace('/\(.+$/', '', trim($res_name[0]->plaintext))));
+        $file_name = preg_replace('/\s+/', '_', strtolower($name));
 
-    $res = $key;
-    $html->load_file($raw_data);
-    $rows = $html->find('tr');
+        $fh = fopen("data/lc_month/$file_name.csv", "a");
+        fputcsv($fh, array("reservoir", "storage", "capacity", "pct_capacity", "date", "state"));
 
-    foreach($rows as $row) {
-        $pct_cap = $row->find('td',3);
-        $pct = trim($pct_cap->plaintext);
+        $rows = $html->find('tr');
+        foreach($rows as $row) {
+            $date = $row->find('td',0);
+            $d = $date->plaintext;
 
-        if(preg_match('/^\d/', $pct)) {
-            $find_date = $row->find('td',0);
-            $date = $find_date->plaintext;
-            $values['res'] = get_res($res);
-            $storage = $row->find('td',2);
-            $values['storage'] = $storage_val;
-            $storage_val = format_storage(trim($storage->plaintext));
-            $values['capacity'] = $capacities[$key];
-            $values['pct_capacity'] = $pct;
-            $values['date'] = format_date($date);
-            $values['state'] = $states[$key];
+            $volume = $row->find('td',2);
+            $vol = trim($volume->plaintext);
 
-            fputcsv($fh, $values);
+            $regx = '/^\d/';
+            if(preg_match($regx, $vol)) {
+                $pct = round(($vol / $reservoir['capacity']) * 100, 1);
+                fputcsv($fh, array(trim($name), $vol, $reservoir['capacity'], $pct, $d, $reservoir['state']));
+            }
         }
+        fclose($fh);
+        echo $key . " processed\n";
+    } catch(Exception $e) {
 
     }
-    fclose($fh);*/
 }
