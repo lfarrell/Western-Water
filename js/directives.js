@@ -546,7 +546,7 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
         var margin = {top: 20, right: 100, left: 100, bottom: 80},
             width = 1250 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom,
-            format = d3.time.format("%Y-%m").parse,
+            format = d3.time.format("%m/%Y").parse,
             tip = tipService.tipDiv();
 
         scope.$watchGroup(['snowdata', 'state'], function(values) {
@@ -554,20 +554,25 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
 
             var data = values[0];
             var state = values[1];
-            var ndx = crossfilter(data);
-            var dim = ndx.dimension(function(d) { return d.date; });
-            var snow_group = dim.group().reduceSum(function(d) {
-               return d.snow_water_equivalent;
+
+            // Process and format data
+            var snow = d3.nest()
+                .key(function(d) { return d.date; })
+                .rollup(function(values) { return d3.mean(values, function(d) {return +d.snow_water_equivalent; }) })
+                .map(data);
+
+            var snow_keys = _.keys(snow);
+            var snow_water = [];
+
+            snow_keys.forEach(function(d) {
+               snow_water.push({key: d, value: snow[d]});
             });
 
-            var snow_water = snow_group.top(Infinity);
-
             snow_water.sort(function(a,b) {
-                var date_one_parts = a.key.split('-');
-                var date_two_parts = b.key.split('-');
-                var date_one = new Date(date_one_parts[0], date_one_parts[1] - 1);
-                var date_two = new Date(date_two_parts[0], date_two_parts[1] - 1);
-
+                var date_one_parts = a.key.split('/');
+                var date_two_parts = b.key.split('/');
+                var date_one = new Date(date_one_parts[1], date_one_parts[0] - 1);
+                var date_two = new Date(date_two_parts[1], date_two_parts[0] - 1);
                 if(date_one < date_two) {
                     return -1;
                 } else if(date_one > date_two) {
@@ -577,10 +582,11 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
                 }
             });
 
+            // Create scales
             var xScale = d3.time.scale()
                 .domain([
-                    format(d3.min(snow_water, function(d) { return d.key; })),
-                    format(d3.max(snow_water, function(d) { return d.key; }))
+                    d3.min(snow_water, function(d) { return format(d.key); }),
+                    d3.max(snow_water, function(d) { return format(d.key); })
                 ])
                 .range([0, width]);
 
