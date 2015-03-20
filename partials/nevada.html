@@ -5,7 +5,20 @@
         <p class="center">Zoom and pan the map to move around in it. Click a point to view the water levels for a particular reservoir. Hover over
             the line graphs to see the levels for a particular month.</p>
     </div>
-    <div class="col-sm-12 col-lg-12 snow-charts" state="nv" data="data" id="snow_level">
+    <div class="col-sm-12 col-lg-7 state-graph" id="map" stations="stations" map="map_data" data="data" state="nv" res="Lake Mead">
+        <h3>Reservoirs</h3>
+    </div>
+    <div class="col-sm-12 col-lg-5" id="graph">
+        <h3>Selected Reservoir: <span id="reservoir">Lake Mead</span></h3>
+        <p id="res_legend"></p>
+    </div>
+</div>
+<div class="row" ng-show="graphloaded">
+    <div class="col-sm-12 col-lg-12">
+        <p class="center">Zoom and pan the map to move around in it. Click a point to view the water levels for a particular reservoir. Hover over
+            the line graphs to see the levels for a particular month.</p>
+    </div>
+    <div class="col-sm-12 col-lg-12 snow-charts" state="nv" snowdata="snowdata" id="snow_level">
         <h3>Snow Pack Levels</h3>
         <p class="center">Dates follow the water year, which runs from October 1st to September 30th</p>
     </div>

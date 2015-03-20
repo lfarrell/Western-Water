@@ -543,7 +543,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
 
 angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'chartService', 'tipService', function(StatsService, chartService, tipService) {
     function link(scope, element, attrs) {
-        var margin = {top: 20, right: 100, left: 100, bottom: 80},
+        var margin = {top: 20, right: 150, left: 100, bottom: 80},
             width = 1250 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom,
             format = d3.time.format("%m/%Y").parse,
@@ -603,9 +603,9 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
                 .scale(yScale)
                 .orient("left");
 
-            var chart = chartService.chart('#snow_level', height, width, margin, xAxis, yAxis, 'Snow Water Equivalent');
+            var chart = chartService.chart('#snow_level', height, width, margin, xAxis, yAxis, 'Snow Water Equivalent (inches)');
 
-            var circle = chart.append("g")
+        /*    var circle = chart.append("g")
                 .selectAll("circle")
                 .data(snow_water)
                 .enter()
@@ -623,7 +623,46 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
                 tipService.tipShow(tip, text);
             }).on("mouseout", function(d) {
                 tipService.tipHide(tip);
-            });
+            }); */
+
+            var snow_level = d3.svg.line()
+                .x(function(d) { return xScale(format(d.key)); })
+                .y(function(d) { return yScale(d.value); });
+
+            chart.append("g")
+                .append("path")
+                .attr("d", snow_level(snow_water))
+                .attr("class", "snow")
+                .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+
+            var focus = chartService.focus(chart, true);
+
+            chart.append("rect")
+                .attr("class", "overlay")
+                .attr("width", width)
+                .attr("height", height)
+                .on("mouseover", function() { focus.style("display", null); })
+                .on("mouseout", function() { focus.style("display", "none"); })
+                .on("mousemove", mousemove)
+                .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+
+            var bisectDate = d3.bisector(function(d) { return format(d.key); }).right;
+
+            function mousemove() {
+                var x0 = xScale.invert(d3.mouse(this)[0]),
+                    i = bisectDate(snow_water, x0, 1),
+                    d0 = snow_water[i - 1],
+                    d1 = snow_water[i];
+                if(d1 === undefined) d1 = Infinity;
+                var d = x0 - d0.key > d1.key - x0 ? d1 : d0;
+                var res_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")";
+                d3.select("#snow_level circle.y0").attr("transform", res_transform);
+                d3.select("#snow_level text.y0").attr("transform", res_transform)
+                    .tspans([
+                        "Date: " + d.key,
+                        "Snow Water Eqv: " + d.value.toFixed(1) + " inches"
+                    ]);
+            }
         });
     }
 
