@@ -498,6 +498,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 .attr("cy", function(d) {
                     return projection([d.lng, d.lat])[1]; })
                 .attr("r", function(d) {
+                    if(state === 'ca') return 3.5;
                     return 5;
                 })
                 .on("click", function (res) {
