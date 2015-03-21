@@ -425,7 +425,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
 angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsService', 'chartService', function(tipService, StatsService, chartService) {
     function link(scope, element, attrs) {
         var margin = {top: 20, right: 130, left: 100, bottom: 80},
-            height = 600 - margin.top - margin.bottom,
+            height = 675 - margin.top - margin.bottom,
             width = 900 - margin.left - margin.right,
             graph_width = 550 - margin.left - margin.right,
             graph_height = 500 - margin.top - margin.bottom,
@@ -454,12 +454,14 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
             var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
             scale   = (hscale < vscale) ? hscale : vscale;
-            var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
-                height - (bounds[0][1] + bounds[1][1])/2];
+        /*    var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
+                height - (bounds[0][1] + bounds[1][1])/2]; */
+
+            var offset = (state === 'utah' || state === 'ca') ? 288 : 250;
 
             // new projection
             projection = d3.geo.mercator().center(center)
-                .scale(scale / 1.15).translate(offset);
+                .scale(scale / 1.15).translate([350, offset]);
             path = path.projection(projection);
 
             state_data = data.filter(function(d) { return d.reservoir === res; });
