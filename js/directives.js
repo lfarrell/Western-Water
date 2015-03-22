@@ -619,26 +619,23 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     d1 = state_data[i];
 
                 if(d1 === undefined) d1 = Infinity;
-                var d = x0 - d0.key > d1.key - x0 ? d1 : d0;
+                var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
 
-                // Get total capacity for the month/year moused over
-                var total_cap = _.filter(state_data, function(g) { return g.key === d.key; });
-
-                var res_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")";
-                d3.select("#graph circle.y0").attr("transform", res_transform);
-                d3.select("#graph text.y0").attr("transform", res_transform)
+                var res_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")";
+                d3.select("circle.y0").attr("transform", res_transform);
+                d3.select("text.y0").attr("transform", res_transform)
                     .tspans([
-                        "Date: " + d.key,
-                        "Vol: " + StatsService.numFormat(d.value) + " acre ft",
-                        "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%"
+                        "Date: " + d.date,
+                        "Vol: " + StatsService.numFormat(d.storage) + " acre ft",
+                        "Pct Full: " + d.pct_capacity + "%"
                     ]);
 
-                var cap_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.cap) + margin.top) + ")";
+                var cap_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.capacity) + margin.top) + ")";
                 d3.select("#graph circle.y1").attr("transform", cap_transform);
                 d3.select("#graph text.y1").attr("transform", cap_transform)
                     .tspans([
-                        "Date: " + d.key,
-                        "Vol: " + StatsService.numFormat(d.cap) + " acre ft"
+                        "Date: " + d.date,
+                        "Capacity: " + StatsService.numFormat(d.capacity) + " acre ft"
                     ], -15);
             }
 
