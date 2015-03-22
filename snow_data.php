@@ -2,7 +2,7 @@
 include 'functions.php';
 date_default_timezone_set('America/New_York');
 
-$states = array('wy');
+$states = array('az', 'cal', 'co', 'nv', 'nm', 'utah', 'wy');
 
 $url_base = "http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=";
 
@@ -51,7 +51,7 @@ foreach($states as $state) {
                         foreach($unique_measurements as $measurement) {
                             if(!preg_match('/^[A-Z]/', $measurement[0])) { continue; }
                             $date = date('m/Y', strtotime(strtolower($measurement[0]) . ' ' . $year));
-                            if(preg_match('/^(09|10|11|12)/', $date)) {
+                            if(preg_match('/^(10|11|12)/', $date)) {
                                 echo "Old date " .$date . "\n";
                                 $datebits = preg_split('/\//', $date);
                                 $date = $datebits[0] . '/' . ($datebits[1] - 1);
