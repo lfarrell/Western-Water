@@ -26,17 +26,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
 
             datz = data.filter(function(d) { return d.reservoir === 'Shasta Dam'; });
 
-            // Create scales
-            var xScale = d3.time.scale().range([0, graph_width]);
-            xScale.domain([
-                d3.min(datz, function(d) { return format(d.date); }),
-                d3.max(datz, function(d) { return format(chartService.graphPadding()); })
-            ]);
-
-            var yScale = d3.scale.linear()
-                .domain([d3.max(datz, function(d) { return d.capacity ; }) * 1.2, 0])
-                .range([0, graph_height]);
-
             var zoom = d3.behavior.zoom()
                 .scaleExtent([1, 10])
                 .on("zoom", zooming);
@@ -96,6 +85,16 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             /**
              * Chart
              */
+            var xScale = d3.time.scale().range([0, graph_width]);
+            xScale.domain([
+                d3.min(datz, function(d) { return format(d.date); }),
+                d3.max(datz, function(d) { return format(chartService.graphPadding()); })
+            ]);
+
+            var yScale = d3.scale.linear()
+                .domain([d3.max(datz, function(d) { return d.capacity; }) * 1.2, 0])
+                .range([0, graph_height]);
+
             var bisectDate = d3.bisector(function(d) { return format(d.date); }).right;
 
             // Create Axis
@@ -526,6 +525,121 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             function dragged(d) {
                 d3.event.sourceEvent.stopPropagation();
                 d3.select(this).attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
+            }
+
+            /**
+             * Chart
+             */
+            var xScale = d3.time.scale().range([0, graph_width]);
+            xScale.domain([
+                d3.min(state_data, function(d) { return format(d.date); }),
+                d3.max(state_data, function(d) { return format(chartService.graphPadding()); })
+            ]);
+
+            var yScale = d3.scale.linear()
+                .domain([d3.max(state_data, function(d) { return d.capacity; }) * 1.2, 0])
+                .range([0, graph_height]);
+
+            var bisectDate = d3.bisector(function(d) { return format(d.date); }).right;
+
+            // Create Axis
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .orient("bottom");
+
+            var yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left");
+
+            chartService.legend('#res_legend');
+            var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
+
+            d3.selectAll("g.x text").attr('transform', "rotate(35)")
+                .attr('dx', 27)
+                .attr('dy', 10);
+
+            var storage = d3.svg.line()
+                .x(function(d) { return xScale(format(d.date)); })
+                .y(function(d) { return yScale(d.storage); });
+
+            chart.append("path")
+                .attr("d", storage(state_data))
+                .attr("id", "storage")
+                .attr("fill", "none")
+                .attr("stroke", "steelblue")
+                .attr("stroke-width", 2)
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            /**
+             * Show values on mouseover
+             */
+            var focus = chartService.focus(chart);
+
+            chart.append("rect")
+                .attr("class", "overlay")
+                .attr("width", graph_width)
+                .attr("height", graph_height)
+                .on("mouseover", function() { focus.style("display", null); })
+                .on("mouseout", function() { focus.style("display", "none"); })
+                .on("mousemove", mousemove)
+                .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+
+            var capacity = d3.svg.line()
+                .x(function(d) { return xScale(format(d.date)); })
+                .y(function(d) { return yScale(d.capacity); });
+
+            chart.append("g")
+                .append("path")
+                .attr("d", capacity(state_data))
+                .attr("id", "capacity")
+                .attr("fill", "none")
+                .attr("stroke", "green")
+                .attr("stroke-width", 2)
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+            function chart_update(datz) {
+                xScale.domain([
+                    d3.min(datz, function(d) { return format(d.date); }),
+                    d3.max(datz, function(d) { return format(chartService.graphPadding()); })
+                ]);
+                yScale.domain([d3.max(datz, function(d) { return d.capacity; }) * 1.2, 0]);
+
+                d3.select("g.x").transition().duration(1000).ease("sin-in-out").call(xAxis);
+                d3.select("g.y").transition().duration(1000).ease("sin-in-out").call(yAxis);
+                d3.select("#storage").transition().duration(1000).ease("sin-in-out").attr("d", storage(datz));
+                d3.select("#capacity").transition().duration(1000).ease("sin-in-out").attr("d", capacity(datz));
+                var res = datz[0];
+                d3.select("#reservoir").text( res.reservoir + ', ' + state);
+            }
+
+            function mousemove() {
+                var x0 = xScale.invert(d3.mouse(this)[0]),
+                    i = bisectDate(state_data, x0, 1),
+                    d0 = state_data[i - 1],
+                    d1 = state_data[i];
+
+                if(d1 === undefined) d1 = Infinity;
+                var d = x0 - d0.key > d1.key - x0 ? d1 : d0;
+
+                // Get total capacity for the month/year moused over
+                var total_cap = _.filter(state_data, function(g) { return g.key === d.key; });
+
+                var res_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")";
+                d3.select("#graph circle.y0").attr("transform", res_transform);
+                d3.select("#graph text.y0").attr("transform", res_transform)
+                    .tspans([
+                        "Date: " + d.key,
+                        "Vol: " + StatsService.numFormat(d.value) + " acre ft",
+                        "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%"
+                    ]);
+
+                var cap_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.cap) + margin.top) + ")";
+                d3.select("#graph circle.y1").attr("transform", cap_transform);
+                d3.select("#graph text.y1").attr("transform", cap_transform)
+                    .tspans([
+                        "Date: " + d.key,
+                        "Vol: " + StatsService.numFormat(d.cap) + " acre ft"
+                    ], -15);
             }
 
         });
