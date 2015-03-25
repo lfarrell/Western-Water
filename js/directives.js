@@ -505,10 +505,11 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     return 5;
                 })
                 .on("click", function (res) {
-                    state_data = data.filter(function(d) {
+                    var filtered = data.filter(function(d) {
                         return d.reservoir === res.reservoir;
                     });
 
+                    state_data = chartService.histAvg(filtered, 'map-graph');
                     chart_update(state_data);
                 })
                 .on("mouseover", function(d) {
@@ -625,7 +626,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 d3.select("g.x").transition().duration(1000).ease("sin-in-out").call(xAxis);
                 d3.select("g.y").transition().duration(1000).ease("sin-in-out").call(yAxis);
                 d3.select("#storage").transition().duration(1000).ease("sin-in-out").attr("d", storage(datz));
-                d3.select("#avg").transition().duration(1000).ease("sin-in-out").attr("d", avg_storage(datz));
+                d3.select("#avg_storage").transition().duration(1000).ease("sin-in-out").attr("d", avg_storage(datz));
                 d3.select("#capacity").transition().duration(1000).ease("sin-in-out").attr("d", capacity(datz));
                 var res = datz[0];
                 d3.select("#reservoir").text( res.reservoir + ', ' + state);
