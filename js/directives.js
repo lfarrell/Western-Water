@@ -629,7 +629,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 d3.select("#avg_storage").transition().duration(1000).ease("sin-in-out").attr("d", avg_storage(datz));
                 d3.select("#capacity").transition().duration(1000).ease("sin-in-out").attr("d", capacity(datz));
                 var res = datz[0];
-                d3.select("#reservoir").text( res.reservoir + ', ' + state);
+                d3.select("#reservoir").text(res.reservoir);
             }
 
             function mousemove() {
