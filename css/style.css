@@ -89,6 +89,12 @@ path.snow {
     stroke-width: 1;
 }
 
+path.snow_avg {
+    fill: none;
+    stroke: white;
+    stroke-width: 1;
+}
+
 .center {
     text-align: center;
 }

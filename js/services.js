@@ -101,9 +101,9 @@ angular.module('westernWaterApp').service('chartService', function() {
     };
 
     this.legend = function(selector, check) {
-        var keys = ['Capacity', 'Current Storage'];
-        var colors = ['green', 'steelblue'];
-        var width = 250;
+        var keys = ['Capacity', 'Avg Levels', 'Current Storage'];
+        var colors = ['green', 'white', 'steelblue'];
+        var width = 300;
         var compare = document.querySelectorAll('#compare_legend .legend');
         if(check && compare.length) return;
 
@@ -111,8 +111,7 @@ angular.module('westernWaterApp').service('chartService', function() {
             .append("svg")
             .attr("width", width)
             .attr("height", 55)
-            .attr("class", "legend")
-            .attr("transform", "translate(" + width/4.3 + ",0)");
+            .attr("class", "legend");
 
         var j = 0;
 
@@ -178,5 +177,21 @@ angular.module('westernWaterApp').service('chartService', function() {
     this.graphPadding = function() {
         var graph_padding = moment().add(8, 'month');
         return graph_padding.format('MM/YYYY');
+    };
+
+    this.histAvg = function(data, type) {
+        var avg = d3.mean(data, function(d) {
+            if(type === 'map-graph') {
+                return +d.storage;
+            } else {
+                return +d.value;
+            }
+        });
+
+        data.forEach(function(d) {
+            d.mean = avg;
+        });
+
+        return data;
     };
 });

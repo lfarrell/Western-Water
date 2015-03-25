@@ -24,7 +24,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     .precision(.1),
                 path = d3.geo.path().projection(projection);
 
-            datz = data.filter(function(d) { return d.reservoir === 'Shasta Dam'; });
+            var filtered = data.filter(function(d) { return d.reservoir === 'Shasta Dam'; });
+            datz = chartService.histAvg(filtered, 'map-graph');
 
             var zoom = d3.behavior.zoom()
                 .scaleExtent([1, 10])
@@ -60,9 +61,11 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     return 2.4;
                })
                .on("click", function (res) {
-                    datz = data.filter(function(d) {
+                    var filtered = data.filter(function(d) {
                         return d.reservoir === res.reservoir;
                     });
+
+                    datz = chartService.histAvg(filtered, 'map-graph');
 
                     chart_update(datz);
                 })
@@ -140,19 +143,19 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
 
 
-            /*  var avg_storage = d3.svg.line()
+              var avg_storage = d3.svg.line()
                     .x(function(d) { return xScale(format(d.date)); })
-                    .y(function(d) { return yScale(d.avg_storage); });
+                    .y(function(d) { return yScale(d.mean); });
 
               chart.append("g")
                    .append("path")
                    .attr("d", avg_storage(datz))
                    .attr("id", "avg_storage")
                    .attr("fill", "none")
-                   .attr("stroke", "steelblue")
+                   .attr("stroke", "white")
                    .attr("stroke-width", 2)
                    .attr("stroke-dasharray", [5,5])
-                   .attr("transform", "translate(" + margin.left + ",0)"); */
+                   .attr("transform", "translate(" + margin.left + ",0)");
 
             var capacity = d3.svg.line()
                   .x(function(d) { return xScale(format(d.date)); })
@@ -179,7 +182,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 d3.select("g.x").transition().duration(1000).ease("sin-in-out").call(xAxis);
                 d3.select("g.y").transition().duration(1000).ease("sin-in-out").call(yAxis);
                 d3.select("#storage").transition().duration(1000).ease("sin-in-out").attr("d", storage(datz));
-           //     d3.select("#avg_storage").transition().duration(1200).ease("sin-in-out").attr("d", avg_storage(datz));
+                d3.select("#avg_storage").transition().duration(1200).ease("sin-in-out").attr("d", avg_storage(datz));
                 d3.select("#capacity").transition().duration(1000).ease("sin-in-out").attr("d", capacity(datz));
                 var res = datz[0];
                 d3.select("#reservoir").text( res.reservoir + ', ' + res.state);
@@ -440,6 +443,9 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             var res = values[3];
             var state = values[4];
 
+            var filtered = data.filter(function(d) { return d.reservoir === res; });
+            state_data = chartService.histAvg(filtered, 'map-graph');
+
             var scale = 1,
                 projection = d3.geo.mercator()
                     .scale(scale)
@@ -462,8 +468,6 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             projection = d3.geo.mercator().center(center)
                 .scale(scale / 1.15).translate([350, offset]);
             path = path.projection(projection);
-
-            state_data = data.filter(function(d) { return d.reservoir === res; });
 
             // Create scales
             var zoom = d3.behavior.zoom()
@@ -570,19 +574,19 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 .attr("stroke-width", 2)
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            /**
-             * Show values on mouseover
-             */
-            var focus = chartService.focus(chart);
+            var avg_storage = d3.svg.line()
+                .x(function(d) { return xScale(format(d.date)); })
+                .y(function(d) { return yScale(d.mean); });
 
-            chart.append("rect")
-                .attr("class", "overlay")
-                .attr("width", graph_width)
-                .attr("height", graph_height)
-                .on("mouseover", function() { focus.style("display", null); })
-                .on("mouseout", function() { focus.style("display", "none"); })
-                .on("mousemove", mousemove)
-                .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+            chart.append("g")
+                .append("path")
+                .attr("d", avg_storage(state_data))
+                .attr("id", "avg_storage")
+                .attr("fill", "none")
+                .attr("stroke", "white")
+                .attr("stroke-width", 2)
+                .attr("stroke-dasharray", [5,5])
+                .attr("transform", "translate(" + margin.left + ",0)");
 
             var capacity = d3.svg.line()
                 .x(function(d) { return xScale(format(d.date)); })
@@ -597,6 +601,20 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 .attr("stroke-width", 2)
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+            /**
+             * Show values on mouseover
+             */
+            var focus = chartService.focus(chart);
+
+            chart.append("rect")
+                .attr("class", "overlay")
+                .attr("width", graph_width)
+                .attr("height", graph_height)
+                .on("mouseover", function() { focus.style("display", null); })
+                .on("mouseout", function() { focus.style("display", "none"); })
+                .on("mousemove", mousemove)
+                .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+
             function chart_update(datz) {
                 xScale.domain([
                     d3.min(datz, function(d) { return format(d.date); }),
@@ -607,6 +625,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 d3.select("g.x").transition().duration(1000).ease("sin-in-out").call(xAxis);
                 d3.select("g.y").transition().duration(1000).ease("sin-in-out").call(yAxis);
                 d3.select("#storage").transition().duration(1000).ease("sin-in-out").attr("d", storage(datz));
+                d3.select("#avg").transition().duration(1000).ease("sin-in-out").attr("d", avg_storage(datz));
                 d3.select("#capacity").transition().duration(1000).ease("sin-in-out").attr("d", capacity(datz));
                 var res = datz[0];
                 d3.select("#reservoir").text( res.reservoir + ', ' + state);
@@ -682,6 +701,8 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
                snow_water.push({key: d, value: snow[d]});
             });
 
+            snow_water = chartService.histAvg(snow_water);
+
             snow_water.sort(function(a,b) {
                 var date_one_parts = a.key.split('/');
                 var date_two_parts = b.key.split('/');
@@ -719,26 +740,6 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
 
             var chart = chartService.chart('#snow_level', height, width, margin, xAxis, yAxis, 'Snow Water Equivalent (inches)');
 
-        /*    var circle = chart.append("g")
-                .selectAll("circle")
-                .data(snow_water)
-                .enter()
-                .append("circle")
-                .attr("transform", "translate("+ margin.left + "," + margin.top + ")")
-                .attr("cx", function(d) { return xScale(format(d.key)); })
-                .attr("cy", function(d) { return yScale(d.value); })
-                .attr("r", 3.5)
-                .style("fill", "none")
-                .style("stroke", "steelblue")
-                .style("stroke-width", 2);
-
-            circle.on("mouseover", function(d) {
-                var text = d.key + ': ' + d.value.toFixed(1);
-                tipService.tipShow(tip, text);
-            }).on("mouseout", function(d) {
-                tipService.tipHide(tip);
-            }); */
-
             var snow_level = d3.svg.line()
                 .x(function(d) { return xScale(format(d.key)); })
                 .y(function(d) { return yScale(d.value); });
@@ -748,6 +749,17 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
                 .attr("d", snow_level(snow_water))
                 .attr("class", "snow")
                 .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+
+            var snow_avg = d3.svg.line()
+                .x(function(d) { return xScale(format(d.key)); })
+                .y(function(d) { return yScale(d.mean); });
+
+            chart.append("g")
+                .append("path")
+                .attr("d", snow_avg(snow_water))
+                .attr("class", "snow_avg")
+                .attr("transform", "translate(" + margin.left + "," + margin.top +")")
+                .style("stroke-dasharray", "5,5");
 
             var focus = chartService.focus(chart, true);
 
