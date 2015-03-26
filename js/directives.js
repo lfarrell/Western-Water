@@ -152,10 +152,10 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                    .attr("d", avg_storage(datz))
                    .attr("id", "avg_storage")
                    .attr("fill", "none")
-                   .attr("stroke", "white")
+                   .attr("stroke", "#FCE883")
                    .attr("stroke-width", 2)
                    .attr("stroke-dasharray", [5,5])
-                   .attr("transform", "translate(" + margin.left + ",0)");
+                  .attr("transform", "translate(" + margin.left + "," + margin.top +")");
 
             var capacity = d3.svg.line()
                   .x(function(d) { return xScale(format(d.date)); })
@@ -309,6 +309,8 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     d.cap = _.find(each_capacity, function(e) { return d.key === e.key; }).value;
                 });
 
+                each_res = chartService.histAvg(each_res); // Add in mean
+
                 var todays_total = each_res.filter(function(d) {
                     return d.key === today;
                 });
@@ -357,6 +359,20 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     .attr("stroke-width", 2)
                     .attr("transform", "translate(" + margin.left + "," + margin.top +")");
 
+                var avg_storage = d3.svg.line()
+                    .x(function(d) { return xScale(format(d.key)); })
+                    .y(function(d) { return yScale(d.mean); });
+
+                chart.append("g")
+                    .append("path")
+                    .attr("d", avg_storage(each_res))
+                    .attr("id", "avg_storage")
+                    .attr("fill", "none")
+                    .attr("stroke", "#FCE883")
+                    .attr("stroke-width", 2)
+                    .attr("stroke-dasharray", [5,5])
+                    .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+
                 /**
                  * Show values on mouseover
                  */
@@ -402,9 +418,17 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                             "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%"
                         ]);
 
+                    var mean_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.mean) + margin.top) + ")";
+                    d3.select(selector + " circle.y1").attr("transform", mean_transform);
+                    d3.select(selector + " text.y1").attr("transform", mean_transform)
+                        .tspans([
+                            "Vol: " + StatsService.numFormat(d.mean.toFixed(1)) + " acre ft",
+                            "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%"
+                        ]);
+
                     var cap_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.cap) + margin.top) + ")";
-                    d3.select(selector + " circle.y1").attr("transform", cap_transform);
-                    d3.select(selector + " text.y1").attr("transform", cap_transform)
+                    d3.select(selector + " circle.y2").attr("transform", cap_transform);
+                    d3.select(selector + " text.y2").attr("transform", cap_transform)
                         .tspans([
                             "Date: " + d.key,
                             "Vol: " + StatsService.numFormat(d.cap) + " acre ft"
@@ -584,10 +608,10 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 .attr("d", avg_storage(state_data))
                 .attr("id", "avg_storage")
                 .attr("fill", "none")
-                .attr("stroke", "white")
+                .attr("stroke", "#FCE883")
                 .attr("stroke-width", 2)
                 .attr("stroke-dasharray", [5,5])
-                .attr("transform", "translate(" + margin.left + ",0)");
+                .attr("transform", "translate(" + margin.left + "," + margin.top +")");
 
             var capacity = d3.svg.line()
                 .x(function(d) { return xScale(format(d.date)); })

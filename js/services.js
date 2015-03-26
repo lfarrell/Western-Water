@@ -102,7 +102,7 @@ angular.module('westernWaterApp').service('chartService', function() {
 
     this.legend = function(selector, check) {
         var keys = ['Capacity', 'Avg Levels', 'Current Storage'];
-        var colors = ['green', 'white', 'steelblue'];
+        var colors = ['green', '#FCE883', 'steelblue'];
         var width = 300;
         var compare = document.querySelectorAll('#compare_legend .legend');
         if(check && compare.length) return;
@@ -160,13 +160,22 @@ angular.module('westernWaterApp').service('chartService', function() {
             .attr("x", 9)
             .attr("dy", ".35em");
 
+        focus.append("circle")
+            .attr("class", "y1")
+            .attr("r", 4.5);
+
+        focus.append("text")
+            .attr("class", "y1")
+            .attr("x", 9)
+            .attr("dy", ".35em");
+
         if(!single) {
             focus.append("circle")
-                .attr("class", "y1")
+                .attr("class", "y2")
                 .attr("r", 4.5);
 
             focus.append("text")
-                .attr("class", "y1")
+                .attr("class", "y2")
                 .attr("x", 9)
                 .attr("dy", ".35em");
         }
