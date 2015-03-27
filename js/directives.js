@@ -263,10 +263,6 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
             function compare(selector) {
                 var datz = data.filter(function(d) { return d.state === state; });
                 var ndx = crossfilter(datz);
-
-              //  var res = _.uniq(datz, function(d) { return d.reservoir; });
-              //  var total_capacity = d3.sum(_.pluck(res, 'capacity'));
-
                 var all_storage = ndx.dimension(function(d) { return d.date; });
 
                 var capacity_total = all_storage.group().reduceSum(function(d) {
@@ -304,6 +300,9 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                         return 0;
                     }
                 });
+
+               // var avg_storage_all = _.pluck(each_res, function(d) { return d.value; });
+               // var avg_storage_all_pct = (d3.sum(avg_storage_all, function(d) { return d; }) / avg_storage_all.length) * 100;
 
                 each_res.forEach(function(d) {
                     d.cap = _.find(each_capacity, function(e) { return d.key === e.key; }).value;
@@ -372,6 +371,9 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     .attr("stroke-width", 2)
                     .attr("stroke-dasharray", [5,5])
                     .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+
+                // Add average capacity text
+                d3.selectAll(selector + '_avg').text(StatsService.numFormat(each_res[0].mean.toFixed(1)));
 
                 /**
                  * Show values on mouseover
