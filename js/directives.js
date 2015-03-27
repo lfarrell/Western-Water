@@ -208,7 +208,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                         "Date: " + d.date,
                         "Vol: " + StatsService.numFormat(d.storage) + " acre ft",
                         "Pct Full: " + d.pct_capacity + "%",
-                        "Pct of Avg Vol: " + (d.storage / d.mean * 100).toFixed(1) + "%"
+                        "Pct of Hist. Avg: " + (d.storage / d.mean * 100).toFixed(1) + "%"
                     ]);
 
                 var cap_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.capacity) + margin.top) + ")";
@@ -417,7 +417,8 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                         .tspans([
                             "Date: " + d.key,
                             "Vol: " + StatsService.numFormat(d.value) + " acre ft",
-                            "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%"
+                            "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%",
+                            "Pct of Hist. Avg: " + (d.value / each_res[0].mean * 100).toFixed(1) + "%"
                         ]);
 
                     var cap_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.cap) + margin.top) + ")";
@@ -668,7 +669,8 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     .tspans([
                         "Date: " + d.date,
                         "Vol: " + StatsService.numFormat(d.storage) + " acre ft",
-                        "Pct Full: " + d.pct_capacity + "%"
+                        "Pct Full: " + d.pct_capacity + "%",
+                        "Pct of Hist. Avg: " + (d.storage / state_data[0].mean * 100).toFixed(1) + "%"
                     ]);
 
                 var cap_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.capacity) + margin.top) + ")";
@@ -811,7 +813,8 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
                 d3.select("#snow_level text.y0").attr("transform", snow_transform)
                     .tspans([
                         "Date: " + d.key,
-                        "Snow Water Eqv: " + d.value.toFixed(1) + " inches"
+                        "Snow Water Eqv: " + d.value.toFixed(1) + " inches",
+                        "Pct of Hist. Avg: " + (d.value / snow_water[0].mean * 100).toFixed(1) + "%"
                     ]);
             }
         });
