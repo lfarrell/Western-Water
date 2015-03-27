@@ -160,22 +160,13 @@ angular.module('westernWaterApp').service('chartService', function() {
             .attr("x", 9)
             .attr("dy", ".35em");
 
-        focus.append("circle")
-            .attr("class", "y1")
-            .attr("r", 4.5);
-
-        focus.append("text")
-            .attr("class", "y1")
-            .attr("x", 9)
-            .attr("dy", ".35em");
-
         if(!single) {
             focus.append("circle")
-                .attr("class", "y2")
+                .attr("class", "y1")
                 .attr("r", 4.5);
 
             focus.append("text")
-                .attr("class", "y2")
+                .attr("class", "y1")
                 .attr("x", 9)
                 .attr("dy", ".35em");
         }
