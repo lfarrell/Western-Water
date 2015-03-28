@@ -61,3 +61,13 @@ foreach($reservoirs as $key => $reservoir) {
 
     }
 }
+/*
+$bureau_reservoirs = array(
+    'Horse Mesa' => array('capacity' => 245138, 'state' => 'AZ'),
+    'Theodore Roosevelt' => array('capacity' => 1381580, 'state' => 'AZ'),
+    'Mormon Flat' => array('capacity' => 57852, 'state' => 'AZ'),
+    'Stewart Mountain' => array('capacity' => 69765, 'state' => 'AZ'),
+    'Bartlett' => array('capacity' => 178490, 'state' => 'AZ'),
+    'Horseshoe' => array('capacity' => 131500, 'state' => 'AZ'),
+    'Mormon Flat' => array('capacity' => 57852, 'state' => 'AZ'),
+); */
