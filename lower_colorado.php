@@ -1,7 +1,9 @@
 <?php
 include 'functions.php';
 include 'simple_html_dom.php';
+
 date_default_timezone_set('America/Los_Angeles');
+
 /**
  * Lower Colorado Basin Reservoirs
  * AF of water
@@ -11,18 +13,6 @@ $reservoirs = array(
     'MHV' => array('capacity' => 1809800, 'state' => 'AZ & NV'),
     'HVS' => array('capacity' => 619400, 'state' => 'AZ & CA'),
 );
-/*
-$reservoirs = array(
-    "KLM" => 486800,
-    "GBR" => 94300,
-    "CLK" => 451000
-);
-
-$states = array(
-    'lake_mead' => 'AZ & NV',
-    'lake_mohave' => 'AZ & NV',
-    'lake_havasu' => 'AZ & CA'
-); */
 
 $day = date('d-M-Y+H:i');
 
@@ -61,13 +51,3 @@ foreach($reservoirs as $key => $reservoir) {
 
     }
 }
-/*
-$bureau_reservoirs = array(
-    'Horse Mesa' => array('capacity' => 245138, 'state' => 'AZ'),
-    'Theodore Roosevelt' => array('capacity' => 1381580, 'state' => 'AZ'),
-    'Mormon Flat' => array('capacity' => 57852, 'state' => 'AZ'),
-    'Stewart Mountain' => array('capacity' => 69765, 'state' => 'AZ'),
-    'Bartlett' => array('capacity' => 178490, 'state' => 'AZ'),
-    'Horseshoe' => array('capacity' => 131500, 'state' => 'AZ'),
-    'Mormon Flat' => array('capacity' => 57852, 'state' => 'AZ'),
-); */
