@@ -19,7 +19,7 @@ h1, h2 {
     text-align: center;
 }
 
-h3, #res_legend, #compare_legend, .center {
+h3, #res_legend, #compare_legend, #map_legend, .center {
     text-align: center;
 }
 

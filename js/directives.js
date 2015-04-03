@@ -15,6 +15,9 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             var stations = values[1];
             var data = values[2];
 
+            stations = chartService.mapPctFull(data, stations);
+            chartService.legend('#map_legend', true);
+
             var projection = d3.geo.albers()
                     .rotate([96, 0])
                     .center([-.6, 38.7])
@@ -59,6 +62,9 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     return projection([d.lng, d.lat])[1]; })
                .attr("r", function(d) {
                     return 2.4;
+               })
+               .style("fill", function(d) {
+                    return chartService.resColors(d.pct_capacity);
                })
                .on("click", function (res) {
                     var filtered = data.filter(function(d) {
@@ -155,7 +161,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                    .attr("stroke", "#FCE883")
                    .attr("stroke-width", 2)
                    .attr("stroke-dasharray", [5,5])
-                  .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+                   .attr("transform", "translate(" + margin.left + "," + margin.top +")");
 
             var capacity = d3.svg.line()
                   .x(function(d) { return xScale(format(d.date)); })
@@ -240,7 +246,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
             height = 550 - margin.top - margin.bottom,
             format = d3.time.format("%m/%Y").parse;
 
-        chartService.legend('#compare_legend', true);
+        chartService.legend('#compare_legend', false, true);
 
         scope.$watchGroup(['data', 'state'], function(values) {
             if(!values[0]) { return; }
@@ -462,6 +468,9 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             var res = values[3];
             var state = values[4];
 
+            stations = chartService.mapPctFull(data, stations);
+            chartService.legend('#map_legend', true);
+
             var filtered = data.filter(function(d) { return d.reservoir === res; });
             state_data = chartService.histAvg(filtered, 'map-graph');
 
@@ -522,6 +531,9 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 .attr("r", function(d) {
                     if(state === 'ca') return 3.5;
                     return 5;
+                })
+                .style("fill", function(d) {
+                    return chartService.resColors(d.pct_capacity);
                 })
                 .on("click", function (res) {
                     var filtered = data.filter(function(d) {

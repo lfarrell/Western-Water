@@ -100,12 +100,20 @@ angular.module('westernWaterApp').service('chartService', function() {
         return chart;
     };
 
-    this.legend = function(selector, check) {
-        var keys = ['Capacity', 'Avg Levels', 'Current Storage'];
-        var colors = ['green', '#FCE883', 'steelblue'];
-        var width = 300;
+    this.legend = function(selector, is_map, check) {
         var compare = document.querySelectorAll('#compare_legend .legend');
         if(check && compare.length) return;
+
+        var keys, colors, width;
+        if(is_map) {
+            keys = ['75%+', '50%+', 'Less than 50%  ', 'Current Level Unavailable'];
+            colors = ['green', '#FCE883', 'red', 'gray'];
+            width = 450;
+        } else {
+            keys = ['Capacity', 'Avg Levels', 'Current Storage'];
+            colors = ['green', '#FCE883', 'steelblue'];
+            width = 300;
+        }
 
         var legend = d3.select(selector)
             .append("svg")
@@ -137,6 +145,18 @@ angular.module('westernWaterApp').service('chartService', function() {
 
                 j += (d.length * 5) + 40;
             });
+    };
+
+    this.resColors = function(d) {
+        if(d >= 75) {
+            return 'green';
+        } else if (d >= 50) {
+            return '#FCE883';
+        } else if (d < 50) {
+            return 'red';
+        } else {
+            return 'gray';
+        }
     };
 
     this.focus = function(chart, single) {
@@ -193,5 +213,21 @@ angular.module('westernWaterApp').service('chartService', function() {
         });
 
         return data;
+    };
+
+    this.mapPctFull = function(data, stations) {
+        var map_month = moment().subtract(1, 'month');
+        d3.select("#map_month").text(map_month.format('MMMM YYYY'));
+
+        var pct_stations = data.filter(function(d) {
+            return d.date === map_month.format('MM/YYYY')
+        });
+
+        stations.forEach(function(d) {
+            var res_total = _.find(pct_stations, function(res) { return res.reservoir === d.reservoir; });
+            d.pct_capacity = (res_total !== undefined) ? res_total.pct_capacity : undefined;
+        });
+
+        return stations;
     };
 });
