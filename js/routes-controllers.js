@@ -28,6 +28,10 @@ angular.module('westernWaterApp').config(function($routeProvider) {
             templateUrl: 'partials/new_mexico.html',
             controller: 'newmexicoController'
         })
+        .when('/oregon', {
+            templateUrl: 'partials/oregon.html',
+            controller: 'oregonController'
+        })
         .when('/texas', {
             templateUrl: 'partials/texas.html',
             controller: 'texasController'
@@ -35,6 +39,10 @@ angular.module('westernWaterApp').config(function($routeProvider) {
         .when('/utah', {
             templateUrl: 'partials/utah.html',
             controller: 'utahController'
+        })
+        .when('/washington', {
+            templateUrl: 'partials/washinton.html',
+            controller: 'washingtonController'
         })
         .when('/wyoming', {
             templateUrl: 'partials/wyoming.html',
@@ -230,6 +238,9 @@ angular.module('westernWaterApp').controller('newmexicoController', ['$scope', f
     });
 }]);
 
+angular.module('westernWaterApp').controller('oregonController', ['$scope', function($scope) {
+}]);
+
 angular.module('westernWaterApp').controller('texasController', ['$scope', function($scope) {
     $scope.graphloading = true;
     $scope.graphloaded = false;
@@ -282,6 +293,9 @@ angular.module('westernWaterApp').controller('utahController', ['$scope', functi
 
         $scope.$apply();
     });
+}]);
+
+angular.module('westernWaterApp').controller('washingtonController', ['$scope', function($scope) {
 }]);
 
 angular.module('westernWaterApp').controller('wyomingController', ['$scope', function($scope) {
