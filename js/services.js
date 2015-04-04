@@ -155,7 +155,7 @@ angular.module('westernWaterApp').service('chartService', function() {
         } else if (d < 50) {
             return 'red';
         } else {
-            return 'gray';
+            return 'lightgray';
         }
     };
 

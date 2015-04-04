@@ -1,5 +1,5 @@
 <?php
-$states = array('az', 'cal', 'co', 'nv', 'nm', 'utah', 'wy');
+$states = array('az', 'cal', 'co', 'nv', 'nm', 'or', 'utah', 'wa', 'wy');
 
 foreach($states as $state) {
     $base = 'data/' . $state . '_snow';
