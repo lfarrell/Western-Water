@@ -19,6 +19,14 @@ $stations = array(
     'FOR' => array('name' => 'Fourmile Lake', 'capacity' => 15600, 'state' => 'OR'),
     'GCL' => array('name' => 'Grand Coulee/FDR Lake', 'capacity' => 19562000, 'state' => 'WA'),
     'GRS' => array('name' => 'Grassy Lake', 'capacity' => 15200, 'state' => 'WY'),
+    'HAY' => array('name' => 'Haystack', 'capacity' => 5600, 'state' => 'OR'),
+ //   'HEN' => array('name' => 'Henrys Lake', 'capacity' => , 'state' => 'ID'),
+    'HPD' => array('name' => 'Howard Prairie Lake', 'capacity' => 62100, 'state' => 'OR'),
+    'HYA' => array('name' => 'Hyatt', 'capacity' => 16900, 'state' => 'OR'),
+    'ISL' => array('name' => 'Island Park', 'capacity' => 135000, 'state' => 'ID'),
+    'JCK' => array('name' => 'Jackson Lake', 'capacity' => 847000, 'state' => 'WY'),
+    'LOW' => array('name' => 'Lake Lowell', 'capacity' => 169000, 'state' => 'ID'),
+    'LUC' => array('name' => 'Lucky Peak Lake', 'capacity' => 307000, 'state' => 'ID'),
 );
 
 foreach($stations as $station_code => $station) {
