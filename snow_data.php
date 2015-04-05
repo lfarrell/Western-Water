@@ -2,7 +2,7 @@
 include 'functions.php';
 date_default_timezone_set('America/New_York');
 
-$states = array('az', 'cal', 'co', 'nv', 'nm', 'or', 'utah', 'wa', 'wy');
+$states = array('az', 'cal', 'co', 'id', 'nv', 'nm', 'or', 'utah', 'wa', 'wy');
 
 $url_base = "http://www.wcc.nrcs.usda.gov/nwcc/rgrpt?station=";
 

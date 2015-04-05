@@ -20,6 +20,10 @@ angular.module('westernWaterApp').config(function($routeProvider) {
             templateUrl: 'partials/colorado.html',
             controller: 'coloradoController'
         })
+        .when('/idaho', {
+            templateUrl: 'partials/idaho.html',
+            controller: 'idahoController'
+        })
         .when('/nevada', {
             templateUrl: 'partials/nevada.html',
             controller: 'nevadaController'
@@ -174,6 +178,9 @@ angular.module('westernWaterApp').controller('coloradoController', ['$scope', fu
 
         $scope.$apply();
     });
+}]);
+
+angular.module('westernWaterApp').controller('idahoController', ['$scope', function($scope) {
 }]);
 
 angular.module('westernWaterApp').controller('nevadaController', ['$scope', function($scope) {
