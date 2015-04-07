@@ -841,3 +841,11 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
         }
     }
 }]);
+/*
+function drawMapForMonth(m){
+    var circle = map.selectAll("circle")
+        .sort(function(a,b){
+            return Math.abs(b[m]) - Math.abs(a[m]);
+        })
+    // etc
+} */

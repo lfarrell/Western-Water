@@ -2,7 +2,7 @@
 include 'simple_html_dom.php';
 
 $stations = array(
- /*   'AGA' => array('name' => 'Agate', 'capacity' => 4800, 'state' => 'OR'),
+    'AGA' => array('name' => 'Agate', 'capacity' => 4800, 'state' => 'OR'),
     'AMF' => array('name' => 'American Falls', 'capacity' => 1671300, 'state' => 'ID'),
     'AND' => array('name' => 'Anderson Ranch', 'capacity' => 503500, 'state' => 'ID'),
     'ARK' => array('name' => 'Arrowrock', 'capacity' => 300850, 'state' => 'ID'),
@@ -18,9 +18,9 @@ $stations = array(
     'EMI' => array('name' => 'Emigrant Lake', 'capacity' => 40530, 'state' => 'OR'),
     'EMM' => array('name' => 'Black Canyon', 'capacity' => 44700, 'state' => 'ID'),
     'FIS' => array('name' => 'Fish Lake', 'capacity' => 7836, 'state' => 'OR'),
-    'FOR' => array('name' => 'Fourmile Lake', 'capacity' => 15600, 'state' => 'OR'), */
+    'FOR' => array('name' => 'Fourmile Lake', 'capacity' => 15600, 'state' => 'OR'),
     'GCL' => array('name' => 'Grand Coulee/FDR Lake', 'capacity' => 9562000, 'state' => 'WA'),
-  /*  'GRS' => array('name' => 'Grassy Lake', 'capacity' => 15200, 'state' => 'WY'),
+    'GRS' => array('name' => 'Grassy Lake', 'capacity' => 15200, 'state' => 'WY'),
     'HAY' => array('name' => 'Haystack', 'capacity' => 5600, 'state' => 'OR'),
  //   'HEN' => array('name' => 'Henrys Lake', 'capacity' => , 'state' => 'ID'),
     'HPD' => array('name' => 'Howard Prairie Lake', 'capacity' => 62100, 'state' => 'OR'),
@@ -49,7 +49,7 @@ $stations = array(
     'WAS' => array('name' => 'Clear Lake', 'capacity' => 13100, 'state' => 'OR'),
     'WIC' => array('name' => 'Wickiup', 'capacity' => 206880, 'state' => 'OR'),
     'WLD' => array('name' => 'Wildhorse', 'capacity' => 71500, 'state' => 'NV'),
-    'WOD' => array('name' => 'Little Wood', 'capacity' => 30000, 'state' => 'ID'), */
+    'WOD' => array('name' => 'Little Wood', 'capacity' => 30000, 'state' => 'ID'),
 );
 
 foreach($stations as $station_code => $station) {
