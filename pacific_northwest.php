@@ -1,4 +1,6 @@
 <?php
+include 'simple_html_dom.php';
+
 $stations = array(
     'AGA' => array('name' => 'Agate', 'capacity' => 1671300, 'state' => 'OR'),
     'AMF' => array('name' => 'American Falls', 'capacity' => 1671300, 'state' => 'ID'),
@@ -51,5 +53,28 @@ $stations = array(
 );
 
 foreach($stations as $station_code => $station) {
+    $fh = fopen('data/pn/' . $key . '.csv', 'wb');
+    fputcsv($fh, array('reservoir', 'storage' ,'capacity' ,'pct_capacity',' date'));
     $url = "http://www.usbr.gov/pn-bin/webarccsv.pl?station=$station_code&format=3&year=2000&month=+1&day=+1&year=2015&month=+3&day=31&pcode=AF";
+
+    $html = new simple_html_dom();
+    $html->load_file($url);
+
+    $rows = $html->find('tr');
+
+    foreach($rows as $row) {
+        $full_date = $row->find('td',0);
+        $date = $full_date->plaintext;
+
+        $level = $row->find('td',1);
+        $res_level = $level->plaintext;
+
+        $pct_capacity = round(($res_level / $station['capacity']) * 100, 1);
+
+        fputcsv($fh, array($station['name'], trim($res_level), $res_level, $station['capacity'], $pct_capacity, $full_date));
+
+        echo $station . "processed\n";
+    }
+
+    fclose($fh);
 }
