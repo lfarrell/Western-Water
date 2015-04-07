@@ -45,7 +45,7 @@ angular.module('westernWaterApp').config(function($routeProvider) {
             controller: 'utahController'
         })
         .when('/washington', {
-            templateUrl: 'partials/washinton.html',
+            templateUrl: 'partials/washington.html',
             controller: 'washingtonController'
         })
         .when('/wyoming', {
@@ -181,6 +181,34 @@ angular.module('westernWaterApp').controller('coloradoController', ['$scope', fu
 }]);
 
 angular.module('westernWaterApp').controller('idahoController', ['$scope', function($scope) {
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+    d3.json('js/maps/id.counties.json', function(map_data) {
+        $scope.map_data = map_data;
+
+        d3.csv('station_data/id.csv', function(stations) {
+            $scope.stations = stations;
+            $scope.$apply();
+        });
+
+        d3.csv('data/states_all/id_all.csv', function(data) {
+            $scope.data = data;
+            $scope.$apply();
+        });
+
+        $scope.graphloading = true;
+        $scope.graphloaded = false;
+
+        d3.csv('data/id_snow/all_id.csv', function(data) {
+            $scope.snowdata = data;
+            $scope.graphloading = false;
+            $scope.graphloaded = true;
+            $scope.$apply();
+        });
+
+        $scope.$apply();
+    });
 }]);
 
 angular.module('westernWaterApp').controller('nevadaController', ['$scope', function($scope) {
@@ -246,6 +274,34 @@ angular.module('westernWaterApp').controller('newmexicoController', ['$scope', f
 }]);
 
 angular.module('westernWaterApp').controller('oregonController', ['$scope', function($scope) {
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+    d3.json('js/maps/or.counties.json', function(map_data) {
+        $scope.map_data = map_data;
+
+        d3.csv('station_data/or.csv', function(stations) {
+            $scope.stations = stations;
+            $scope.$apply();
+        });
+
+        d3.csv('data/states_all/or_all.csv', function(data) {
+            $scope.data = data;
+            $scope.$apply();
+        });
+
+        $scope.graphloading = true;
+        $scope.graphloaded = false;
+
+        d3.csv('data/or_snow/all_or.csv', function(data) {
+            $scope.snowdata = data;
+            $scope.graphloading = false;
+            $scope.graphloaded = true;
+            $scope.$apply();
+        });
+
+        $scope.$apply();
+    });
 }]);
 
 angular.module('westernWaterApp').controller('texasController', ['$scope', function($scope) {
@@ -303,6 +359,34 @@ angular.module('westernWaterApp').controller('utahController', ['$scope', functi
 }]);
 
 angular.module('westernWaterApp').controller('washingtonController', ['$scope', function($scope) {
+    $scope.graphloading = true;
+    $scope.graphloaded = false;
+
+    d3.json('js/maps/wa.counties.json', function(map_data) {
+        $scope.map_data = map_data;
+
+        d3.csv('station_data/wa.csv', function(stations) {
+            $scope.stations = stations;
+            $scope.$apply();
+        });
+
+        d3.csv('data/states_all/wa_all.csv', function(data) {
+            $scope.data = data;
+            $scope.$apply();
+        });
+
+        $scope.graphloading = true;
+        $scope.graphloaded = false;
+
+        d3.csv('data/wa_snow/all_wa.csv', function(data) {
+            $scope.snowdata = data;
+            $scope.graphloading = false;
+            $scope.graphloaded = true;
+            $scope.$apply();
+        });
+
+        $scope.$apply();
+    });
 }]);
 
 angular.module('westernWaterApp').controller('wyomingController', ['$scope', function($scope) {

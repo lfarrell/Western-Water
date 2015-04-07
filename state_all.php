@@ -1,7 +1,7 @@
 <?php
 include 'functions.php';
 
-$states = array('az', 'ca', 'co', 'nm', 'nv', 'tx', 'utah', 'wy');
+$states = array('az', 'ca', 'co', 'id', 'nm', 'nv', 'or', 'tx', 'utah', 'wa', 'wy');
 
 foreach($states as $state) {
     $fh = fopen('data/states_all/' . $state . '_all.csv', 'wb');

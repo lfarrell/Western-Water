@@ -490,7 +490,15 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
         /*    var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
                 height - (bounds[0][1] + bounds[1][1])/2]; */
 
-            var offset = (state === 'utah' || state === 'ca') ? 288 : 250;
+            var offset;
+            if(state === 'id') {
+                offset = 350;
+            } else if(state === 'utah' || state === 'ca') {
+                offset = 288;
+            } else {
+                offset = 250;
+            }
+
 
             // new projection
             projection = d3.geo.mercator().center(center)
