@@ -14,6 +14,9 @@ $oc_files = scandir($oc_base);
 $lc_base = "data/lc_month";
 $lc_files = scandir($lc_base);
 
+$pn_base = "data/pn_month";
+$pn_files = scandir($pn_base);
+
 $fh = fopen("all.csv", "wb");
 fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date','state'));
 
@@ -45,3 +48,4 @@ merge($tx_base, $fh, $tx_files, 'TX');
 merge($cal_base, $fh, $cal_files);
 merge($oc_base, $fh, $oc_files, false);
 merge($lc_base, $fh, $lc_files, false);
+merge($pn_base, $fh, $pn_files, false);
