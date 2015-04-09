@@ -8,173 +8,195 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             format = d3.time.format("%m/%Y").parse,
             tip = tipService.tipDiv();
 
-        scope.$watchGroup(['map', 'stations', 'data'], function(values) {
+        scope.$watchGroup(['map', 'stations', 'data', 'term'], function(values) {
             if (!values[0] || !values[1] || !values[2]) { return; }
 
             var map_data = values[0];
             var stations = values[1];
             var data = values[2];
 
-            stations = chartService.mapPctFull(data, stations);
-            chartService.legend('#map_legend', true);
+            if(!document.querySelectorAll('#map svg').length) {
+                stations = chartService.mapPctFull(data, stations);
+                chartService.legend('#map_legend', true);
 
-            var projection = d3.geo.albers()
-                    .rotate([96, 0])
-                    .center([-.6, 38.7])
-                    .parallels([29.5, 45.5])
-                        .scale(925)
-                    .translate([width / 2, height / 2])
-                    .precision(.1),
-                path = d3.geo.path().projection(projection);
+                var projection = d3.geo.albers()
+                        .rotate([96, 0])
+                        .center([-.6, 38.7])
+                        .parallels([29.5, 45.5])
+                            .scale(925)
+                        .translate([width / 2, height / 2])
+                        .precision(.1),
+                    path = d3.geo.path().projection(projection);
 
-            var filtered = data.filter(function(d) { return d.reservoir === 'Shasta Dam'; });
-            datz = chartService.histAvg(filtered, 'map-graph');
+                var filtered = data.filter(function(d) { return d.reservoir === 'Shasta Dam'; });
+                datz = chartService.histAvg(filtered, 'map-graph');
 
-            var zoom = d3.behavior.zoom()
-                .scaleExtent([1, 10])
-                .on("zoom", zooming);
+                var map_scale = d3.scale.linear()
+                    .domain(d3.extent(data, function(d) { return d.capacity; }))
+                        .range([1, 3]);
 
-            var drag = d3.behavior.drag()
-                .origin(function(d) { return d; })
-                .on("drag", dragged);
+                var zoom = d3.behavior.zoom()
+                    .scaleExtent([1, 10])
+                    .on("zoom", zooming);
 
-            var map_svg = d3.select('#map').append('svg')
-                .attr('height', height)
-                .attr('width', width)
-                .call(zoom);
+                var drag = d3.behavior.drag()
+                    .origin(function(d) { return d; })
+                    .on("drag", dragged);
 
-            var map = map_svg.append('g');
+                var map_svg = d3.select('#map').append('svg')
+                    .attr('height', height)
+                    .attr('width', width)
+                    .call(zoom);
 
-            map.selectAll("path")
-               .data(map_data.features)
-               .enter()
-               .append("path")
-               .attr("d", path);
+                var map = map_svg.append('g');
 
-            map.selectAll("circle")
-               .data(stations)
-               .enter()
-               .append("circle")
-               .attr("class", "map-circle")
-               .attr("cx", function(d) {
-                   return projection([d.lng, d.lat])[0]; })
-               .attr("cy", function(d) {
-                    return projection([d.lng, d.lat])[1]; })
-               .attr("r", function(d) {
-                    return 2.4;
-               })
-               .style("fill", function(d) {
-                    return chartService.resColors(d.pct_capacity);
-               })
-               .on("click", function (res) {
-                    var filtered = data.filter(function(d) {
-                        return d.reservoir === res.reservoir;
+                map.selectAll("path")
+                   .data(map_data.features)
+                   .enter()
+                   .append("path")
+                   .attr("d", path);
+
+                map.selectAll("circle")
+                   .data(stations)
+                   .enter()
+                   .append("circle")
+                   .attr("class", "map-circle")
+                   .attr("cx", function(d) {
+                       return projection([d.lng, d.lat])[0]; })
+                   .attr("cy", function(d) {
+                        return projection([d.lng, d.lat])[1]; })
+                   .attr("r", function(d) {
+                      //  console.log(map_scale(d.capacity))
+                      //  return map_scale(d.capacity);
+                        return 2.4;
+                   })
+                   .style("fill", function(d) {
+                        return chartService.resColors(d.pct_capacity);
+                   })
+                   .on("click", function (res) {
+                        var filtered = data.filter(function(d) {
+                            return d.reservoir === res.reservoir;
+                        });
+
+                        datz = chartService.histAvg(filtered, 'map-graph');
+
+                        chart_update(datz);
+                    })
+                    .on("mouseover", function(d) {
+                        var text = d.reservoir;
+                        tipService.tipShow(tip, text);
+
+                        d3.select(this).attr('r', function(d) {
+                            return 7;
+                        });
+                    })
+                    .on("mouseout", function(d) {
+                        tipService.tipHide(tip);
+
+                        d3.select(this).attr('r', function(d) {
+                            return 2.4;
+                        });
                     });
-
-                    datz = chartService.histAvg(filtered, 'map-graph');
-
-                    chart_update(datz);
-                })
-                .on("mouseover", function(d) {
-                    var text = d.reservoir;
-                    tipService.tipShow(tip, text);
-                })
-                .on("mouseout", function(d) {
-                    tipService.tipHide(tip);
-                });
-
-            function zooming() {
-                map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-                if(d3.event.scale > 2) {
-                    d3.selectAll('#map circle').attr("r", 1.5);
-                }
             }
 
-            /**
-             * Chart
-             */
-            var xScale = d3.time.scale().range([0, graph_width]);
-            xScale.domain([
-                d3.min(datz, function(d) { return format(d.date); }),
-                d3.max(datz, function(d) { return format(chartService.graphPadding()); })
-            ]);
+                /**
+                 * Chart
+                 */
+                var xScale = d3.time.scale().range([0, graph_width]);
+                xScale.domain([
+                    d3.min(datz, function(d) { return format(d.date); }),
+                    d3.max(datz, function(d) { return format(chartService.graphPadding()); })
+                ]);
 
-            var yScale = d3.scale.linear()
-                .domain([d3.max(datz, function(d) { return d.capacity; }) * 1.2, 0])
-                .range([0, graph_height]);
+                var yScale = d3.scale.linear()
+                    .domain([d3.max(datz, function(d) { return d.capacity; }) * 1.2, 0])
+                    .range([0, graph_height]);
 
-            var bisectDate = d3.bisector(function(d) { return format(d.date); }).right;
+                var bisectDate = d3.bisector(function(d) { return format(d.date); }).right;
 
-            // Create Axis
-            var xAxis = d3.svg.axis()
-                .scale(xScale)
-                .orient("bottom");
+                // Create Axis
+                var xAxis = d3.svg.axis()
+                    .scale(xScale)
+                    .orient("bottom");
 
-            var yAxis = d3.svg.axis()
-                 .scale(yScale)
-                 .orient("left");
+                var yAxis = d3.svg.axis()
+                     .scale(yScale)
+                     .orient("left");
 
-            chartService.legend('#res_legend');
-            d3.selectAll('#all_res_avg').text(StatsService.numFormat(datz[0].mean.toFixed(1)));
+                d3.selectAll('#all_res_avg').text(StatsService.numFormat(datz[0].mean.toFixed(1)));
 
-            var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
+                var storage = d3.svg.line()
+                      .x(function(d) { return xScale(format(d.date)); })
+                      .y(function(d) { return yScale(d.storage); });
 
-            d3.selectAll("g.x text").attr('transform', "rotate(35)")
-              .attr('dx', 27)
-              .attr('dy', 10);
-
-            var storage = d3.svg.line()
-                  .x(function(d) { return xScale(format(d.date)); })
-                  .y(function(d) { return yScale(d.storage); });
-
-            chart.append("path")
-                 .attr("d", storage(datz))
-                 .attr("id", "storage")
-                 .attr("fill", "none")
-                 .attr("stroke", "steelblue")
-                 .attr("stroke-width", 2)
-                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            /**
-             * Show values on mouseover
-             */
-            var focus = chartService.focus(chart);
-
-            chart.append("rect")
-                .attr("class", "overlay")
-                .attr("width", graph_width)
-                .attr("height", graph_height)
-                .on("mouseover", function() { focus.style("display", null); })
-                .on("mouseout", function() { focus.style("display", "none"); })
-                .on("mousemove", mousemove)
-                .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
-
-            var avg_storage = d3.svg.line()
+                var avg_storage = d3.svg.line()
                     .x(function(d) { return xScale(format(d.date)); })
                     .y(function(d) { return yScale(d.mean); });
 
-            chart.append("g")
-                   .append("path")
-                   .attr("d", avg_storage(datz))
-                   .attr("id", "avg_storage")
-                   .attr("fill", "none")
-                   .attr("stroke", "#FCE883")
-                   .attr("stroke-width", 2)
-                   .attr("stroke-dasharray", [5,5])
-                   .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+                var capacity = d3.svg.line()
+                    .x(function(d) { return xScale(format(d.date)); })
+                    .y(function(d) { return yScale(d.capacity); });
 
-            var capacity = d3.svg.line()
-                  .x(function(d) { return xScale(format(d.date)); })
-                  .y(function(d) { return yScale(d.capacity); });
+                if(!document.querySelectorAll('#graph svg').length) {
+                    chartService.legend('#res_legend');
+                    var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
 
-            chart.append("g")
-                 .append("path")
-                 .attr("d", capacity(datz))
-                 .attr("id", "capacity")
-                 .attr("fill", "none")
-                 .attr("stroke", "green")
-                 .attr("stroke-width", 2)
-                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    d3.selectAll("g.x text").attr('transform', "rotate(35)")
+                        .attr('dx', 27)
+                        .attr('dy', 10);
+
+                    chart.append("path")
+                         .attr("d", storage(datz))
+                         .attr("id", "storage")
+                         .attr("fill", "none")
+                         .attr("stroke", "steelblue")
+                         .attr("stroke-width", 2)
+                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                    /**
+                     * Show values on mouseover
+                     */
+                    var focus = chartService.focus(chart);
+
+                    chart.append("rect")
+                        .attr("class", "overlay")
+                        .attr("width", graph_width)
+                        .attr("height", graph_height)
+                        .on("mouseover", function() { focus.style("display", null); })
+                        .on("mouseout", function() { focus.style("display", "none"); })
+                        .on("mousemove", mousemove)
+                        .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+
+                    chart.append("g")
+                           .append("path")
+                           .attr("d", avg_storage(datz))
+                           .attr("id", "avg_storage")
+                           .attr("fill", "none")
+                           .attr("stroke", "#FCE883")
+                           .attr("stroke-width", 2)
+                           .attr("stroke-dasharray", [5,5])
+                           .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+
+                    chart.append("g")
+                         .append("path")
+                         .attr("d", capacity(datz))
+                         .attr("id", "capacity")
+                         .attr("fill", "none")
+                         .attr("stroke", "green")
+                         .attr("stroke-width", 2)
+                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            }
+
+            if(values[3] && values[3] !== undefined) {
+                var search_term = values[3];
+                var filtered = data.filter(function(d) {
+                    return d.reservoir === search_term.split(' -- ')[0];
+                });
+
+                if(!filtered.length) return;
+
+                var datiz = chartService.histAvg(filtered, 'map-graph');
+                chart_update(datiz);
+            }
 
             function chart_update(datz) {
                 xScale.domain([
@@ -191,6 +213,13 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 var res = datz[0];
                 d3.select("#reservoir").text( res.reservoir + ', ' + res.state);
                 d3.selectAll('#all_res_avg').text(StatsService.numFormat(datz[0].mean.toFixed(1)));
+            }
+
+            function zooming() {
+                    map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+                    if(d3.event.scale > 2) {
+                        d3.selectAll('#map circle').attr("r", 1.5);
+                    }
             }
 
             function dragged(d) {
@@ -225,6 +254,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                         "Capacity: " + StatsService.numFormat(d.capacity) + " acre ft"
                     ], -15);
             }
+
         });
     }
 
@@ -234,7 +264,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
         scope: {
             'map': '=',
             'data': '=',
-            'stations': '='
+            'stations': '=',
+            'term': '='
         }
     }
 }]);
@@ -498,7 +529,6 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             } else {
                 offset = 250;
             }
-
 
             // new projection
             projection = d3.geo.mercator().center(center)

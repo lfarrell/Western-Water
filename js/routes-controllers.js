@@ -85,6 +85,13 @@ angular.module('westernWaterApp').controller('mainController', ['$scope', functi
 
         $scope.$apply();
     });
+
+    $scope.search = '';
+
+    $scope.resSearch = function() {
+        $scope.term = $scope.search;
+        $scope.search = '';
+    };
 }]);
 
 angular.module('westernWaterApp').controller('arizonaController', ['$scope', function($scope) {

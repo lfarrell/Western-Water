@@ -55,8 +55,8 @@ angular.module('westernWaterApp').service('tipService', function() {
             .style("opacity", .9);
 
         tip.html(text)
-            .style("top", (d3.event.pageY-28)+"px")
-            .style("left", (d3.event.pageX-28)+"px");
+            .style("top", (d3.event.pageY-38)+"px")
+            .style("left", (d3.event.pageX-38)+"px");
 
     };
 
@@ -226,6 +226,7 @@ angular.module('westernWaterApp').service('chartService', function() {
         stations.forEach(function(d) {
             var res_total = _.find(pct_stations, function(res) { return res.reservoir === d.reservoir; });
             d.pct_capacity = (res_total !== undefined) ? res_total.pct_capacity : undefined;
+            d.capacity = (res_total !== undefined) ? res_total.capacity : undefined;
         });
 
         return stations;

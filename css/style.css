@@ -4,6 +4,16 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+#search_form input {
+    font-size: 1em;
+    height: 50px;
+    width: 75%;
+}
+
+#search_form {
+    padding-bottom: 25px;
+}
+
 h1, h2 {
     margin-top: 70px;
     text-align: center;
@@ -53,7 +63,12 @@ div.tooltip {
 
 .map-circle {
     fill: steelblue;
-    opacity: 0.7;
+    opacity: 0.5;
+}
+
+circle:hover {
+    stroke: black;
+    stroke-width: 3;
 }
 
 text {
