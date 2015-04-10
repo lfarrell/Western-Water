@@ -1,26 +1,40 @@
 angular.module('westernWaterApp').service('LoadService', function() {
-    this.file_load = function (text_file, $scope) {
-        d3.csv(text_file, function (error, graph) {
-            load(graph);
-        });
+    this.data_load = function($scope, map_path, stations_path, data_path, snow_path) {
+        $scope.graphloading = true;
+        $scope.graphloaded = false;
 
-        function load(data) {
-            // put the data into angular's scope
-            $scope.data = data;
-            $scope.loading = false;
-            $scope.loaded = true;
+        d3.json(map_path, function(map_data) {
+            $scope.map_data = map_data;
+
+            d3.csv(stations_path, function(stations) {
+                $scope.stations = stations;
+                $scope.$apply();
+            });
+
+            d3.csv(data_path, function(data) {
+                $scope.data = data;
+
+                if(!snow_path) {
+                    $scope.graphloading = false;
+                    $scope.graphloaded = true;
+                }
+                $scope.$apply();
+            });
+
+            if(snow_path) {
+                $scope.graphloading = true;
+                $scope.graphloaded = false;
+
+                d3.csv(snow_path, function(data) {
+                    $scope.snowdata = data;
+                    $scope.graphloading = false;
+                    $scope.graphloaded = true;
+                    $scope.$apply();
+                });
+            }
 
             $scope.$apply();
-        }
-    };
-
-    this.canvasFormat = function($scope) {
-        $scope.loading = true;
-        $scope.loaded = false;
-
-        d3.selectAll("svg").remove();
-
-        return $scope;
+        });
     };
 });
 
