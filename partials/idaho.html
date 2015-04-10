@@ -1,11 +1,35 @@
 <div class="loader" ng-show="graphloading">Loading...</div>
 <h2 ng-show="graphloaded">The Water of the West - Idaho</h2>
 <div class="row" ng-show="graphloaded">
-    <div class="col-sm-12 col-lg-12">
-        <p class="center">Zoom and pan the map to move around in it. Click a point to view the water levels for a particular reservoir. Hover over
-            the line graphs to see the levels for a particular month.</p>
+    <div class="col-md-offset-3 col-md-6 col-md-offset-3">
+        <form id="search_form"  class="form-inline" role="form" ng-submit="resSearch()">
+            <input ng-model="search" type="text" class="form-control" list="res_list" placeholder="Search Idaho Reservoirs!" />
+            <datalist id="res_list">
+                <option value="American Falls">
+                <option value="Anderson Ranch">
+                <option value="Arrowrock">
+                <option value="Black Canyon">
+                <option value="Deadwood">
+                <option value="Island Park">
+                <option value="Lake Cascade">
+                <option value="Lake Lowell">
+                <option value="Lake Walcott">
+                <option value="Little Wood">
+                <option value="Lucky Peak Lake">
+                <option value="Mann Creek">
+                <option value="Milner">
+                <option value="Palisades">
+                <option value="Reservoir A">
+                <option value="Ririe Lake">
+                <option value="Soldiers Meadow">
+            </datalist>
+            <button class="btn btn-lg btn-primary" type="submit">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+        </form>
     </div>
-    <div class="col-sm-12 col-lg-7 state-graph" id="map" stations="stations" map="map_data" data="data" state="id" res="Arrowrock">
+</div>
+<div class="row" ng-show="graphloaded">
+    <div class="col-sm-12 col-lg-7 state-graph" id="map" stations="stations" map="map_data" term="term" data="data" state="id" res="Arrowrock">
         <h3>Reservoirs</h3>
         <p class="center">Percent Full for Month Ending <span id="map_month"></span></p>
         <p id="map_legend"></p>
@@ -17,6 +41,10 @@
     </div>
 </div>
 <div class="row" ng-show="graphloaded">
+    <div class="col-sm-12 col-lg-12">
+        <p class="center">Zoom and pan the map to move around in it. Click a point to view the water levels for a particular reservoir. Hover over
+            the line graphs to see the levels for a particular month.</p>
+    </div>
     <div class="col-lg-offset-2 col-md-8 col-lg-offset-2">
         <p class="center">One acre foot is the amount of water it takes to cover one acre in one foot of water, or about 325,851 gallons.</p>
     </div>

@@ -1,11 +1,134 @@
 <div class="loader" ng-show="graphloading">Loading...</div>
 <h2 ng-show="graphloaded">The Water of the West - Texas</h2>
 <div class="row" ng-show="graphloaded">
-    <div class="col-sm-12 col-lg-12">
-        <p class="center">Zoom and pan the map to move around in it. Click a point to view the water levels for a particular reservoir. Hover over
-            the line graphs to see the levels for a particular month.</p>
+    <div class="col-md-offset-3 col-md-6 col-md-offset-3">
+        <form id="search_form"  class="form-inline" role="form" ng-submit="resSearch()">
+            <input ng-model="search" type="text" class="form-control" list="res_list" placeholder="Search Texas Reservoirs!" />
+            <datalist id="res_list">
+                <option value="Abilene">
+                <option value="Addicks">
+                <option value="Alan Henry">
+                <option value="Amistad">
+                <option value="Amon G Carter">
+                <option value="Aquilla">
+                <option value="Arlington">
+                <option value="Arrowhead">
+                <option value="Athens">
+                <option value="Austin">
+                <option value="B A Steinhagen">
+                <option value="Bardwell">
+                <option value="Belton">
+                <option value="Benbrook">
+                <option value="Bob Sandlin">
+                <option value="Bonham">
+                <option value="Brady Creek">
+                <option value="Bridgeport">
+                <option value="Brownwood">
+                <option value="Buchanan">
+                <option value="Caddo">
+                <option value="Canyon">
+                <option value="Cedar Creek">
+                <option value="Champion Creek">
+                <option value="Choke Canyon">
+                <option value="Cisco">
+                <option value="Coleman">
+                <option value="Coleto Creek">
+                <option value="Colorado City">
+                <option value="Conroe">
+                <option value="Corpus Christi">
+                <option value="Crook">
+                <option value="Cypress Springs">
+                <option value="E V Spence">
+                <option value="Eagle Mountain">
+                <option value="Elephant Butte">
+                <option value="Falcon">
+                <option value="Fork">
+                <option value="Fort Phantom Hill">
+                <option value="Georgetown">
+                <option value="Graham">
+                <option value="Granbury">
+                <option value="Granger">
+                <option value="Grapevine">
+                <option value="Greenbelt">
+                <option value="Halbert">
+                <option value="Hords Creek">
+                <option value="Houston County">
+                <option value="Houston">
+                <option value="Hubbard Creek">
+                <option value="Hubert H Moss">
+                <option value="Inks">
+                <option value="J B Thomas">
+                <option value="Jacksonville">
+                <option value="Jim Chapman">
+                <option value="Joe Pool">
+                <option value="Kemp">
+                <option value="Kickapoo">
+                <option value="Lake O' the Pines">
+                <option value="Lavon">
+                <option value="Leon">
+                <option value="Lewisville">
+                <option value="Limestone">
+                <option value="Livingston">
+                <option value="Lost Creek">
+                <option value="Lyndon B Johnson">
+                <option value="Mackenzie">
+                <option value="Martin">
+                <option value="Medina">
+                <option value="Meredith">
+                <option value="Millers Creek">
+                <option value="Mineral Wells">
+                <option value="Monticello">
+                <option value="Mountain Creek">
+                <option value="Murvaul">
+                <option value="Nacogdoches">
+                <option value="Natural Dam">
+                <option value="Navarro Mills">
+                <option value="New Terrell City">
+                <option value="Nocona">
+                <option value="North Fork Buffalo Creek">
+                <option value="O C Fisher">
+                <option value="O H Ivie">
+                <option value="Oak Creek">
+                <option value="Palestine">
+                <option value="Palo Duro">
+                <option value="Palo Pinto">
+                <option value="Pat Cleburne">
+                <option value="Pat Mayse">
+                <option value="Possum Kingdom">
+                <option value="Proctor">
+                <option value="Ray Hubbard">
+                <option value="Ray Roberts">
+                <option value="Red Bluff">
+                <option value="Richland Chambers">
+                <option value="Sam Rayburn">
+                <option value="Somerville">
+                <option value="Squaw Creek">
+                <option value="Stamford">
+                <option value="Stillhouse Hollow">
+                <option value="Sulphur Springs">
+                <option value="Sweetwater">
+                <option value="Tawakoni">
+                <option value="Texana">
+                <option value="Texoma">
+                <option value="Toledo Bend">
+                <option value="Travis">
+                <option value="Twin Buttes">
+                <option value="Tyler">
+                <option value="Waco">
+                <option value="Waxahachie">
+                <option value="Weatherford">
+                <option value="White River">
+                <option value="Whitney">
+                <option value="Worth">
+                <option value="Wright Patman">
+            </datalist>
+            <button class="btn btn-lg btn-primary" type="submit">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
+        </form>
     </div>
-    <div class="col-sm-12 col-lg-7 state-graph" id="map" stations="stations" map="map_data" data="data" state="tx" res="Meredith">
+</div>
+<div class="row" ng-show="graphloaded">
+    <div class="col-sm-12 col-lg-7 state-graph" id="map" stations="stations" map="map_data" term="term" data="data" state="tx" res="Meredith">
         <h3>Reservoirs</h3>
         <p class="center">Percent Full for Month Ending <span id="map_month"></span></p>
         <p id="map_legend"></p>
@@ -17,6 +140,10 @@
     </div>
 </div>
 <div class="row" ng-show="graphloaded">
+    <div class="col-sm-12 col-lg-12">
+        <p class="center">Zoom and pan the map to move around in it. Click a point to view the water levels for a particular reservoir. Hover over
+            the line graphs to see the levels for a particular month.</p>
+    </div>
     <div class="col-sm-12 col-lg-12">
         <p class="center">Elephant Butte Lake, shared with Colorado, New Mexico, Texas and the Mexican state of Chihuahua is located in New
             Mexico, hence showing outside state bounds.</p>
