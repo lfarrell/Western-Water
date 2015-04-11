@@ -1,6 +1,10 @@
 <div class="loader" ng-show="graphloading">Loading...</div>
 <h2 ng-show="graphloaded">The Water of the West</h2>
 <div class="row" ng-show="graphloaded">
+    <div class="col-sm-12 col-lg-12">
+        <p class="center">Zoom and pan the map to move around in it. Click a point to view the water levels for a particular reservoir. Hover over
+            the line graphs to see the levels for a particular month.</p>
+    </div>
     <div class="col-sm-12 col-lg-7 map-graph" id="map" stations="stations" map="map_data" data="data">
         <h3>Reservoirs</h3>
         <p class="center">Percent Full for Month Ending <span id="map_month"></span></p>
@@ -13,14 +17,10 @@
     </div>
 </div>
 <div class="row" ng-show="graphloaded">
-    <div class="col-sm-12 col-lg-12">
-        <p class="center">Zoom and pan the map to move around in it. Click a point to view the water levels for a particular reservoir. Hover over
-            the line graphs to see the levels for a particular month.</p>
-    </div>
     <div class="col-lg-offset-2 col-lg-8 col-lg-offset-2">
         <p class="center">One acre foot is the amount of water it takes to cover one acre in one foot of water, or about 325,851 gallons.</p>
     </div>
-    <div class="col-lg-offset-2 col-ld-8 col-lg-offset-2">
+    <div class="col-lg-offset-2 col-lg-8 col-lg-offset-2">
         <p>Much of the American West is in a prolonged drought. Notice that for many reservoirs, particularly those in California, the seeming inexorable decline in stored water levels
             over the past several years. Then notice as many California reservoirs tick up after the heavy rains in December 2014. A number of
         reservoirs also exhibit wild oscillations in water level, presumably due to scheduled releases.</p>
