@@ -72,13 +72,6 @@ angular.module('westernWaterApp').controller('mainController', ['$scope', 'LoadS
         'data/all.csv',
         false
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('arizonaController', ['$scope', 'LoadService', function($scope, LoadService) {
@@ -89,13 +82,6 @@ angular.module('westernWaterApp').controller('arizonaController', ['$scope', 'Lo
         'data/states_all/az_all.csv',
         'data/az_snow/all_az.csv'
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('californiaController', ['$scope', 'LoadService', function($scope, LoadService) {
@@ -106,13 +92,6 @@ angular.module('westernWaterApp').controller('californiaController', ['$scope', 
         'data/states_all/ca_all.csv',
         'data/cal_snow/all_cal.csv'
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('coloradoController', ['$scope', 'LoadService', function($scope, LoadService) {
@@ -123,13 +102,6 @@ angular.module('westernWaterApp').controller('coloradoController', ['$scope', 'L
         'data/states_all/co_all.csv',
         'data/co_snow/all_co.csv'
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('idahoController', ['$scope','LoadService', function($scope, LoadService) {
@@ -140,13 +112,6 @@ angular.module('westernWaterApp').controller('idahoController', ['$scope','LoadS
         'data/states_all/id_all.csv',
         'data/id_snow/all_id.csv'
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('nevadaController', ['$scope', 'LoadService', function($scope, LoadService) {
@@ -157,13 +122,6 @@ angular.module('westernWaterApp').controller('nevadaController', ['$scope', 'Loa
         'data/states_all/nv_all.csv',
         'data/nv_snow/all_nv.csv'
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('newmexicoController', ['$scope', 'LoadService', function($scope, LoadService) {
@@ -174,13 +132,6 @@ angular.module('westernWaterApp').controller('newmexicoController', ['$scope', '
         'data/states_all/nm_all.csv',
         'data/nm_snow/all_nm.csv'
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('oregonController', ['$scope', 'LoadService', function($scope, LoadService) {
@@ -191,13 +142,6 @@ angular.module('westernWaterApp').controller('oregonController', ['$scope', 'Loa
         'data/states_all/or_all.csv',
         'data/or_snow/all_or.csv'
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('texasController', ['$scope', 'LoadService', function($scope, LoadService) {
@@ -208,13 +152,6 @@ angular.module('westernWaterApp').controller('texasController', ['$scope', 'Load
         'data/states_all/tx_all.csv',
         false
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('utahController', ['$scope', 'LoadService', function($scope, LoadService) {
@@ -225,13 +162,6 @@ angular.module('westernWaterApp').controller('utahController', ['$scope', 'LoadS
         'data/states_all/utah_all.csv',
         'data/utah_snow/all_utah.csv'
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('washingtonController', ['$scope', 'LoadService', function($scope, LoadService) {
@@ -242,13 +172,6 @@ angular.module('westernWaterApp').controller('washingtonController', ['$scope', 
         'data/states_all/wa_all.csv',
         'data/wa_snow/all_wa.csv'
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);
 
 angular.module('westernWaterApp').controller('wyomingController', ['$scope', 'LoadService', function($scope, LoadService) {
@@ -259,11 +182,4 @@ angular.module('westernWaterApp').controller('wyomingController', ['$scope', 'Lo
         'data/states_all/wy_all.csv',
         'data/wy_snow/all_wy.csv'
     );
-
-    $scope.search = '';
-
-    $scope.resSearch = function() {
-        $scope.term = $scope.search;
-        $scope.search = '';
-    };
 }]);

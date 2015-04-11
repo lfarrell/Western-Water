@@ -1,34 +1,7 @@
 <div class="loader" ng-show="graphloading">Loading...</div>
 <h2 ng-show="graphloaded">The Water of the West - Colorado</h2>
 <div class="row" ng-show="graphloaded">
-    <div class="col-md-offset-3 col-md-6 col-md-offset-3">
-        <form id="search_form"  class="form-inline" role="form" ng-submit="resSearch()">
-            <input ng-model="search" type="text" class="form-control" list="res_list" placeholder="Search Colorado Reservoirs!" />
-            <datalist id="res_list">
-                <option value="Blue Mesa">
-                <option value="Crystal">
-                <option value="Elephant Butte">
-                <option value="Fruitgrowers">
-                <option value="Jackson Gulch">
-                <option value="Lemon">
-                <option value="McPhee">
-                <option value="Morrow Point">
-                <option value="Navajo">
-                <option value="Paonia">
-                <option value="Ridgway">
-                <option value="Rifle Gap">
-                <option value="Silver Jack">
-                <option value="Taylor Park">
-                <option value="Vallecito">
-                <option value="Vega">
-            </datalist>
-            <button class="btn btn-lg btn-primary" type="submit">
-                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search</button>
-        </form>
-    </div>
-</div>
-<div class="row" ng-show="graphloaded">
-    <div class="col-sm-12 col-lg-7 state-graph" id="map" stations="stations" map="map_data" term="term" data="data" state="co" res="Vallecito">
+    <div class="col-sm-12 col-lg-7 state-graph" id="map" stations="stations" map="map_data" data="data" state="co" res="Vallecito">
         <h3>Reservoirs</h3>
         <p class="center">Percent Full for Month Ending <span id="map_month"></span></p>
         <p id="map_legend"></p>

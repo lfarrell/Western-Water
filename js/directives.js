@@ -8,14 +8,13 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             format = d3.time.format("%m/%Y").parse,
             tip = tipService.tipDiv();
 
-        scope.$watchGroup(['map', 'stations', 'data', 'term'], function(values) {
+        scope.$watchGroup(['map', 'stations', 'data'], function(values) {
             if (!values[0] || !values[1] || !values[2]) { return; }
 
             var map_data = values[0];
             var stations = values[1];
             var data = values[2];
 
-            if(!document.querySelectorAll('#map svg').length) {
                 stations = chartService.mapPctFull(data, stations);
                 chartService.legend('#map_legend', true);
 
@@ -97,7 +96,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                             return 2.4;
                         });
                     });
-            }
 
                 /**
                  * Chart
@@ -137,7 +135,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     .x(function(d) { return xScale(format(d.date)); })
                     .y(function(d) { return yScale(d.capacity); });
 
-                if(!document.querySelectorAll('#graph svg').length) {
                     chartService.legend('#res_legend');
                     var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
 
@@ -184,22 +181,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                          .attr("stroke", "green")
                          .attr("stroke-width", 2)
                          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-            }
-
-            if(values[3] && values[3] !== undefined) {
-                var search_term = values[3];
-                filtered = data.filter(function(d) {
-                    return d.reservoir === search_term.split(' -- ')[0];
-                });
-
-                if(!filtered.length) {
-
-                    return;
-                }
-
-                datz = chartService.histAvg(filtered, 'map-graph');
-                chart_update(datz);
-            }
 
             function chart_update(datz) {
                 xScale.domain([
@@ -267,8 +248,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
         scope: {
             'map': '=',
             'data': '=',
-            'stations': '=',
-            'term': '='
+            'stations': '='
         }
     }
 }]);
@@ -493,7 +473,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             format = d3.time.format("%m/%Y").parse,
             tip = tipService.tipDiv();
 
-        scope.$watchGroup(['map', 'stations', 'data', 'res', 'state', 'term'], function(values) {
+        scope.$watchGroup(['map', 'stations', 'data', 'res', 'state'], function(values) {
             if (!values[0] || !values[1] || !values[2] || !values[3] || !values[4]) { return; }
 
             var map_data = values[0];
@@ -501,9 +481,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             var data = values[2];
             var res = values[3];
             var state = values[4];
-            var search_term = values[5];
 
-            if(!document.querySelectorAll('#map svg').length) {
                 stations = chartService.mapPctFull(data, stations);
                 chartService.legend('#map_legend', true);
 
@@ -593,7 +571,6 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     .on("mouseout", function(d) {
                         tipService.tipHide(tip);
                     });
-            }
 
             function zooming() {
                 map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -643,7 +620,6 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 .x(function(d) { return xScale(format(d.date)); })
                 .y(function(d) { return yScale(d.capacity); });
 
-            if(!document.querySelectorAll('#graph svg').length) {
                 chartService.legend('#res_legend');
                 var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
 
@@ -693,25 +669,6 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     .on("mouseout", function() { focus.style("display", "none"); })
                     .on("mousemove", mousemove)
                     .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
-            }
-
-            if(search_term !== undefined) {
-                var filter_data = data.filter(function(d) {
-                    return d.reservoir === search_term;
-                });
-                var search_result_text = d3.select("#search_result_text");
-
-                if(!filter_data.length) {
-                  //  search_result_text.text("Your search returned no results");
-                    return;
-                } else {
-                //    search_result_text.text("Search Term: " + search_term);
-                }
-
-                state_data = chartService.histAvg(filter_data, 'map-graph');
-                chart_update(state_data);
-            }
-
 
             function chart_update(datz) {
                 xScale.domain([
@@ -740,7 +697,6 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
 
                 var res_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")";
-                console.log(res_transform)
                 d3.select("circle.y0").attr("transform", res_transform);
                 d3.select("text.y0").attr("transform", res_transform)
                     .tspans([
@@ -770,8 +726,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             'data': '=',
             'stations': '=',
             'res': '@',
-            'state': '@',
-            'term': '='
+            'state': '@'
         }
     }
 }]);
