@@ -86,7 +86,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                         tipService.tipShow(tip, text);
 
                         d3.select(this).attr('r', function(d) {
-                            return 7;
+                            return 6;
                         });
                     })
                     .on("mouseout", function(d) {
@@ -567,9 +567,18 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     .on("mouseover", function(d) {
                         var text = d.reservoir;
                         tipService.tipShow(tip, text);
+
+                        d3.select(this).attr('r', function(d) {
+                            return 7;
+                        });
                     })
                     .on("mouseout", function(d) {
                         tipService.tipHide(tip);
+
+                        d3.select(this).attr('r', function(d) {
+                            if(state === 'ca') return 3.5;
+                            return 5;
+                        });
                     });
 
             function zooming() {
