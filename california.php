@@ -1,5 +1,6 @@
 <?php
 //http://cdec.water.ca.gov/misc/monthly_res.html
+/*
 include 'simple_html_dom.php';
 
 $file = 'data/california.csv';
@@ -57,4 +58,28 @@ foreach($rows as $row) {
     }
 }
 
-fclose($fh);
+fclose($fh); */
+
+$values = array(
+"Blue Mesa",
+"Crystal",
+"Vallecito",
+"Rifle Gap",
+"Taylor Park",
+"Jackson Gulch",
+"Lemon",
+"Morrow Point",
+"Navajo",
+"Vega",
+"Silver Jack",
+"Ridgway",
+"Paonia",
+"McPhee",
+"Fruitgrowers",
+"Elephant Butte",
+);
+sort($values);
+
+foreach($values as $key => $value) {
+    echo '<option value="' . $value . '">' . "\n";
+}

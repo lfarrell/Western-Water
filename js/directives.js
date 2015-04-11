@@ -188,14 +188,17 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
 
             if(values[3] && values[3] !== undefined) {
                 var search_term = values[3];
-                var filtered = data.filter(function(d) {
+                filtered = data.filter(function(d) {
                     return d.reservoir === search_term.split(' -- ')[0];
                 });
 
-                if(!filtered.length) return;
+                if(!filtered.length) {
 
-                var datiz = chartService.histAvg(filtered, 'map-graph');
-                chart_update(datiz);
+                    return;
+                }
+
+                datz = chartService.histAvg(filtered, 'map-graph');
+                chart_update(datz);
             }
 
             function chart_update(datz) {
@@ -490,7 +493,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             format = d3.time.format("%m/%Y").parse,
             tip = tipService.tipDiv();
 
-        scope.$watchGroup(['map', 'stations', 'data', 'res', 'state'], function(values) {
+        scope.$watchGroup(['map', 'stations', 'data', 'res', 'state', 'term'], function(values) {
             if (!values[0] || !values[1] || !values[2] || !values[3] || !values[4]) { return; }
 
             var map_data = values[0];
@@ -498,96 +501,99 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             var data = values[2];
             var res = values[3];
             var state = values[4];
+            var search_term = values[5];
 
-            stations = chartService.mapPctFull(data, stations);
-            chartService.legend('#map_legend', true);
+            if(!document.querySelectorAll('#map svg').length) {
+                stations = chartService.mapPctFull(data, stations);
+                chartService.legend('#map_legend', true);
 
-            var filtered = data.filter(function(d) { return d.reservoir === res; });
-            state_data = chartService.histAvg(filtered, 'map-graph');
+                var filtered = data.filter(function(d) { return d.reservoir === res; });
+                state_data = chartService.histAvg(filtered, 'map-graph');
 
-            var scale = 1,
-                projection = d3.geo.mercator()
-                    .scale(scale)
-                    .translate([width/2, height/2]),
-                center = d3.geo.centroid(map_data),
-                path = d3.geo.path().projection(projection);
+                var scale = 1,
+                    projection = d3.geo.mercator()
+                        .scale(scale)
+                        .translate([width/2, height/2]),
+                    center = d3.geo.centroid(map_data),
+                    path = d3.geo.path().projection(projection);
 
-            // using the path determine the bounds of the current map and use
-            // these to determine better values for the scale and translation
-            var bounds  = path.bounds(map_data);
-            var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
-            var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
-            scale   = (hscale < vscale) ? hscale : vscale;
-        /*    var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
-                height - (bounds[0][1] + bounds[1][1])/2]; */
+                // using the path determine the bounds of the current map and use
+                // these to determine better values for the scale and translation
+                var bounds  = path.bounds(map_data);
+                var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
+                var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
+                scale   = (hscale < vscale) ? hscale : vscale;
+            /*    var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
+                    height - (bounds[0][1] + bounds[1][1])/2]; */
 
-            var offset;
-            if(state === 'id') {
-                offset = 350;
-            } else if(state === 'utah' || state === 'ca') {
-                offset = 288;
-            } else {
-                offset = 250;
-            }
+                var offset;
+                if(state === 'id') {
+                    offset = 350;
+                } else if(state === 'utah' || state === 'ca') {
+                    offset = 288;
+                } else {
+                    offset = 250;
+                }
 
-            // new projection
-            projection = d3.geo.mercator().center(center)
-                .scale(scale / 1.15).translate([350, offset]);
-            path = path.projection(projection);
+                // new projection
+                projection = d3.geo.mercator().center(center)
+                    .scale(scale / 1.15).translate([350, offset]);
+                path = path.projection(projection);
 
-            // Create scales
-            var zoom = d3.behavior.zoom()
-                .scaleExtent([1, 5])
-                .on("zoom", zooming);
+                // Create scales
+                var zoom = d3.behavior.zoom()
+                    .scaleExtent([1, 5])
+                    .on("zoom", zooming);
 
-            var drag = d3.behavior.drag()
-                .origin(function(d) { return d; })
-                .on("drag", dragged);
+                var drag = d3.behavior.drag()
+                    .origin(function(d) { return d; })
+                    .on("drag", dragged);
 
-            var map_svg = d3.select('#map').append('svg')
-                .attr('height', height)
-                .attr('width', width)
-                .call(zoom);
+                var map_svg = d3.select('#map').append('svg')
+                    .attr('height', height)
+                    .attr('width', width)
+                    .call(zoom);
 
-            var map = map_svg.append('g');
+                var map = map_svg.append('g');
 
-            map.selectAll("path")
-                .data(map_data.features)
-                .enter()
-                .append("path")
-                .attr("d", path);
+                map.selectAll("path")
+                    .data(map_data.features)
+                    .enter()
+                    .append("path")
+                    .attr("d", path);
 
-            map.selectAll("circle")
-                .data(stations)
-                .enter()
-                .append("circle")
-                .attr("class", "map-circle")
-                .attr("cx", function(d) {
-                    return projection([d.lng, d.lat])[0]; })
-                .attr("cy", function(d) {
-                    return projection([d.lng, d.lat])[1]; })
-                .attr("r", function(d) {
-                    if(state === 'ca') return 3.5;
-                    return 5;
-                })
-                .style("fill", function(d) {
-                    return chartService.resColors(d.pct_capacity);
-                })
-                .on("click", function (res) {
-                    var filtered = data.filter(function(d) {
-                        return d.reservoir === res.reservoir;
+                map.selectAll("circle")
+                    .data(stations)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "map-circle")
+                    .attr("cx", function(d) {
+                        return projection([d.lng, d.lat])[0]; })
+                    .attr("cy", function(d) {
+                        return projection([d.lng, d.lat])[1]; })
+                    .attr("r", function(d) {
+                        if(state === 'ca') return 3.5;
+                        return 5;
+                    })
+                    .style("fill", function(d) {
+                        return chartService.resColors(d.pct_capacity);
+                    })
+                    .on("click", function (res) {
+                        var filtered = data.filter(function(d) {
+                            return d.reservoir === res.reservoir;
+                        });
+
+                        state_data = chartService.histAvg(filtered, 'map-graph');
+                        chart_update(state_data);
+                    })
+                    .on("mouseover", function(d) {
+                        var text = d.reservoir;
+                        tipService.tipShow(tip, text);
+                    })
+                    .on("mouseout", function(d) {
+                        tipService.tipHide(tip);
                     });
-
-                    state_data = chartService.histAvg(filtered, 'map-graph');
-                    chart_update(state_data);
-                })
-                .on("mouseover", function(d) {
-                    var text = d.reservoir;
-                    tipService.tipShow(tip, text);
-                })
-                .on("mouseout", function(d) {
-                    tipService.tipHide(tip);
-                });
+            }
 
             function zooming() {
                 map.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
@@ -625,67 +631,87 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 .scale(yScale)
                 .orient("left");
 
-            chartService.legend('#res_legend');
-            var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
-
-            d3.selectAll("g.x text").attr('transform', "rotate(35)")
-                .attr('dx', 27)
-                .attr('dy', 10);
-
-            d3.selectAll('#res_avg').text(StatsService.numFormat(state_data[0].mean.toFixed(1)));
-
             var storage = d3.svg.line()
                 .x(function(d) { return xScale(format(d.date)); })
                 .y(function(d) { return yScale(d.storage); });
-
-            chart.append("path")
-                .attr("d", storage(state_data))
-                .attr("id", "storage")
-                .attr("fill", "none")
-                .attr("stroke", "steelblue")
-                .attr("stroke-width", 2)
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
             var avg_storage = d3.svg.line()
                 .x(function(d) { return xScale(format(d.date)); })
                 .y(function(d) { return yScale(d.mean); });
 
-            chart.append("g")
-                .append("path")
-                .attr("d", avg_storage(state_data))
-                .attr("id", "avg_storage")
-                .attr("fill", "none")
-                .attr("stroke", "#FCE883")
-                .attr("stroke-width", 2)
-                .attr("stroke-dasharray", [5,5])
-                .attr("transform", "translate(" + margin.left + "," + margin.top +")");
-
             var capacity = d3.svg.line()
                 .x(function(d) { return xScale(format(d.date)); })
                 .y(function(d) { return yScale(d.capacity); });
 
-            chart.append("g")
-                .append("path")
-                .attr("d", capacity(state_data))
-                .attr("id", "capacity")
-                .attr("fill", "none")
-                .attr("stroke", "green")
-                .attr("stroke-width", 2)
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            if(!document.querySelectorAll('#graph svg').length) {
+                chartService.legend('#res_legend');
+                var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
 
-            /**
-             * Show values on mouseover
-             */
-            var focus = chartService.focus(chart);
+                d3.selectAll("g.x text").attr('transform', "rotate(35)")
+                    .attr('dx', 27)
+                    .attr('dy', 10);
 
-            chart.append("rect")
-                .attr("class", "overlay")
-                .attr("width", graph_width)
-                .attr("height", graph_height)
-                .on("mouseover", function() { focus.style("display", null); })
-                .on("mouseout", function() { focus.style("display", "none"); })
-                .on("mousemove", mousemove)
-                .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+                d3.selectAll('#res_avg').text(StatsService.numFormat(state_data[0].mean.toFixed(1)));
+
+                chart.append("path")
+                    .attr("d", storage(state_data))
+                    .attr("id", "storage")
+                    .attr("fill", "none")
+                    .attr("stroke", "steelblue")
+                    .attr("stroke-width", 2)
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                chart.append("g")
+                    .append("path")
+                    .attr("d", avg_storage(state_data))
+                    .attr("id", "avg_storage")
+                    .attr("fill", "none")
+                    .attr("stroke", "#FCE883")
+                    .attr("stroke-width", 2)
+                    .attr("stroke-dasharray", [5,5])
+                    .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+
+                chart.append("g")
+                    .append("path")
+                    .attr("d", capacity(state_data))
+                    .attr("id", "capacity")
+                    .attr("fill", "none")
+                    .attr("stroke", "green")
+                    .attr("stroke-width", 2)
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                /**
+                 * Show values on mouseover
+                 */
+                var focus = chartService.focus(chart);
+
+                chart.append("rect")
+                    .attr("class", "overlay")
+                    .attr("width", graph_width)
+                    .attr("height", graph_height)
+                    .on("mouseover", function() { focus.style("display", null); })
+                    .on("mouseout", function() { focus.style("display", "none"); })
+                    .on("mousemove", mousemove)
+                    .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+            }
+
+            if(search_term !== undefined) {
+                var filter_data = data.filter(function(d) {
+                    return d.reservoir === search_term;
+                });
+                var search_result_text = d3.select("#search_result_text");
+
+                if(!filter_data.length) {
+                  //  search_result_text.text("Your search returned no results");
+                    return;
+                } else {
+                //    search_result_text.text("Search Term: " + search_term);
+                }
+
+                state_data = chartService.histAvg(filter_data, 'map-graph');
+                chart_update(state_data);
+            }
+
 
             function chart_update(datz) {
                 xScale.domain([
@@ -714,6 +740,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
 
                 var res_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")";
+                console.log(res_transform)
                 d3.select("circle.y0").attr("transform", res_transform);
                 d3.select("text.y0").attr("transform", res_transform)
                     .tspans([
@@ -743,7 +770,8 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             'data': '=',
             'stations': '=',
             'res': '@',
-            'state': '@'
+            'state': '@',
+            'term': '='
         }
     }
 }]);

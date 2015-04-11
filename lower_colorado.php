@@ -28,7 +28,7 @@ foreach($reservoirs as $key => $reservoir) {
         $name = ucwords(strtolower(preg_replace('/\(.+$/', '', trim($res_name[0]->plaintext))));
         $file_name = preg_replace('/\s+/', '_', strtolower($name));
 
-        $fh = fopen("data/lc_month/$file_name.csv", "a");
+        $fh = fopen("data/lc_month/$file_name.csv", "wb");
         fputcsv($fh, array("reservoir", "storage", "capacity", "pct_capacity", "date", "state"));
 
         $rows = $html->find('tr');
