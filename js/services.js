@@ -245,4 +245,17 @@ angular.module('westernWaterApp').service('chartService', function() {
 
         return stations;
     };
+
+    this.mapScale = function(data, state) {
+        var vals;
+
+        if(state === 'CA') {
+            vals = [2, 7];
+        } else {
+            vals = [3, 8];
+        }
+        return d3.scale.linear()
+            .domain(d3.extent(data, function(d) { return d.capacity * .2; }))
+            .range(vals);
+    };
 });
