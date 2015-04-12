@@ -6,7 +6,7 @@ date_default_timezone_set('America/Phoenix');
 
 $bureau_reservoirs = array(
     'Horse Mesa' => array('capacity' => 245138, 'state' => 'AZ'),
-    'Theodore Roosevelt' => array('capacity' => 1381580, 'state' => 'AZ'),
+    'Roosevelt' => array('capacity' => 1381580, 'state' => 'AZ'),
     'Mormon Flat' => array('capacity' => 57852, 'state' => 'AZ'),
     'Stewart Mtn' => array('capacity' => 69765, 'state' => 'AZ'),
     'Bartlett' => array('capacity' => 178490, 'state' => 'AZ'),
@@ -25,10 +25,8 @@ fputcsv($fd, array('reservoir','storage','capacity','pct_capacity','date','state
 for($i=1; $i<=$days; $i++) {
     $month = preg_replace('/^0/', '', $date_bits[0]);
     $url = $path . $month . '/' . $i . '/' . $date_bits[1];
-    echo $url . "\n";
 
-    $lc_html = new simple_html_dom();
-    $lc_html->load_file($url);
+    $lc_html = file_get_html($url);
 
     $table = $lc_html->find('table.section', 0);
     $rows = $table->find('tr');
@@ -45,7 +43,6 @@ for($i=1; $i<=$days; $i++) {
             $pct_cap = round(($curr_level / $cap) * 100, 1);
 
             fputcsv($fd, array($res_name, $curr_level, $cap, $pct_cap, $date_bits[0]. '/' . $i . '/' . $date_bits[1], 'AZ'));
-            echo $res_name . '-- ' . $date_bits[0]. '/' . $i . '/' . $date_bits[1] . "\n";
         }
     }
 }
