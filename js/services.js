@@ -230,15 +230,13 @@ angular.module('westernWaterApp').service('chartService', function() {
     };
 
     this.mapPctFull = function(data, stations) {
-        var map_month = moment().subtract(1, 'month');
-        d3.select("#map_month").text(map_month.format('MMMM YYYY'));
-
-        var pct_stations = data.filter(function(d) {
-            return d.date === map_month.format('MM/YYYY')
-        });
+        var sorted = d3.nest()
+            .key(function(d) { return d.reservoir; })
+            .map(data);
 
         stations.forEach(function(d) {
-            var res_total = _.find(pct_stations, function(res) { return res.reservoir === d.reservoir; });
+            var res_total = _.last(sorted[d.reservoir]); //console.log(res_total)
+          //  if(res_total === undefined) console.log(d.reservoir)
             d.pct_capacity = (res_total !== undefined) ? res_total.pct_capacity : undefined;
             d.capacity = (res_total !== undefined) ? res_total.capacity : undefined;
         });
