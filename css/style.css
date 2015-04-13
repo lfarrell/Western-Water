@@ -66,8 +66,12 @@ div.tooltip {
     opacity: 0.7;
 }
 
-circle:hover {
+circle {
     stroke: black;
+    stroke-width: 0.5;
+}
+
+circle:hover {
     stroke-width: 3;
 }
 
