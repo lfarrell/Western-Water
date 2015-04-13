@@ -575,7 +575,8 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     .attr("cy", function(d) {
                         return projection([d.lng, d.lat])[1]; })
                     .attr("r", function(d) {
-                        return mapScale(d.capacity);
+                        var upsize = (d.state === 'CA') ? 0 : 2;
+                        return mapScale(d.capacity) + upsize;
                     })
                     .style("fill", function(d) {
                         return chartService.resColors(d.pct_capacity);
