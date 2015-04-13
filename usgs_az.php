@@ -6,7 +6,7 @@ $az_reservoirs = array(
     '09398300' => array('capacity' => 15000, 'name' => 'C. C. Cragin', 'state' => 'AZ'),
     '09509501' => array('capacity' => 131500, 'name' => 'Horseshoe', 'state' => 'AZ'),
     '09509502' => array('capacity' => 178186, 'name' => 'Bartlett', 'state' => 'AZ'),
- //   '09384600' => array('capacity' => , 'name' => 'Lyman Lake', 'state' => 'AZ')
+    '09384600' => array('capacity' => 27000, 'name' => 'Lyman Lake', 'state' => 'AZ')
 );
 
 $base = 'raw_data/usgs_az/';
