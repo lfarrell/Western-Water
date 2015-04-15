@@ -47,3 +47,5 @@ for($i=1; $i<=$days; $i++) {
     }
 }
 fclose($fd);
+
+aggregate('data/lc_az', 'data/lc_az_month');
