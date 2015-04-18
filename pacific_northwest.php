@@ -22,7 +22,7 @@ $stations = array(
     'GCL' => array('name' => 'Grand Coulee/FDR Lake', 'capacity' => 9562000, 'state' => 'WA'),
     'GRS' => array('name' => 'Grassy Lake', 'capacity' => 15200, 'state' => 'WY'),
     'HAY' => array('name' => 'Haystack', 'capacity' => 5600, 'state' => 'OR'),
- //   'HEN' => array('name' => 'Henrys Lake', 'capacity' => , 'state' => 'ID'),
+    'HEN' => array('name' => 'Henrys Lake', 'capacity' => 90000, 'state' => 'ID'),
     'HPD' => array('name' => 'Howard Prairie Lake', 'capacity' => 62100, 'state' => 'OR'),
     'HYA' => array('name' => 'Hyatt', 'capacity' => 16900, 'state' => 'OR'),
     'ISL' => array('name' => 'Island Park', 'capacity' => 135000, 'state' => 'ID'),
