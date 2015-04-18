@@ -31,6 +31,9 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
 
             chartService.legend('#map_legend', true);
 
+            var today_words = chartService.displayMonth();
+            d3.select("#map_month").html('(' + today_words + ')');
+
             var mapScale = chartService.mapScale(data);
 
             var projection = d3.geo.albers()
@@ -281,7 +284,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
 
             var current_date = moment().subtract(1, 'month');
             var today = current_date.format('MM/YYYY');
-            var today_words = current_date.format('MMMM YYYY');
+            var today_words = chartService.displayMonth();
 
             d3.select("#date").html('(for Month Ending '+ today_words + ')');
 

@@ -229,6 +229,12 @@ angular.module('westernWaterApp').service('chartService', function() {
         return data;
     };
 
+    this.displayMonth = function() {
+        var current_date = moment().subtract(1, 'month');
+        var today = current_date.format('MM/YYYY');
+        return current_date.format('MMMM YYYY');
+    };
+
     this.mapPctFull = function(data, stations) {
         var sorted = d3.nest()
             .key(function(d) { return d.reservoir; })

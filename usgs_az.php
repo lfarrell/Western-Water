@@ -9,6 +9,11 @@ $az_reservoirs = array(
     '09384600' => array('capacity' => 27000, 'name' => 'Lyman Lake', 'state' => 'AZ')
 );
 
+$id_reservoirs = array(
+    '13039000' => array('capacity' => 90000, 'name' => 'Henrys Lake', 'state' => 'ID'),
+    '13115000' => array('capacity' => 90000, 'name' => 'Mud Lake', 'state' => 'ID')
+);
+
 $base = 'raw_data/usgs_az/';
 
 foreach($az_reservoirs as $res_key => $res_info) {
