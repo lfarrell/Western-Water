@@ -510,11 +510,13 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             });
 
             chartService.legend('#map_legend', true);
+            var today_words = chartService.displayMonth();
+            d3.select("#map_month").html('(' + today_words + ')');
 
             var mapScale = chartService.mapScale(data, state);
 
-                var filtered = data.filter(function(d) { return d.reservoir === res; });
-                state_data = chartService.histAvg(filtered, 'map-graph');
+            var filtered = data.filter(function(d) { return d.reservoir === res; });
+            state_data = chartService.histAvg(filtered, 'map-graph');
 
                 var scale = 1,
                     projection = d3.geo.mercator()
