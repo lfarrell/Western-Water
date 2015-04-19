@@ -213,6 +213,12 @@ angular.module('westernWaterApp').service('chartService', function() {
         return graph_padding.format('MM/YYYY');
     };
 
+    this.rotate = function() {
+        d3.selectAll("g.x text").attr('transform', "rotate(35)")
+            .attr('dx', 27)
+            .attr('dy', 10);
+    };
+
     this.histAvg = function(data, type) {
         var avg = d3.mean(data, function(d) {
             if(type === 'map-graph') {

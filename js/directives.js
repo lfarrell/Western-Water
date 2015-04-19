@@ -149,12 +149,10 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     .x(function(d) { return xScale(format(d.date)); })
                     .y(function(d) { return yScale(d.capacity); });
 
-                    chartService.legend('#res_legend');
-                    var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
+                chartService.legend('#res_legend');
+                var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
 
-                    d3.selectAll("g.x text").attr('transform', "rotate(35)")
-                        .attr('dx', 27)
-                        .attr('dy', 10);
+                chartService.rotate();
 
                     chart.append("path")
                          .attr("d", storage(datz))
@@ -211,6 +209,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 var res = datz[0];
                 d3.select("#reservoir").text( res.reservoir + ', ' + res.state);
                 d3.selectAll('#all_res_avg').text(StatsService.numFormat(datz[0].mean.toFixed(1)));
+
+                chartService.rotate();
             }
 
             function zooming() {
@@ -658,12 +658,10 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 .x(function(d) { return xScale(format(d.date)); })
                 .y(function(d) { return yScale(d.capacity); });
 
-                chartService.legend('#res_legend');
-                var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
+            chartService.legend('#res_legend');
+            var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
 
-                d3.selectAll("g.x text").attr('transform', "rotate(35)")
-                    .attr('dx', 27)
-                    .attr('dy', 10);
+            chartService.rotate();
 
                 d3.selectAll('#res_avg').text(StatsService.numFormat(state_data[0].mean.toFixed(1)));
 
@@ -723,6 +721,8 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 var res = datz[0];
                 d3.select("#reservoir").text(res.reservoir);
                 d3.selectAll('#res_avg').text(StatsService.numFormat(datz[0].mean.toFixed(1)));
+
+                chartService.rotate();
             }
 
             function mousemove() {
