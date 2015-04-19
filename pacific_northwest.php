@@ -52,11 +52,16 @@ $stations = array(
     'WOD' => array('name' => 'Little Wood', 'capacity' => 30000, 'state' => 'ID'),
 );
 
-foreach($stations as $station_code => $station) {
-    $fh = fopen('data/pn/' . $station_code . '.csv', 'wb');
-    fputcsv($fh, array('reservoir', 'storage' ,'capacity' ,'pct_capacity', 'date'));
+$last_month = date("m/Y", strtotime("first day of previous month"));
+$date_bits = preg_split('/\//', $last_month);
+$days = cal_days_in_month(CAL_GREGORIAN, $date_bits[0], $date_bits[1]);
+$month_num = preg_replace('/^0/', '', $date_bits[0]);
 
-    $url = "http://www.usbr.gov/pn-bin/webarccsv.pl?station=$station_code&format=3&year=2000&month=+1&day=+1&year=2015&month=+3&day=31&pcode=AF";
+foreach($stations as $station_code => $station) {
+    $fh = fopen('data/pn/' . $station_code . '.csv', 'a');
+  //  fputcsv($fh, array('reservoir', 'storage' ,'capacity' ,'pct_capacity', 'date'));
+
+    $url = "http://www.usbr.gov/pn-bin/webarccsv.pl?station=$station_code&format=3&year=" . $data[1] . "&month=+" . $data[0] . "&day=+1&year=" . $data[1] . "&month=+$month_num&day=$days&pcode=AF";
 
     $html = file_get_html($url);
 
@@ -83,6 +88,8 @@ $files = scandir($path);
 
 foreach($files as $file) {
     if(!preg_match('/^\./', $file)) {
+        $station_id = preg_split('/\./', $file)[0];
+        $state = strtolower($stations[$station_id]['state']);
         $row = 1;
         $res = '';
         $capacity = '';
@@ -90,9 +97,11 @@ foreach($files as $file) {
             $months = array();
             $months_list = array();
             $fh = fopen('data/pn_month/' . $file, 'wb');
+            $if = fopen('data/' . $state . '_month/' . $file, 'wb');
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 if($row == 1) {
                     fputcsv($fh, $data);
+                    fputcsv($if, $data);
                 } else {
                     $date = explode('/', $data[4]);
                     $date_parts = $date[0] . '/' . $date[2];
@@ -108,6 +117,7 @@ foreach($files as $file) {
                 $monthly_avg_pct = round(($monthly_avg / $capacity) * 100, 1);
 
                 fputcsv($fh, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key));
+                fputcsv($if, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key));
             }
             echo $res . "\n";
 

@@ -8,30 +8,34 @@ $az_reservoirs = array(
     '09509502' => array('capacity' => 178186, 'name' => 'Bartlett', 'state' => 'AZ'),
     '09384600' => array('capacity' => 27000, 'name' => 'Lyman Lake', 'state' => 'AZ')
 );
-
+/*
 $id_reservoirs = array(
     '13039000' => array('capacity' => 90000, 'name' => 'Henrys Lake', 'state' => 'ID'),
     '13115000' => array('capacity' => 90000, 'name' => 'Mud Lake', 'state' => 'ID')
-);
+); */
 
 $base = 'raw_data/usgs_az/';
 
+$last_month = date("Y-m-d", strtotime("first day of previous month"));
+$date_bits = preg_split('-', $last_month);
+$days = cal_days_in_month(CAL_GREGORIAN, $date_bits[1], $date_bits[0]);
+$end_date = $date_bits[1] . '-' . $date_bits[0] . '-' . $days;
+
 foreach($az_reservoirs as $res_key => $res_info) {
-    $url = "http://waterdata.usgs.gov/nwis/dv?cb_00054=on&format=rdb&site_no=$res_key&referred_module=sw&period=&begin_date=2000-01-01&end_date=2015-03-31";
+    $url = "http://waterdata.usgs.gov/nwis/dv?cb_00054=on&format=rdb&site_no=$res_key&referred_module=sw&period=&begin_date=$last_month&end_date=$end_date";
     $file_name = strtolower(preg_replace('/\s+/', '', $res_info['name']));
-    get_records($url,  $base . $file_name  . ".tsv", 'wb');
+    get_records($url,  $base . $file_name  . ".tsv", 'a');
 
     if (($handle = fopen($base . $file_name  . ".tsv", "r")) !== FALSE) {
         $months = array();
         $months_list = array();
         $fh = fopen('data/usgs_az_month/' . $file_name . ".csv", 'wb');
-        fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date', 'state'));
+        $if = fopen('data/az_month/' . $file_name . ".csv", 'wb');
+    //    fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date', 'state'));
 
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
             $values = preg_replace('/\t+/', ',', $data[0]);
-
-
-                $val_array = explode(',', $values);
+            $val_array = explode(',', $values);
 
             if(preg_match('/^USGS/', $val_array[0])) {
                 $date = explode('-', $val_array[2]);
@@ -45,6 +49,7 @@ foreach($az_reservoirs as $res_key => $res_info) {
             $monthly_avg_pct = round(($monthly_avg / $res_info['capacity']) * 100, 1);
 
             fputcsv($fh, array($res_info['name'], $monthly_avg, $res_info['capacity'], $monthly_avg_pct, $key, 'AZ'));
+            fputcsv($if, array($res_info['name'], $monthly_avg, $res_info['capacity'], $monthly_avg_pct, $key, 'AZ'));
         }
         fclose($handle);
     };

@@ -19,8 +19,8 @@ $last_month = date("m/Y", strtotime("first day of previous month"));
 $date_bits = preg_split('/\//', $last_month);
 $days = cal_days_in_month(CAL_GREGORIAN, $date_bits[0], $date_bits[1]);
 
-$fd = fopen("data/lower_az.csv", "wb");
-fputcsv($fd, array('reservoir','storage','capacity','pct_capacity','date','state'));
+$fd = fopen("data/lower_az.csv", "a");
+//fputcsv($fd, array('reservoir','storage','capacity','pct_capacity','date','state'));
 
 for($i=1; $i<=$days; $i++) {
     $month = preg_replace('/^0/', '', $date_bits[0]);
@@ -48,4 +48,4 @@ for($i=1; $i<=$days; $i++) {
 }
 fclose($fd);
 
-aggregate('data/lc_az', 'data/lc_az_month');
+aggregate('data/lc_az', 'data/lc_az_month', 'data/az_month');
