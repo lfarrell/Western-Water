@@ -49,7 +49,7 @@ function aggregate($target_path, $destination_path, $final_path = '') {
                 }
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if($row == 1) {
-                     //   fputcsv($fh, $data);
+                        fputcsv($fh, $data);
                     } else {
                         $date = explode('/', $data[4]);
                         $date_parts = $date[0] . '/' . $date[2];
@@ -57,6 +57,7 @@ function aggregate($target_path, $destination_path, $final_path = '') {
                     }
                     $res = $data[0];
                     $capacity = $data[2];
+                    $state = end($data);
                     $row++;
                 }
 
@@ -64,9 +65,9 @@ function aggregate($target_path, $destination_path, $final_path = '') {
                     $monthly_avg = round(array_sum($month) / count($month));
                     $monthly_avg_pct = round(($monthly_avg / $capacity) * 100, 1);
 
-                    fputcsv($fh, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key));
+                    fputcsv($fh, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key, $state));
                     if($final_path) {
-                        fputcsv($if, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key));
+                        fputcsv($if, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key, $state));
                     }
                 }
                 echo $res . "\n";

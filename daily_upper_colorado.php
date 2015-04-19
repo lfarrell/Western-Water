@@ -67,7 +67,7 @@ foreach($reservoirs as $key => $reservoir) {
     $full_data = $html->find('pre');
     $file_base = str_replace(' ', '_', strtolower($key));
     $fh = fopen('data/uc_daily/' . $file_base . '.csv', 'wb');
-    fputcsv($fh, array('reservoir', 'storage', 'capacity', 'date', 'state'));
+    fputcsv($fh, array('reservoir', 'storage', 'capacity', 'pct_full', 'date', 'state'));
     foreach($full_data as $row) {
         $updated_row = preg_replace('/\s{2,}/', '@@', $row);
         $chunked_datas = array_chunk(explode('@@', $updated_row), 5);
@@ -75,13 +75,17 @@ foreach($reservoirs as $key => $reservoir) {
         foreach($chunked_datas as $chunked_data) {
             $needed_month = preg_split('/-/', $chunked_data[1]);
             if(preg_match('/\d{2}-\w{3}/', $chunked_data[1]) && months($needed_month[1]) == $last_month) {
-                fputcsv($fh, array($key, $chunked_data[3], $reservoir[0], $chunked_data[1], $reservoir[1]));
+                $date_format = explode('-', $chunked_data[1]);
+                $formatted_date = months($date_format[1]) . '/' . $date_format[0] . '/' . $date_format[2];
+                fputcsv($fh, array($key, $chunked_data[3], $reservoir[0], '', $formatted_date, $reservoir[1]));
             }
         }
     }
     fclose($fh);
     echo $key . " processed\n";
 }
+
+aggregate('data/uc_daily', 'data/uc_mf');
 
 function months($date) {
     switch($date) {
