@@ -14,17 +14,18 @@ $bureau_reservoirs = array(
 );
 
 $path = "http://data.hydrometdataservice.info/dwr/report.aspx?dt=";
-
-$last_month = date("m/Y", strtotime("first day of previous month"));
+$last_month = date("d/m/Y", strtotime("first day of previous month"));
 $date_bits = preg_split('/\//', $last_month);
-$days = cal_days_in_month(CAL_GREGORIAN, $date_bits[0], $date_bits[1]);
+$days = cal_days_in_month(CAL_GREGORIAN, $date_bits[1], $date_bits[2]);
+$month = $date_bits[1];
+$year = $date_bits[2];
 
-$fd = fopen("data/lower_az.csv", "a");
-//fputcsv($fd, array('reservoir','storage','capacity','pct_capacity','date','state'));
+$fd = fopen("data/lower_all_az_daily.csv", "wb");
 
 for($i=1; $i<=$days; $i++) {
-    $month = preg_replace('/^0/', '', $date_bits[0]);
-    $url = $path . $month . '/' . $i . '/' . $date_bits[1];
+    $month = preg_replace('/^0/', '', $month);
+    $full_date = $month . '/' . $i . '/' . $year;
+    $url = $path . $full_date;
 
     $lc_html = file_get_html($url);
 
@@ -34,7 +35,6 @@ for($i=1; $i<=$days; $i++) {
     foreach($rows as $key => $row) {
         $reservoir = $row->find('td', 0);
         $res_name = $reservoir->plaintext;
-        echo $res_name . "\n";
 
         if(array_key_exists($res_name, $bureau_reservoirs)) {
             $current_level = $row->find('td', 4);
@@ -42,10 +42,26 @@ for($i=1; $i<=$days; $i++) {
             $cap = $bureau_reservoirs[$res_name]['capacity'];
             $pct_cap = round(($curr_level / $cap) * 100, 1);
 
-            fputcsv($fd, array($res_name, $curr_level, $cap, $pct_cap, $date_bits[0]. '/' . $i . '/' . $date_bits[1], 'AZ'));
+            fputcsv($fd, array($res_name, $curr_level, $cap, $pct_cap, $month . '/' . $i . '/' . $year, 'AZ'));
         }
     }
+
+    echo $month . ' ' . $i . ' ' . $year . " processed\n";
 }
 fclose($fd);
 
-aggregate('data/lc_az', 'data/lc_az_month', 'data/az_month');
+if (($handle = fopen("data/lower_all_az_daily.csv", "r")) !== FALSE) {
+    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        $file = file_name($data[0]);
+        $fh = fopen('data/lc_az/' . $file . '.csv', 'a');
+        fputcsv($fh, $data);
+        fclose($fh);
+    }
+    fclose($handle);
+}
+
+aggregate('data/lc_az', 'data/az_month');
+
+function file_name($data) {
+    return preg_replace('/\s+/', '_', strtolower($data));
+}

@@ -43,13 +43,13 @@ function aggregate($target_path, $destination_path, $final_path = '') {
             if (($handle = fopen($path . '/' . $file, "r")) !== FALSE) {
                 $months = array();
 
-                $fh = fopen($destination_path .'/' . $file, 'wb');
+                $fh = fopen($destination_path .'/' . $file, 'a');
                 if($final_path) {
-                    $if = fopen($final_path .'/' . $file, 'wb');
+                    $if = fopen($final_path .'/' . $file, 'a');
                 }
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if($row == 1) {
-                        fputcsv($fh, $data);
+                     //   fputcsv($fh, $data);
                     } else {
                         $date = explode('/', $data[4]);
                         $date_parts = $date[0] . '/' . $date[2];
