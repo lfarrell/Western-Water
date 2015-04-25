@@ -9,8 +9,8 @@ date_default_timezone_set('America/Los_Angeles');
  * AF of water
  */
 $reservoirs = array(
-    'MEA' => array('capacity' => 25877000, 'state' => 'AZ & NV'),
-    'MHV' => array('capacity' => 1809800, 'state' => 'AZ & NV'),
+    'MEA' => array('capacity' => 25877000, 'state' => 'AZ&NV'),
+    'MHV' => array('capacity' => 1809800, 'state' => 'AZ&NV'),
     'HVS' => array('capacity' => 619400, 'state' => 'AZ'),
 );
 
