@@ -11,10 +11,13 @@ date_default_timezone_set('America/Los_Angeles');
 $reservoirs = array(
     'MEA' => array('capacity' => 25877000, 'state' => 'AZ & NV'),
     'MHV' => array('capacity' => 1809800, 'state' => 'AZ & NV'),
-    'HVS' => array('capacity' => 619400, 'state' => 'AZ & CA'),
+    'HVS' => array('capacity' => 619400, 'state' => 'AZ'),
 );
 
 $day = date('d-M-Y+H:i');
+$last_month = date("m/Y", strtotime("first day of previous month"));
+$date_bits = preg_split('/\//', $last_month);
+$days = cal_days_in_month(CAL_GREGORIAN, $date_bits[0], $date_bits[1]);
 
 foreach($reservoirs as $key => $reservoir) {
   //  $full_link = "http://cdec.water.ca.gov/cgi-progs/queryMonthly?$key";
@@ -35,12 +38,13 @@ foreach($reservoirs as $key => $reservoir) {
         foreach($rows as $row) {
             $date = $row->find('td',0);
             $d = $date->plaintext;
+            $date_check = preg_split('/\//', $d);
 
             $volume = $row->find('td',2);
             $vol = trim($volume->plaintext);
 
             $regx = '/^\d/';
-            if(preg_match($regx, $vol)) {
+            if(preg_match($regx, $vol) && $date_check[1] >= 2000) {
                 $pct = round(($vol / $reservoir['capacity']) * 100, 1);
                 fputcsv($fh, array(trim($name), $vol, $reservoir['capacity'], $pct, $d, $reservoir['state']));
             }

@@ -29,7 +29,7 @@ $reservoirs = array(
     "Huntington North Reservoir"=>array("5420","UT","hn"),
     "Hyrum Reservoir"=>array("18685","UT","hy"),
     "Jordanelle Reservoir"=>array("320300","UT","jr"),
-    "Lake Powell"=>array("24322000","AZ&UT","gc.html"),
+    "Lake Powell"=>array("24322000","AZ&UT","gc"),
     "Lemon Reservoir"=>array("39792","CO","lr"),
     "Lost Creek Reservoir"=>array("22510","UT","lc"),
     //  "Lost Lake" => "ll",*/
@@ -86,6 +86,32 @@ foreach($reservoirs as $key => $reservoir) {
 }
 
 aggregate('data/uc_daily', 'data/uc_mf');
+
+// Dump out to individual state directories
+$files = scandir('data/uc_mf');
+
+foreach($files as $file) {
+    if(!is_dir($file) && !preg_match('/^\./', $file)) {
+        if (($handle = fopen('data/uc_mf/' . $file, 'r')) !== FALSE) {
+            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+               if($data[4] == $last_month) {
+                   $states = preg_split('/&/', $data[5]);
+
+                   foreach($states as $state) {
+                       $state = strtolower(trim($state));
+                       if($state == 'ut') { $state = 'utah'; }
+                       $t = fopen('data/' . $state . '_month/' . $file, 'a');
+                       fputcsv($t, $data);
+                       fclose($t);
+                   }
+               } else {
+                   continue;
+               }
+            }
+            fclose($handle);
+        }
+    }
+}
 
 function months($date) {
     switch($date) {
