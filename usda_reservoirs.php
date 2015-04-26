@@ -1,11 +1,21 @@
 <?php
 $reservoirs = array(
+  //  "Hungry Horse Lake" => array("capacity" => 3451000, "state" => "MT"),
+  //  "Flathead Lake" => array("capacity" => 1791000, "state" => "MT"),
+  //  "Noxon Rapids" => array("capacity" => 335000, "state" => "MT"),
     "Lake Coeur d'Alene" => array("capacity" => 238500, "state" => "ID"),
     "Lake Pend Oreille" => array("capacity" => 1561300, "state" => "ID"),
     "Priest Lake" => array("capacity" => 119300, "state" => "ID"),
-    "Dworshak" => array("capacity" => 346800, "state" => "ID"),
+    "Dworshak" => array("capacity" => 3468000, "state" => "ID"),
+    "Magic" => array("capacity" => 191500, "state" => "ID"),
+    "Blackfoot" => array("capacity" => 337000, "state" => "ID"),
+    "Oakley" => array("capacity" => 75600, "state" => "ID"),
+    "Salmon Falls" => array("capacity" => 182600, "state" => "ID"),
+    "Brownlee" => array("capacity" => 1420000, "state" => "ID"),
+    "Bear Lake" => array("capacity" => 1302000, "state" => "ID"),
+    "Montpelier" => array("capacity" => 4000, "state" => "ID"),
     "Conconully" => array("capacity" => 13000, "state" => "WA"),
-    "Lake Chelan" => array("station_id" => 12452000, "capacity" => 676100, "state" => "WA"),
+    "Lake Chelan" => array("capacity" => 676100, "state" => "WA"),
     "Keechelus" => array("capacity" => 157800, "state" => "WA"),
     "Kachess" => array("capacity" => 239000, "state" => "WA"),
     "Cle Elum" => array("capacity" => 436900, "state" => "WA"),
@@ -25,6 +35,9 @@ $reservoirs = array(
     "Fall Creek" => array("capacity" => 115500, "state" => "OR"),
     "Fern Ridge" => array("capacity" => 109600, "state" => "OR"),
     "Foster" => array("capacity" => 29700, "state" => "OR"),
+    "Applegate" => array("capacity" => 75200, "state" => "OR"),
+    "Lost Creek" => array("capacity" => 315000, "state" => "OR"),
+    "Cottonwood" => array("capacity" => 8700, "state" => "OR"),
 );
 
 $url = "http://www.wcc.nrcs.usda.gov/reportGenerator/view/customCalendarYearGroupByMonthReport/monthly/12435599:WA:BOR|name=%22Lake%20Chelan%22%20AND%20state=%22Washington%22%20AND%20network=%22BOR%22%20AND%20element=%22RESC%22%20AND%20outServiceDate=%222100-01-01%22|name/2005-01-01,2015-03-31/RESC::value";
