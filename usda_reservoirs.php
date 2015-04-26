@@ -38,6 +38,19 @@ $reservoirs = array(
     "Applegate" => array("capacity" => 75200, "state" => "OR"),
     "Lost Creek" => array("capacity" => 315000, "state" => "OR"),
     "Cottonwood" => array("capacity" => 8700, "state" => "OR"),
+    "Abiquiu" => array("capacity" => 1192800, "state" => "NM"),
+    "Bluewater Lake" => array("capacity" => 38500, "state" => "NM"),
+    "Brantley Lake" => array("capacity" => 1082000, "state" => "NM"),
+    "Cochiti" => array("capacity" => 491000, "state" => "NM"),
+    "Conchas" => array("capacity" => 254200, "state" => "NM"),
+    "Costilla" => array("capacity" => 16000, "state" => "NM"),
+    "Eagle Nest Lake" => array("capacity" => 79000, "state" => "NM"),
+    "El Vado" => array("capacity" => 190300, "state" => "NM"),
+    "Heron" => array("capacity" => 400000, "state" => "NM"),
+    "Lake Avalon" => array("capacity" => 4000, "state" => "NM"),
+   // "Donner Lake" => array("capacity" => 9500, "state" => "NV"),
+    "Lahontan" => array("capacity" => 295100, "state" => "NV"),
+    "Rye Patch" => array("capacity" => 194300, "state" => "NV"),
 );
 
 $url = "http://www.wcc.nrcs.usda.gov/reportGenerator/view/customCalendarYearGroupByMonthReport/monthly/12435599:WA:BOR|name=%22Lake%20Chelan%22%20AND%20state=%22Washington%22%20AND%20network=%22BOR%22%20AND%20element=%22RESC%22%20AND%20outServiceDate=%222100-01-01%22|name/2005-01-01,2015-03-31/RESC::value";

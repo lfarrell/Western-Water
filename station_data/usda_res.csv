@@ -1,3 +1,4 @@
+reservoir,lat,lng,state
 "Lake Coeur d'Alene",47.533461,-116.809122,ID
 "Lake Pend Oreille",48.166667,-116.333333,ID
 "Priest Lake",48.566667,-116.866667,ID
@@ -33,3 +34,15 @@ Foster,44.42,-122.67,OR
 Applegate,42.05,-123.12,OR
 "Lost Creek",42.76,-122.67,OR
 Cottonwood,42.24,-120.51,OR
+Abiquiu,36.24,-106.43,NM
+"Bluewater Lake",35.29,-108.11,NM
+"Brantley Lake",32.54,-104.38,NM
+"Cochiti Lake",35.62,-106.32,NM
+"Conchas Lake",35.4,-104.19,NM
+Costilla,36.88,-105.28,NM
+"Eagle Nest Lake",36.53,-105.23,NM
+"El Vado",36.59,-106.73,NM
+Heron,36.67,-106.71,NM
+"Lake Avalon,32.49,-104.25,NM
+Lahontan,39.46,-119.07,NV
+"Rye Patch",40.47,-118.31,NV
