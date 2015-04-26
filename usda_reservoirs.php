@@ -51,6 +51,19 @@ $reservoirs = array(
    // "Donner Lake" => array("capacity" => 9500, "state" => "NV"),
     "Lahontan" => array("capacity" => 295100, "state" => "NV"),
     "Rye Patch" => array("capacity" => 194300, "state" => "NV"),
+    "Big Sand Wash" => array("capacity" => 25700, "state" => "UT"),
+    "Cleveland Lake" => array("capacity" => 5400, "state" => "UT"),
+    "Grantsville" => array("capacity" => 3300, "state" => "UT"),
+    "Gunlock" => array("capacity" => 10400, "state" => "UT"),
+    "Gunnison" => array("capacity" => 20300, "state" => "UT"),
+    "Ken's Lake" => array("capacity" => 2300, "state" => "UT"),
+    "Kolob" => array("capacity" => 5600, "state" => "UT"),
+    "Lower Enterprise" => array("capacity" => 2600, "state" => "UT"),
+    "Miller Flat" => array("capacity" => 5200, "state" => "UT"),
+    "Millsite" => array("capacity" => 16700, "state" => "UT"),
+    "Minersville" => array("capacity" => 23300, "state" => "UT"),
+    "Otter Creek" => array("capacity" => 52500, "state" => "UT"),
+    "Panguitch Lake" => array("capacity" => 22300, "state" => "UT"),
 );
 
 $url = "http://www.wcc.nrcs.usda.gov/reportGenerator/view/customCalendarYearGroupByMonthReport/monthly/12435599:WA:BOR|name=%22Lake%20Chelan%22%20AND%20state=%22Washington%22%20AND%20network=%22BOR%22%20AND%20element=%22RESC%22%20AND%20outServiceDate=%222100-01-01%22|name/2005-01-01,2015-03-31/RESC::value";
