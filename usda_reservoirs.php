@@ -64,6 +64,18 @@ $reservoirs = array(
     "Minersville" => array("capacity" => 23300, "state" => "UT"),
     "Otter Creek" => array("capacity" => 52500, "state" => "UT"),
     "Panguitch Lake" => array("capacity" => 22300, "state" => "UT"),
+    "Piute" => array("capacity" => 71800, "state" => "UT"),
+    "Porcupine" => array("capacity" => 11300, "state" => "UT"),
+    "Quail Creek" => array("capacity" => 40000, "state" => "UT"),
+    "Sand Hollow" => array("capacity" => 50000, "state" => "UT"),
+    "Sevier Bridge" => array("capacity" => 236000, "state" => "UT"),
+    "Smith and Morehouse" => array("capacity" => 81000, "state" => "UT"),
+    "Upper Enterprise" => array("capacity" => 10000, "state" => "UT"),
+    "Utah Lake" => array("capacity" => 870900, "state" => "UT"),
+    "Willard Bay" => array("capacity" => 215000, "state" => "UT"),
+    "Woodruff Creek" => array("capacity" => 4000, "state" => "UT"),
+    "Woodruff Narrows" => array("capacity" => 57300, "state" => "WY"),
+
 );
 
 $url = "http://www.wcc.nrcs.usda.gov/reportGenerator/view/customCalendarYearGroupByMonthReport/monthly/12435599:WA:BOR|name=%22Lake%20Chelan%22%20AND%20state=%22Washington%22%20AND%20network=%22BOR%22%20AND%20element=%22RESC%22%20AND%20outServiceDate=%222100-01-01%22|name/2005-01-01,2015-03-31/RESC::value";
