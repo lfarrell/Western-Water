@@ -6,7 +6,7 @@ $stations = array(
     'AMF' => array('name' => 'American Falls', 'capacity' => 1671300, 'state' => 'ID'),
     'AND' => array('name' => 'Anderson Ranch', 'capacity' => 503500, 'state' => 'ID'),
     'ARK' => array('name' => 'Arrowrock', 'capacity' => 300850, 'state' => 'ID'),
-    'BEU' => array('name' => 'Agency Valley', 'capacity' => 59200, 'state' => 'OR'),
+    'BEU' => array('name' => 'Beulah', 'capacity' => 59200, 'state' => 'OR'),
     'BNK' => array('name' => 'Banks Lake', 'capacity' => 1237000 , 'state' => 'WA'),
     'BUL' => array('name' => 'Bully Creek', 'capacity' => 31650, 'state' => 'OR'),
     'CLS' => array('name' => 'Cold Springs', 'capacity' => 40000, 'state' => 'OR'),
@@ -14,7 +14,7 @@ $stations = array(
     'CRE' => array('name' => 'Crescent Lake', 'capacity' => 566600, 'state' => 'OR'),
     'CSC' => array('name' => 'Lake Cascade', 'capacity' => 693100, 'state' => 'ID'),
     'DED' => array('name' => 'Deadwood', 'capacity' => 154000, 'state' => 'ID'),
-  //  'DRW' => array('name' => 'Drews', 'capacity' => , 'state' => 'OR'),
+  //  'DRW' => array('name' => 'Drews', 'capacity' => 63000, 'state' => 'OR'),
     'EMI' => array('name' => 'Emigrant Lake', 'capacity' => 40530, 'state' => 'OR'),
     'EMM' => array('name' => 'Black Canyon', 'capacity' => 44700, 'state' => 'ID'),
     'FIS' => array('name' => 'Fish Lake', 'capacity' => 7836, 'state' => 'OR'),
@@ -59,7 +59,7 @@ $month_num = preg_replace('/^0/', '', $date_bits[0]);
 
 foreach($stations as $station_code => $station) {
     $fh = fopen('data/pn/' . $station_code . '.csv', 'a');
-  //  fputcsv($fh, array('reservoir', 'storage' ,'capacity' ,'pct_capacity', 'date'));
+  //  fputcsv($fh, array('reservoir', 'storage' ,'capacity' ,'pct_capacity', 'date', 'state'));
 
     $url = "http://www.usbr.gov/pn-bin/webarccsv.pl?station=$station_code&format=3&year=" . $data[1] . "&month=+" . $data[0] . "&day=+1&year=" . $data[1] . "&month=+$month_num&day=$days&pcode=AF";
 
@@ -75,7 +75,7 @@ foreach($stations as $station_code => $station) {
         if($date != 'Date' && $res_level != '') {
 
             $pct_capacity = round(($res_level / $station['capacity']) * 100, 1);
-            fputcsv($fh, array($station['name'], trim($res_level), $station['capacity'], $pct_capacity, $date));
+            fputcsv($fh, array($station['name'], trim($res_level), $station['capacity'], $pct_capacity, $date, $station['state']));
         }
     }
     echo $station_code . " processed\n";
@@ -96,8 +96,8 @@ foreach($files as $file) {
         if (($handle = fopen($path . '/' . $file, "r")) !== FALSE) {
             $months = array();
             $months_list = array();
-            $fh = fopen('data/pn_month/' . $file, 'wb');
-            $if = fopen('data/' . $state . '_month/' . $file, 'wb');
+            $fh = fopen('data/pn_month/' . $file, 'a');
+            $if = fopen('data/' . $state . '_month/' . $file, 'a');
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 if($row == 1) {
                     fputcsv($fh, $data);
