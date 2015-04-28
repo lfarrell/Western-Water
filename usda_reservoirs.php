@@ -75,7 +75,19 @@ $reservoirs = array(
     "Willard Bay" => array("capacity" => 215000, "state" => "UT"),
     "Woodruff Creek" => array("capacity" => 4000, "state" => "UT"),
     "Woodruff Narrows" => array("capacity" => 57300, "state" => "WY"),
-
+    "Bull Lake" => array("capacity" => 151800, "state" => "WY"),
+    "Boysen" => array("capacity" => 596000, "state" => "WY"),
+    "Pilot Butte" => array("capacity" => 31600, "state" => "WY"),
+    "Buffalo Bill" => array("capacity" => 646600, "state" => "WY"),
+    "Keyhole" => array("capacity" => 193800, "state" => "WY"),
+    "Seminoe" => array("capacity" => 1016700, "state" => "WY"),
+    "Pathfinder" => array("capacity" => 1016500, "state" => "WY"),
+    "Alcova" => array("capacity" => 184300, "state" => "WY"),
+    "Glendo" => array("capacity" => 506400, "state" => "WY"),
+    "Guernsey" => array("capacity" => 45600, "state" => "WY"),
+    "High Savery" => array("capacity" => 22400, "state" => "WY"),
+    "Viva Naughton" => array("capacity" => 42400, "state" => "WY"),
+    "Wheatland #2" => array("capacity" => 98900, "state" => "WY"),
 );
 
 $url = "http://www.wcc.nrcs.usda.gov/reportGenerator/view/customCalendarYearGroupByMonthReport/monthly/12435599:WA:BOR|name=%22Lake%20Chelan%22%20AND%20state=%22Washington%22%20AND%20network=%22BOR%22%20AND%20element=%22RESC%22%20AND%20outServiceDate=%222100-01-01%22|name/2005-01-01,2015-03-31/RESC::value";
