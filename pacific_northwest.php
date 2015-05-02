@@ -1,5 +1,6 @@
 <?php
 include 'simple_html_dom.php';
+date_default_timezone_set('America/New_York');
 
 $stations = array(
     'AGA' => array('name' => 'Agate', 'capacity' => 4800, 'state' => 'OR'),
@@ -61,8 +62,7 @@ foreach($stations as $station_code => $station) {
     $fh = fopen('data/pn/' . $station_code . '.csv', 'a');
   //  fputcsv($fh, array('reservoir', 'storage' ,'capacity' ,'pct_capacity', 'date', 'state'));
 
-    $url = "http://www.usbr.gov/pn-bin/webarccsv.pl?station=$station_code&format=3&year=" . $data[1] . "&month=+" . $data[0] . "&day=+1&year=" . $data[1] . "&month=+$month_num&day=$days&pcode=AF";
-
+    $url = "http://www.usbr.gov/pn-bin/webarccsv.pl?station=$station_code&format=3&year=" . $date_bits[1] . "&month=+" . $month_num . "&day=+1&year=" . $date_bits[1] . "&month=+$month_num&day=$days&pcode=AF";
     $html = file_get_html($url);
 
     foreach($html->find('tr') as $row) {
@@ -73,7 +73,6 @@ foreach($stations as $station_code => $station) {
         $res_level = $level->plaintext;
 
         if($date != 'Date' && $res_level != '') {
-
             $pct_capacity = round(($res_level / $station['capacity']) * 100, 1);
             fputcsv($fh, array($station['name'], trim($res_level), $station['capacity'], $pct_capacity, $date, $station['state']));
         }

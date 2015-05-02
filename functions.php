@@ -49,7 +49,7 @@ function aggregate($target_path, $destination_path, $final_path = '') {
                 }
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if($row == 1) {
-                        fputcsv($fh, $data);
+                       // fputcsv($fh, $data);
                     } else {
                         $date = explode('/', $data[4]);
                         $date_parts = $date[0] . '/' . $date[2];

@@ -60,6 +60,7 @@ $reservoirs = array(
 );
 
 $last_month = date("m", strtotime("first day of previous month"));
+$last_month_full = date("m/Y", strtotime("first day of previous month"));
 foreach($reservoirs as $key => $reservoir) {
     $url = "http://www.usbr.gov/uc/water/rsvrs/ops/crsp_40_" . $reservoir[2] . ".html";
     $html = file_get_html($url);
@@ -67,7 +68,7 @@ foreach($reservoirs as $key => $reservoir) {
     $full_data = $html->find('pre');
     $file_base = str_replace(' ', '_', strtolower($key));
     $fh = fopen('data/uc_daily/' . $file_base . '.csv', 'wb');
-    fputcsv($fh, array('reservoir', 'storage', 'capacity', 'pct_full', 'date', 'state'));
+   // fputcsv($fh, array('reservoir', 'storage', 'capacity', 'pct_full', 'date', 'state'));
     foreach($full_data as $row) {
         $updated_row = preg_replace('/\s{2,}/', '@@', $row);
         $chunked_datas = array_chunk(explode('@@', $updated_row), 5);
@@ -77,7 +78,8 @@ foreach($reservoirs as $key => $reservoir) {
             if(preg_match('/\d{2}-\w{3}/', $chunked_data[1]) && months($needed_month[1]) == $last_month) {
                 $date_format = explode('-', $chunked_data[1]);
                 $formatted_date = months($date_format[1]) . '/' . $date_format[0] . '/' . $date_format[2];
-                fputcsv($fh, array($key, $chunked_data[3], $reservoir[0], '', $formatted_date, $reservoir[1]));
+                $res_name = str_ireplace('reservoir', '', $key);
+                fputcsv($fh, array(trim($res_name), $chunked_data[3], $reservoir[0], '', $formatted_date, $reservoir[1]));
             }
         }
     }
@@ -94,15 +96,15 @@ foreach($files as $file) {
     if(!is_dir($file) && !preg_match('/^\./', $file)) {
         if (($handle = fopen('data/uc_mf/' . $file, 'r')) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-               if($data[4] == $last_month) {
+                echo $data[4] . ' ' . $last_month_full . "\n";
+
+               if($data[4] == $last_month_full) {
                    $states = preg_split('/&/', $data[5]);
 
                    foreach($states as $state) {
                        $state = strtolower(trim($state));
                        if($state == 'ut') { $state = 'utah'; }
-                       $t = fopen('data/' . $state . '_month/' . $file, 'a');
-                       fputcsv($t, $data);
-                       fclose($t);
+                       copy('data/uc_mf/' . $file, 'data/' . $state . '_month/' . $file);
                    }
                } else {
                    continue;
