@@ -29,7 +29,7 @@ for($i=1; $i<=$days; $i++) {
 
     $lc_html = file_get_html($url);
 
-    $table = $lc_html->find('table.section', 0);
+    $table = $lc_html->find('table', 0);
     $rows = $table->find('tr');
 
     foreach($rows as $key => $row) {
@@ -37,8 +37,10 @@ for($i=1; $i<=$days; $i++) {
         $res_name = $reservoir->plaintext;
 
         if(array_key_exists($res_name, $bureau_reservoirs)) {
+            echo $res_name . "\n";
             $current_level = $row->find('td', 4);
             $curr_level = str_ireplace(',', '', $current_level->plaintext);
+            echo $curr_level . "\n";
             $cap = $bureau_reservoirs[$res_name]['capacity'];
             $pct_cap = round(($curr_level / $cap) * 100, 1);
 
