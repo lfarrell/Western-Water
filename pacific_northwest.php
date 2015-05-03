@@ -95,7 +95,7 @@ foreach($files as $file) {
         if (($handle = fopen($path . '/' . $file, "r")) !== FALSE) {
             $months = array();
             $months_list = array();
-            $fh = fopen('data/pn_month/' . $file, 'a');
+            $fh = fopen('data/pn_month/' . $file, 'wb');
             $if = fopen('data/' . $state . '_month/' . $file, 'a');
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 if($row == 1) {
@@ -115,8 +115,8 @@ foreach($files as $file) {
                 $monthly_avg = round(array_sum($month) / count($month));
                 $monthly_avg_pct = round(($monthly_avg / $capacity) * 100, 1);
 
-                fputcsv($fh, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key));
-                fputcsv($if, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key));
+                fputcsv($fh, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key, $state));
+                fputcsv($if, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key, $state));
             }
             echo $res . "\n";
 

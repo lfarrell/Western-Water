@@ -20,6 +20,9 @@ $pn_files = scandir($pn_base);
 $usgs_az_base = "data/usgs_az_month";
 $usgs_az_files = scandir($usgs_az_base);
 
+$salt_river_base = "data/lc_az_month";
+$salt_river_files = scandir($salt_river_base);
+
 $fh = fopen("all.csv", "wb");
 fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date','state'));
 
@@ -53,3 +56,4 @@ merge($oc_base, $fh, $oc_files, false);
 merge($lc_base, $fh, $lc_files, false);
 merge($pn_base, $fh, $pn_files, false);
 merge($usgs_az_base, $fh, $usgs_az_files, false);
+merge($salt_river_base, $fh, $salt_river_files, false);
