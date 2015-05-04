@@ -100,6 +100,19 @@ $reservoirs = array(
     "Continental" => array("station_id" => "08008170", "capacity" => 27000, "state" => "CO"),
     "Crawford" => array("station_id" => "09009340", "capacity" => 14000, "state" => "CO"),
     "Cucharas" => array("station_id" => "07007030", "capacity" => 40000, "state" => "CO"),
+    "Dillon" => array("station_id" => "09009020", "capacity" => 254000, "state" => "CO"),
+    "Eleven Mile" => array("station_id" => "06016100", "capacity" => 98000, "state" => "CO"),
+    "Empire" => array("station_id" => "06016110", "capacity" => 36500, "state" => "CO"),
+    "Fossil Creek" => array("station_id" => "06016120", "capacity" => 11100, "state" => "CO"),
+    "Green Mtn" => array("station_id" => "09009030", "capacity" => 146800, "state" => "CO"),
+    "Gross" => array("station_id" => "06016130", "capacity" => 41800, "state" => "CO"),
+    "Groundhog" => array("station_id" => "09009170", "capacity" => 22000, "state" => "CO"),
+    "Homestake" => array("station_id" => "09009040", "capacity" => 43000, "state" => "CO"),
+    "Horse Creek" => array("station_id" => "07007050", "capacity" => 27000, "state" => "CO"),
+    "Horsecreek" => array("station_id" => "06016370", "capacity" => 14700, "state" => "CO"),
+    "Horsetooth" => array("station_id" => "06016150", "capacity" => 149700, "state" => "CO"),
+    "Jackon Gulch" => array("station_id" => "09009050", "capacity" => 10000, "state" => "CO"),
+    "Jackon Lake" => array("station_id" => "06016160", "capacity" => 26100, "state" => "CO"),
 );
 
 foreach($reservoirs as $res_name => $res) {
