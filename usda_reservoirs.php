@@ -90,6 +90,16 @@ $reservoirs = array(
     "High Savery" => array("station_id" => "09255450", "capacity" => 22400, "state" => "WY"),
     "Viva Naughton" => array("station_id" => "09223100", "capacity" => 42400, "state" => "WY"),
     "Wheatland #2" => array("station_id" => "06662500", "capacity" => 98900, "state" => "WY"),
+    "Adobe Creek" => array("station_id" => "07007010", "capacity" => 62000, "state" => "CO"),
+    "Barr Lake" => array("station_id" => "06016020", "capacity" => 30100, "state" => "CO"),
+    "Boyd Lake" => array("station_id" => "06016040", "capacity" => 48400, "state" => "CO"),
+    "Carter Lake" => array("station_id" => "06016060", "capacity" => 108900, "state" => "CO"),
+    "Cheesman" => array("station_id" => "06016080", "capacity" => 79000, "state" => "CO"),
+    "Clear Creek" => array("station_id" => "07007020", "capacity" => 11400, "state" => "CO"),
+    "Cobb Lake" => array("station_id" => "06016090", "capacity" => 22300, "state" => "CO"),
+    "Continental" => array("station_id" => "08008170", "capacity" => 27000, "state" => "CO"),
+    "Crawford" => array("station_id" => "09009340", "capacity" => 14000, "state" => "CO"),
+    "Cucharas" => array("station_id" => "07007030", "capacity" => 40000, "state" => "CO"),
 );
 
 foreach($reservoirs as $res_name => $res) {
