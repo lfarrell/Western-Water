@@ -137,6 +137,14 @@ $reservoirs = array(
     "Spinney Mountain" => array("station_id" => "16016025", "capacity" => 49000, "state" => "CO"),
     "Stagecoach" => array("station_id" => "09237495", "capacity" => 33300, "state" => "CO"),
     "Standley" => array("station_id" => "06016280", "capacity" => 42000, "state" => "CO"),
+    "Terrace" => array("station_id" => "08008160", "capacity" => 18000, "state" => "CO"),
+    "Trinidad Lake" => array("station_id" => "07007100", "capacity" => 167000, "state" => "CO"),
+    "Turquoise Lake" => array("station_id" => "07007110", "capacity" => 127000, "state" => "CO"),
+    "Twin Lakes" => array("station_id" => "07007120", "capacity" => 86000, "state" => "CO"),
+    "Union" => array("station_id" => "06016300", "capacity" => 13000, "state" => "CO"),
+    "Williams Fork" => array("station_id" => "09009150", "capacity" => 97000, "state" => "CO"),
+    "Windsor" => array("station_id" => "06016310", "capacity" => 15200, "state" => "CO"),
+    "Wolford Mountain" => array("station_id" => "09041395", "capacity" => 65900, "state" => "CO")
 );
 
 foreach($reservoirs as $res_name => $res) {
