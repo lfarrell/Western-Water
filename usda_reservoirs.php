@@ -1,5 +1,6 @@
 <?php
-
+include 'functions.php';
+date_default_timezone_set('America/New_York');
 
 $reservoirs = array(
   //  "Hungry Horse Lake" => array("station_id" => "", "capacity" => 3451000, "state" => "MT"),
@@ -149,4 +150,32 @@ $reservoirs = array(
 
 foreach($reservoirs as $res_name => $res) {
     $url = "http://www.wcc.nrcs.usda.gov/reportGenerator/view_csv/customCalendarYearGroupByMonthReport/monthly/" . $res['station_id'] . ":" . $res['state'] .":BOR|id=%22%22|name/POR_BEGIN,POR_END/RESC::value";
+    $file_name = 'raw_data/usda/' . $res['state'] . '_' . $res_name . ".csv";
+ //   get_records($url, $file_name, "wb");
+
+    $fh = fopen('data/usda_month/' . $res['state'] . '_' . $res_name . ".csv", 'wb');
+    fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date', 'state'));
+
+    if (($handle = fopen($file_name, "r")) !== FALSE) {
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            if(preg_match('/^\d/', $data[0])) {
+                $num = count($data);
+                for ($c=0; $c < $num; $c++) {
+                    if($data[0] < 2000 || !$c || $data[$c] == '' || !preg_match('/\d/', $data[$c])) { continue; }
+
+                    $pct_capacity = round(($data[$c] / $res['capacity']) * 100, 1);
+                    $month = ($c < 10) ? '0' . $c : $c;
+
+                    fputcsv($fh, array($res_name, $data[$c], $res['capacity'], $pct_capacity, $month . '/' . $data[0], $res['state']));
+
+                   // echo $month . '/' . $data[0] . "\n";
+                }
+
+            }
+        }
+        fclose($handle);
+    }
+
+    fclose($fh);
+    echo $res_name . " processed\n";
 }
