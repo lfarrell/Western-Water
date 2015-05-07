@@ -12,7 +12,7 @@ $reservoirs = array(
     "Dworshak" => array("station_id" => "13340950", "capacity" => 3468000, "state" => "ID"),
     "Magic" => array("station_id" => "13142000", "capacity" => 191500, "state" => "ID"),
     "Blackfoot" => array("station_id" => "13065000", "capacity" => 337000, "state" => "ID"),
-    "Oakley" => array("station_id" => "3083500", "capacity" => 75600, "state" => "ID"),
+    "Oakley" => array("station_id" => "13083500", "capacity" => 75600, "state" => "ID"),
     "Salmon Falls" => array("station_id" => "13106500", "capacity" => 182600, "state" => "ID"),
     "Brownlee" => array("station_id" => "13289700", "capacity" => 1420000, "state" => "ID"),
     "Bear Lake" => array("station_id" => "10055500", "capacity" => 1302000, "state" => "ID"),
@@ -44,8 +44,8 @@ $reservoirs = array(
     "Abiquiu" => array("station_id" => "08108010", "capacity" => 1192800, "state" => "NM"),
     "Bluewater Lake" => array("station_id" => "08341400", "capacity" => 38500, "state" => "NM"),
     "Brantley Lake" => array("station_id" => "08401450", "capacity" => 1082000, "state" => "NM"),
-    "Cochiti" => array("station_id" => "08108040", "capacity" => 491000, "state" => "NM"),
-    "Conchas" => array("station_id" => "08108030", "capacity" => 254200, "state" => "NM"),
+    "Cochiti Lake" => array("station_id" => "08108040", "capacity" => 491000, "state" => "NM"),
+    "Conchas Lake" => array("station_id" => "08108030", "capacity" => 254200, "state" => "NM"),
     "Costilla" => array("station_id" => "08108050", "capacity" => 16000, "state" => "NM"),
     "Eagle Nest Lake" => array("station_id" => "07205500", "capacity" => 79000, "state" => "NM"),
     "El Vado" => array("station_id" => "08108060", "capacity" => 190300, "state" => "NM"),
@@ -65,7 +65,7 @@ $reservoirs = array(
     "Miller Flat" => array("station_id" => "09UTMILF", "capacity" => 5200, "state" => "UT"),
     "Millsite" => array("station_id" => "09UTMILL", "capacity" => 16700, "state" => "UT"),
     "Minersville" => array("station_id" => "10238500", "capacity" => 23300, "state" => "UT"),
-    "Otter Creek" => array("station_id" => "0188000", "capacity" => 52500, "state" => "UT"),
+    "Otter Creek" => array("station_id" => "10188000", "capacity" => 52500, "state" => "UT"),
     "Panguitch Lake" => array("station_id" => "10UTPANG", "capacity" => 22300, "state" => "UT"),
     "Piute" => array("station_id" => "10191000", "capacity" => 71800, "state" => "UT"),
     "Porcupine" => array("station_id" => "10105200", "capacity" => 11300, "state" => "UT"),
@@ -81,7 +81,7 @@ $reservoirs = array(
     "Bull Lake" => array("station_id" => "06224500", "capacity" => 151800, "state" => "WY"),
     "Boysen" => array("station_id" => "06258900", "capacity" => 596000, "state" => "WY"),
     "Pilot Butte" => array("station_id" => "06216400", "capacity" => 31600, "state" => "WY"),
-    "Buffalo Bill" => array("station_id" => "6281500", "capacity" => 646600, "state" => "WY"),
+    "Buffalo Bill" => array("station_id" => "06281500", "capacity" => 646600, "state" => "WY"),
     "Keyhole" => array("station_id" => "06427000", "capacity" => 193800, "state" => "WY"),
     "Seminoe" => array("station_id" => "06635500", "capacity" => 1016700, "state" => "WY"),
     "Pathfinder" => array("station_id" => "06640500", "capacity" => 1016500, "state" => "WY"),
@@ -92,6 +92,7 @@ $reservoirs = array(
     "Viva Naughton" => array("station_id" => "09223100", "capacity" => 42400, "state" => "WY"),
     "Wheatland #2" => array("station_id" => "06662500", "capacity" => 98900, "state" => "WY"),
     "Adobe Creek" => array("station_id" => "07007010", "capacity" => 62000, "state" => "CO"),
+    "Antero" => array("station_id" => "06016010", "capacity" => 16372, "state" => "CO"),
     "Barr Lake" => array("station_id" => "06016020", "capacity" => 30100, "state" => "CO"),
     "Boyd Lake" => array("station_id" => "06016040", "capacity" => 48400, "state" => "CO"),
     "Carter Lake" => array("station_id" => "06016060", "capacity" => 108900, "state" => "CO"),
@@ -150,10 +151,12 @@ $reservoirs = array(
 
 foreach($reservoirs as $res_name => $res) {
     $url = "http://www.wcc.nrcs.usda.gov/reportGenerator/view_csv/customCalendarYearGroupByMonthReport/monthly/" . $res['station_id'] . ":" . $res['state'] .":BOR|id=%22%22|name/POR_BEGIN,POR_END/RESC::value";
-    $file_name = 'raw_data/usda/' . $res['state'] . '_' . $res_name . ".csv";
- //   get_records($url, $file_name, "wb");
 
-    $fh = fopen('data/usda_month/' . $res['state'] . '_' . $res_name . ".csv", 'wb');
+    $res_name_format = preg_replace('/(\s+|\'|#)/', '_', $res_name);
+    $file_name = 'raw_data/usda/' . $res['state'] . '_' . $res_name_format . ".csv";
+    get_records($url, $file_name, "wb");
+
+    $fh = fopen('data/usda_month/' . $res['state'] . '_' . $res_name_format . ".csv", 'wb');
     fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date', 'state'));
 
     if (($handle = fopen($file_name, "r")) !== FALSE) {
