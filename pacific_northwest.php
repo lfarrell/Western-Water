@@ -47,7 +47,7 @@ $stations = array(
     'THF' => array('name' => 'Thief Valley', 'capacity' => 17600, 'state' => 'OR'),
     'UNY' => array('name' => 'Unity', 'capacity' => 25500, 'state' => 'OR'),
     'WAR' => array('name' => 'Warm Springs', 'capacity' => 169714, 'state' => 'OR'),
-    'WAS' => array('name' => 'Clear Lake', 'capacity' => 13100, 'state' => 'OR'),
+  //  'WAS' => array('name' => 'Clear Lake', 'capacity' => 13100, 'state' => 'OR'),
     'WIC' => array('name' => 'Wickiup', 'capacity' => 206880, 'state' => 'OR'),
     'WLD' => array('name' => 'Wildhorse', 'capacity' => 71500, 'state' => 'NV'),
     'WOD' => array('name' => 'Little Wood', 'capacity' => 30000, 'state' => 'ID'),
