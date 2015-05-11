@@ -88,6 +88,10 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                    })
                    .on("click", function (res) {
                         var filtered = data.filter(function(d) {
+                            if(res.reservoir === "Jackson Lake") {
+                                return d.reservoir === res.reservoir;
+                            }
+
                             return d.reservoir === res.reservoir;
                         });
 
@@ -562,6 +566,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     .attr('width', width)
                     .call(zoom);
 
+                var upsize = (state === 'CA') ? 0 : 2;
                 var map = map_svg.append('g');
 
                 map.selectAll("path")
@@ -580,7 +585,6 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     .attr("cy", function(d) {
                         return projection([d.lng, d.lat])[1]; })
                     .attr("r", function(d) {
-                        var upsize = (d.state === 'CA') ? 0 : 2;
                         return mapScale(d.capacity) + upsize;
                     })
                     .style("fill", function(d) {
@@ -606,7 +610,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                         tipService.tipHide(tip);
 
                         d3.select(this).attr('r', function(d) {
-                            return mapScale(d.capacity);
+                            return mapScale(d.capacity) + upsize;
                         });
                     });
 
