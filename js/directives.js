@@ -88,10 +88,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                    })
                    .on("click", function (res) {
                         var filtered = data.filter(function(d) {
-                            if(res.reservoir === "Jackson Lake") {
-                                return d.reservoir === res.reservoir;
-                            }
-
                             return d.reservoir === res.reservoir;
                         });
 
