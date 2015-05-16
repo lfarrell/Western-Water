@@ -5,7 +5,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             width = 900 - margin.left - margin.right,
             graph_width = 550 - margin.left - margin.right,
             graph_height = 500 - margin.top - margin.bottom,
-            format = d3.time.format("%m/%Y").parse,
+            format = d3.time.format("%m/%y").parse,
             tip = tipService.tipDiv();
 
         scope.$watchGroup(['map', 'stations', 'data'], function(values) {
@@ -272,7 +272,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
         var margin = {top: 20, right: 130, left: 100, bottom: 80},
             width = 600 - margin.left - margin.right,
             height = 550 - margin.top - margin.bottom,
-            format = d3.time.format("%m/%Y").parse;
+            format = d3.time.format("%m/%y").parse;
 
         chartService.legend('#compare_legend', false, true);
 
@@ -283,7 +283,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
             var state = values[1];
 
             var current_date = moment().subtract(1, 'month');
-            var today = current_date.format('MM/YYYY');
+            var today = current_date.format('MM/YY');
             var today_words = chartService.displayMonth();
 
             d3.select("#date").html('(for Month Ending '+ today_words + ')');
@@ -297,6 +297,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
             function compare(selector) {
                 var datz = data.filter(function(d) { return d.state === state; });
                 var ndx = crossfilter(datz);
+                var date_start = '20';
                 var all_storage = ndx.dimension(function(d) { return d.date; });
 
                 var capacity_total = all_storage.group().reduceSum(function(d) {
@@ -305,8 +306,8 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                 var each_capacity = capacity_total.top(Infinity).sort(function(a,b) {
                     var date_one_parts = a.key.split('/');
                     var date_two_parts = b.key.split('/');
-                    var date_one = new Date(date_one_parts[1], date_one_parts[0] - 1);
-                    var date_two = new Date(date_two_parts[1], date_two_parts[0] - 1);
+                    var date_one = new Date(date_start + date_one_parts[1], date_one_parts[0] - 1);
+                    var date_two = new Date(date_start + date_two_parts[1], date_two_parts[0] - 1);
 
                     if(date_one < date_two) {
                         return -1;
@@ -323,8 +324,8 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                 var each_res = storage_total.top(Infinity).sort(function(a,b) {
                     var date_one_parts = a.key.split('/');
                     var date_two_parts = b.key.split('/');
-                    var date_one = new Date(date_one_parts[1], date_one_parts[0] - 1);
-                    var date_two = new Date(date_two_parts[1], date_two_parts[0] - 1);
+                    var date_one = new Date(date_start + date_one_parts[1], date_one_parts[0] - 1);
+                    var date_two = new Date(date_start + date_two_parts[1], date_two_parts[0] - 1);
 
                     if(date_one < date_two) {
                         return -1;

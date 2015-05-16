@@ -208,9 +208,10 @@ angular.module('westernWaterApp').service('chartService', function() {
         return focus;
     };
 
-    this.graphPadding = function() {
+    this.graphPadding = function(formatting) {
         var graph_padding = moment().add(8, 'month');
-        return graph_padding.format('MM/YYYY');
+        var date_string = (formatting !== null) ? 'MM/YY' : 'MM/YYYY';
+        return graph_padding.format(date_string);
     };
 
     this.rotate = function() {
@@ -248,7 +249,7 @@ angular.module('westernWaterApp').service('chartService', function() {
 
         stations.forEach(function(d) {
             var res_total = _.last(sorted[d.reservoir]); //console.log(res_total)
-          //  if(res_total === undefined) console.log(d.reservoir)
+            if(res_total === undefined) console.log(d.reservoir)
             d.pct_capacity = (res_total !== undefined) ? res_total.pct_capacity : undefined;
             d.capacity = (res_total !== undefined) ? res_total.capacity : undefined;
         });
