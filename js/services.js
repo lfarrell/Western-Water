@@ -210,7 +210,8 @@ angular.module('westernWaterApp').service('chartService', function() {
 
     this.graphPadding = function(formatting) {
         var graph_padding = moment().add(8, 'month');
-        var date_string = (formatting !== null) ? 'MM/YY' : 'MM/YYYY';
+        var date_string = (formatting !== undefined) ? 'MM/YY' : 'MM/YYYY';
+
         return graph_padding.format(date_string);
     };
 
