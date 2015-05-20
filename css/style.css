@@ -118,3 +118,7 @@ path.snow_avg {
 .center {
     text-align: center;
 }
+
+.hide {
+    display: none;
+}
