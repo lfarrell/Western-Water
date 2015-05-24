@@ -35,34 +35,38 @@
         </div>
         <div class="navbar-collapse" ng-class="{collapse: isCollapsed}">
             <ul class="nav navbar-nav">
-                <li><a href="#/arizona">Arizona</a></li>
-                <li><a href="#/california">California</a></li>
-                <li><a href="#/colorado">Colorado</a></li>
-                <li><a href="#/idaho">Idaho</a></li>
-                <li><a href="#/nevada">Nevada</a></li>
-                <li><a href="#/new_mexico">New Mexico</a></li>
-                <li><a href="#/oregon">Oregon</a></li>
+                <li class="dropdown" dropdown on-toggle="toggled(open)">
+                  <a class="dropdown-toggle" dropdown-toggle href="#">Lower Colorado States<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#/arizona">Arizona</a></li>
+                        <li><a href="#/california">California</a></li>
+                        <li><a href="#/nevada">Nevada</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" dropdown on-toggle="toggled(open)">
+                    <a class="dropdown-toggle" dropdown-toggle href="#">Upper Colorado States<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#/colorado">Colorado</a></li>
+                        <li><a href="#/new_mexico">New Mexico</a></li>
+                        <li><a href="#/utah">Utah</a></li>
+                        <li><a href="#/wyoming">Wyoming</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown" dropdown on-toggle="toggled(open)">
+                    <a class="dropdown-toggle" dropdown-toggle href="#">Pacific Northwest States<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#/idaho">Idaho</a></li>
+                        <li><a href="#/oregon">Oregon</a></li>
+                        <li><a href="#/washington">Washington</a></li>
+                    </ul>
+                </li>
                 <li><a href="#/texas">Texas</a></li>
-                <li><a href="#/utah">Utah</a></li>
-                <li><a href="#/washington">Washington</a></li>
-                <li><a href="#/wyoming">Wyoming</a></li>
                 <li><a href="#/about">About</a></li>
-              <!--  <li><a href="../viz/index.php">Other Work</a></li> -->
             </ul>
         </div>
     </div>
 </div>
 <div class="container-fluid" ng-view></div>
-<div class="container-fluid">
-    <div class="row" id="buttons" style="opacity:0">
-        <div class="col-sm-4 col-lg-2">
-            <a href="https://twitter.com/share" class="twitter-share-button" data-via="farrelldlfarrel" data-size="large">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-        </div>
-        <div class="col-sm-4 col-lg-2">
-            <div class="fb-like" data-href="http://www.deanfarr.com/western_water" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
-        </div>
-    </div>
-</div>
 <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.11/crossfilter.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
@@ -73,13 +77,6 @@
 <script src="js/assets/d3-jetpack.min.js"></script>
 <script src="js/routes-controllers.js"></script>
 <script src="js/minified/output.min.js"></script>
-<script>
-    (function() {
-        setTimeout(function() {
-            document.getElementById('buttons').style.opacity = '1';
-        }, 10000);
-    }());
-</script>
 <script type="text/javascript">
 
     var _gaq = _gaq || [];
