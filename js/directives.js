@@ -45,7 +45,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                         .precision(.1),
                     path = d3.geo.path().projection(projection);
 
-                var filtered = data.filter(function(d) { return d.reservoir === 'Shasta Dam'; });
+                var filtered = data.filter(function(d) { return reservoir_names[d.reservoir] === 'Shasta Dam'; });
                 datz = chartService.histAvg(filtered, 'map-graph');
 
                 var zoom = d3.behavior.zoom()
@@ -88,7 +88,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                    })
                    .on("click", function (res) {
                         var filtered = data.filter(function(d) {
-                            return d.reservoir === res.reservoir;
+                            return reservoir_names[d.reservoir] === res.reservoir;
                         });
 
                         datz = chartService.histAvg(filtered, 'map-graph');
@@ -96,7 +96,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                         chart_update(datz);
                     })
                     .on("mouseover", function(d) {
-                        var text = d.reservoir;
+                        var text =  d.reservoir;
                         tipService.tipShow(tip, text);
 
                         d3.select(this).attr('r', function(d) {
@@ -114,6 +114,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 /**
                  * Chart
                  */
+                    console.log(datz)
                 var xScale = d3.time.scale().range([0, graph_width]);
                 xScale.domain([
                     d3.min(datz, function(d) { return format(d.date); }),
@@ -207,7 +208,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 d3.select("#avg_storage").transition().duration(1200).ease("sin-in-out").attr("d", avg_storage(datz));
                 d3.select("#capacity").transition().duration(1000).ease("sin-in-out").attr("d", capacity(datz));
                 var res = datz[0];
-                d3.select("#reservoir").text( res.reservoir + ', ' + res.state);
+                d3.select("#reservoir").text( reservoir_names[res.reservoir] + ', ' + res.state);
                 d3.selectAll('#all_res_avg').text(StatsService.numFormat(datz[0].mean.toFixed(1)));
 
                 chartService.rotate();
