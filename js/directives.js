@@ -114,7 +114,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 /**
                  * Chart
                  */
-                    console.log(datz)
                 var xScale = d3.time.scale().range([0, graph_width]);
                 xScale.domain([
                     d3.min(datz, function(d) { return format(d.date); }),
