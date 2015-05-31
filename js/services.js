@@ -763,9 +763,12 @@ angular.module('westernWaterApp').service('chartService', function() {
         return current_date.format('MMMM YYYY');
     };
 
-    this.mapPctFull = function(data, stations) {
+    this.mapPctFull = function(data, stations, key_used) {
         var sorted = d3.nest()
-            .key(function(d) { return reservoir_names[d.reservoir]; })
+            .key(function(d) {
+                var res = (!key_used) ? d.reservoir : reservoir_names[d.reservoir];
+                return res;
+            })
             .map(data);
 
         stations.forEach(function(d) {

@@ -15,7 +15,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             var stations = values[1];
             var data = values[2];
 
-            stations = chartService.mapPctFull(data, stations);
+            stations = chartService.mapPctFull(data, stations, true);
 
             stations.sort(function(a,b) {
                 var a_cap = +a.capacity;
@@ -497,7 +497,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             var res = values[3];
             var state = values[4];
 
-            stations = chartService.mapPctFull(data, stations);
+            stations = chartService.mapPctFull(data, stations, false);
             stations.sort(function(a,b) {
                 var a_cap = +a.capacity;
                 var b_cap = +b.capacity;
