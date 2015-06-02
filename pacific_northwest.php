@@ -96,7 +96,7 @@ foreach($files as $file) {
             $months = array();
             $months_list = array();
             $fh = fopen('data/pn_month/' . $file, 'wb');
-            $if = fopen('data/' . $state . '_month/' . $file, 'a');
+            $if = fopen('data/' . $state . '_month/' . $file, 'wb');
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 if($row == 1) {
                     fputcsv($fh, $data);
