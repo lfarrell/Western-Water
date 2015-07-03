@@ -151,7 +151,6 @@ $reservoirs = array(
 
 foreach($reservoirs as $res_name => $res) {
     $url = "http://www.wcc.nrcs.usda.gov/reportGenerator/view_csv/customCalendarYearGroupByMonthReport/monthly/" . $res['station_id'] . ":" . $res['state'] .":BOR|id=%22%22|name/POR_BEGIN,POR_END/RESC::value";
-
     $res_name_format = preg_replace('/(\s+|\'|#)/', '_', $res_name);
     $file_name = 'raw_data/usda/' . $res['state'] . '_' . $res_name_format . ".csv";
     get_records($url, $file_name, "wb");
@@ -170,8 +169,6 @@ foreach($reservoirs as $res_name => $res) {
                     $month = ($c < 10) ? '0' . $c : $c;
 
                     fputcsv($fh, array($res_name, $data[$c], $res['capacity'], $pct_capacity, $month . '/' . $data[0], $res['state']));
-
-                   // echo $month . '/' . $data[0] . "\n";
                 }
 
             }
