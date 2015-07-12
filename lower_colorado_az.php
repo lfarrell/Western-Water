@@ -62,8 +62,8 @@ if (($handle = fopen("data/lower_all_az_daily.csv", "r")) !== FALSE) {
     fclose($handle);
 }
 
-aggregate('data/lc_az', 'data/az_month');
-aggregate('data/lc_az', 'data/lc_az_month');
+aggregate('data/lc_az', 'data/az_month', false, true);
+aggregate('data/lc_az', 'data/lc_az_month', false, true);
 
 function file_name($data) {
     return preg_replace('/\s+/', '_', strtolower($data));

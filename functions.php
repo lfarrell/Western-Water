@@ -31,9 +31,10 @@ function format_date($date) {
     return $pieces[1] . '/' . $pieces[2] . '/' . $pieces[0];
 }
 
-function aggregate($target_path, $destination_path, $final_path = '') {
+function aggregate($target_path, $destination_path, $final_path = '', $write = false) {
     $path = $target_path;
     $files = scandir($path);
+    $write_method = ($write) ? 'wb' : 'a';
 
     foreach($files as $file) {
         if(!is_dir($file) && !preg_match('/^\./', $file)) {
@@ -43,7 +44,7 @@ function aggregate($target_path, $destination_path, $final_path = '') {
             if (($handle = fopen($path . '/' . $file, "r")) !== FALSE) {
                 $months = array();
 
-                $fh = fopen($destination_path .'/' . $file, 'a');
+                $fh = fopen($destination_path .'/' . $file, $write_method);
                 if($final_path) {
                     $if = fopen($final_path .'/' . $file, 'a');
                 }
