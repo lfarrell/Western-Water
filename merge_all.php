@@ -523,7 +523,7 @@ $reservoir_names = [
     "Lake Granby",
     "Lake Loveland",
     "Marshall",
-    "Meredith",
+    "Meredith Reservoir",
     "Milton",
     "Mountain Home",
     "Narraguinnep",

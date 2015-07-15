@@ -121,7 +121,7 @@ $reservoirs = array(
     "Lake Loveland" => array("station_id" => "06016180", "capacity" => 10300, "state" => "CO"),
     "Marshall" => array("station_id" => "06016220", "capacity" => 10000, "state" => "CO"),
     "Marston" => array("station_id" => "06016210", "capacity" => 13000, "state" => "CO"),
-    "Meredith" => array("station_id" => "07007070", "capacity" => 42000, "state" => "CO"),
+    "Meredith Reservoir" => array("station_id" => "07007070", "capacity" => 42000, "state" => "CO"),
     "Milton" => array("station_id" => "06016230", "capacity" => 23500, "state" => "CO"),
     "Mountain Home" => array("station_id" => "MTNRESCO", "capacity" => 18000, "state" => "CO"),
     "Narraguinnep" => array("station_id" => "09009350", "capacity" => 19000, "state" => "CO"),
