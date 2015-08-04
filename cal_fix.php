@@ -6,7 +6,7 @@ foreach($reservoirs as $reservoir) {
         $ft = fopen('data/ca/' . $reservoir, "wb");
         if (($handle = fopen('data/ca_month/' . $reservoir, "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                if(!preg_match('/06\/2015/', $data[4])) {
+                if(!preg_match('/07\/2015/', $data[4])) {
                     fputcsv($ft, $data);
                 }
 
