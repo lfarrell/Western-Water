@@ -15,5 +15,4 @@ foreach($reservoirs as $reservoir) {
         fclose($handle);
         fclose($ft);
     }
-
 }

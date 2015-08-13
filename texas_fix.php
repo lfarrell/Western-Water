@@ -122,10 +122,12 @@ $reservoirs = array(
 );
 
 foreach($reservoirs as $reservoir) {
-    $ft = fopen('data/tx_c/' . $reservoir. '.csv', "wb");
-    if (($handle = fopen('data/tx/' . $reservoir. '.csv', "r")) !== FALSE) {
+    $ft = fopen('data/tx_fix/' . $reservoir. '.csv', "wb");
+    fputcsv($ft, ['reservoir','storage','capacity','pct_capacity','date']);
+    if (($handle = fopen('data/tx_m/' . $reservoir. '.csv', "r")) !== FALSE) {
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-            if(!preg_match('/02\/\d{2}\/2015/', $data[4])) {
+            $date = preg_split('/\//', $data[4]);
+            if(preg_match('/^\d/', $data[4]) && $date[1] >= 2000) {
                 fputcsv($ft, $data);
             }
 
