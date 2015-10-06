@@ -393,7 +393,7 @@ $reservoir_names = [
     "Soldiers Meadow",
     "Thief Valley",
     "Unity",
-    "Warm Springs",
+    "Warm Springs Reservoir",
     "Clear Lake",
     "Wickiup",
     "Wildhorse",
