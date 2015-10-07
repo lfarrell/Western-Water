@@ -310,7 +310,7 @@ var reservoir_names = [
     "Newton",
     "Meeks Cabin",
     "McPhee",
-    "Lost Creek",
+    "Lost Creek Reservoir",
     "Lake Sumner",
     "Jordanelle",
     "Joes Valley",
@@ -416,7 +416,7 @@ var reservoir_names = [
     "Fern Ridge",
     "Foster",
     "Applegate",
-    "Lost Creek",
+    "Lost Creek Res",
     "Cottonwood",
     "Abiquiu",
     "Bluewater Lake",
@@ -772,7 +772,7 @@ angular.module('westernWaterApp').service('chartService', function() {
 
         stations.forEach(function(d) {
             var res_total = _.last(sorted[d.reservoir]); //console.log(res_total)
-          //  if(res_total === undefined) console.log(d.reservoir, d.state);
+        //    if(res_total === undefined) console.log(d.reservoir, d.state);
             d.pct_capacity = (res_total !== undefined) ? res_total.pct_capacity : undefined;
             d.capacity = (res_total !== undefined) ? res_total.capacity : undefined;
         });

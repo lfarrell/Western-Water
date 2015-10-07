@@ -78,7 +78,12 @@ foreach($reservoirs as $key => $reservoir) {
             if(preg_match('/\d{2}-\w{3}/', $chunked_data[1]) && months($needed_month[1]) == $last_month) {
                 $date_format = explode('-', $chunked_data[1]);
                 $formatted_date = months($date_format[1]) . '/' . $date_format[0] . '/' . $date_format[2];
-                $res_name = str_ireplace('reservoir', '', $key);
+                if($key === 'Lost Creek Reservoir') {
+                    $res_name = str_ireplace('reservoir', '', $key);
+                } else {
+                    $res_name = $key;
+                }
+
                 fputcsv($fh, array(trim($res_name), $chunked_data[3], $reservoir[0], '', $formatted_date, $reservoir[1]));
             }
         }

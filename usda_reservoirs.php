@@ -39,7 +39,7 @@ $reservoirs = array(
     "Fern Ridge" => array("station_id" => "14168000", "capacity" => 109600, "state" => "OR"),
     "Foster" => array("station_id" => "14186600", "capacity" => 29700, "state" => "OR"),
     "Applegate" => array("station_id" => "14361900", "capacity" => 75200, "state" => "OR"),
-    "Lost Creek" => array("station_id" => "14335040", "capacity" => 315000, "state" => "OR"),
+    "Lost Creek Res" => array("station_id" => "14335040", "capacity" => 315000, "state" => "OR"),
     "Cottonwood" => array("station_id" => "11340000", "capacity" => 8700, "state" => "OR"),
     "Abiquiu" => array("station_id" => "08108010", "capacity" => 1192800, "state" => "NM"),
     "Bluewater Lake" => array("station_id" => "08341400", "capacity" => 38500, "state" => "NM"),
