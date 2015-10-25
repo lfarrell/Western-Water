@@ -28,7 +28,10 @@ foreach($files as $file) {
                 $monthly_avg = round(array_sum($month) / count($month));
                 $monthly_avg_pct = round(($monthly_avg / $capacity) * 100, 1);
 
-                fputcsv($fh, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key));
+                if(preg_match('/20\d{2}$/', $key) && !preg_match('/[A-Za-z]/', $key)) {
+                    fputcsv($fh, array($res, $monthly_avg, $capacity, $monthly_avg_pct, $key));
+                }
+
             }
             echo $res . "\n";
 
