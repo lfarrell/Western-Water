@@ -31,8 +31,8 @@ foreach($az_reservoirs as $res_key => $res_info) {
     if (($handle = fopen($base . $file_name  . ".tsv", "r")) !== FALSE) {
         $months = array();
         $months_list = array();
-        $fh = fopen('data/usgs_az_month/' . $file_name . ".csv", 'a');
-        $if = fopen('data/az_month/' . $file_name . ".csv", 'a');
+        $fh = fopen('data/usgs_az_month/' . $file_name . ".csv", 'wb');
+        $if = fopen('data/az_month/' . $file_name . ".csv", 'wb');
     //    fputcsv($fh, array('reservoir','storage','capacity','pct_capacity','date', 'state'));
 
         while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
