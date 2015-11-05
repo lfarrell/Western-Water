@@ -446,7 +446,6 @@ $reservoir_names = [
     "Dorena",
     "Fall Creek",
     "Fern Ridge",
-    "Foster",
     "Applegate",
     "Lost Creek Res",
     "Cottonwood",

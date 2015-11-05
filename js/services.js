@@ -414,7 +414,6 @@ var reservoir_names = [
     "Dorena",
     "Fall Creek",
     "Fern Ridge",
-    "Foster",
     "Applegate",
     "Lost Creek Res",
     "Cottonwood",
@@ -772,7 +771,7 @@ angular.module('westernWaterApp').service('chartService', function() {
 
         stations.forEach(function(d) {
             var res_total = _.last(sorted[d.reservoir]); //console.log(res_total)
-        //    if(res_total === undefined) console.log(d.reservoir, d.state);
+      //      if(res_total === undefined) console.log(d.reservoir, d.state);
             d.pct_capacity = (res_total !== undefined) ? res_total.pct_capacity : undefined;
             d.capacity = (res_total !== undefined) ? res_total.capacity : undefined;
         });
@@ -791,5 +790,2068 @@ angular.module('westernWaterApp').service('chartService', function() {
         return d3.scale.linear()
             .domain(d3.extent(data, function(d) { return d.capacity * .2; }))
             .range(vals);
+    };
+});
+
+angular.module('westernWaterApp').service('searchService', function() {
+    this.reservoirs = function() {
+        return [
+            {
+                "name":"Upper Klamath",
+                "code":"CA"
+            },
+            {
+                "name":"Gerber",
+                "code":"CA"
+            },
+            {
+                "name":"Clear Lk   Klamath R",
+                "code":"CA"
+            },
+            {
+                "name":"Dwinnell",
+                "code":"CA"
+            },
+            {
+                "name":"Trinity Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Lewiston",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Pillsbury",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Mendocino",
+                "code":"CA"
+            },
+            {
+                "name":"Warm Springs",
+                "code":"CA"
+            },
+            {
+                "name":"Soulajule Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Nicasio",
+                "code":"CA"
+            },
+            {
+                "name":"Kent",
+                "code":"CA"
+            },
+            {
+                "name":"Alpine Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Hennessey",
+                "code":"CA"
+            },
+            {
+                "name":"Briones Dam",
+                "code":"CA"
+            },
+            {
+                "name":"U San Leandro",
+                "code":"CA"
+            },
+            {
+                "name":"Chabot",
+                "code":"CA"
+            },
+            {
+                "name":"Del Valle",
+                "code":"CA"
+            },
+            {
+                "name":"San Antonio Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Calaveras",
+                "code":"CA"
+            },
+            {
+                "name":"Lexington Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Leroy Anderson",
+                "code":"CA"
+            },
+            {
+                "name":"Coyote Res Sta Clara",
+                "code":"CA"
+            },
+            {
+                "name":"Lower Crystal Springs Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"San Pablo",
+                "code":"CA"
+            },
+            {
+                "name":"San Andreas",
+                "code":"CA"
+            },
+            {
+                "name":"Lake San Antonio",
+                "code":"CA"
+            },
+            {
+                "name":"Whale Rock",
+                "code":"CA"
+            },
+            {
+                "name":"Santa Margarita Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Nacimiento",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Jennings",
+                "code":"CA"
+            },
+            {
+                "name":"Twitchell",
+                "code":"CA"
+            },
+            {
+                "name":"Cachuma Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Gibraltar Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Matilija Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Casitas",
+                "code":"CA"
+            },
+            {
+                "name":"Pyramid",
+                "code":"CA"
+            },
+            {
+                "name":"Bouquet Canyon",
+                "code":"CA"
+            },
+            {
+                "name":"Castaic",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Piru",
+                "code":"CA"
+            },
+            {
+                "name":"Cogswell Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"San Gabriel",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Mathews",
+                "code":"CA"
+            },
+            {
+                "name":"Perris",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Hemet",
+                "code":"CA"
+            },
+            {
+                "name":"Bear Valley Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Santiago Creek Res",
+                "code":"CA"
+            },
+            {
+                "name":"Railroad Canyon",
+                "code":"CA"
+            },
+            {
+                "name":"Diamond Valley",
+                "code":"CA"
+            },
+            {
+                "name":"Vail Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Sutherland Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Hodges",
+                "code":"CA"
+            },
+            {
+                "name":"Skinner",
+                "code":"CA"
+            },
+            {
+                "name":"Henshaw",
+                "code":"CA"
+            },
+            {
+                "name":"Cuyamaca Dam",
+                "code":"CA"
+            },
+            {
+                "name":"San Vicente",
+                "code":"CA"
+            },
+            {
+                "name":"Miramar",
+                "code":"CA"
+            },
+            {
+                "name":"El Capitan Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Murray Res",
+                "code":"CA"
+            },
+            {
+                "name":"Morena Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Barrett",
+                "code":"CA"
+            },
+            {
+                "name":"Loveland Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Sweetwater Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Lower Otay",
+                "code":"CA"
+            },
+            {
+                "name":"Shasta Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Keswick Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Whiskeytown Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Mccloud",
+                "code":"CA"
+            },
+            {
+                "name":"Iron Canyon",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Britton",
+                "code":"CA"
+            },
+            {
+                "name":"Black Butte",
+                "code":"CA"
+            },
+            {
+                "name":"Stony Gorge Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"East Park Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Mountain Meadows",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Almanor",
+                "code":"CA"
+            },
+            {
+                "name":"Butt Valley",
+                "code":"CA"
+            },
+            {
+                "name":"Antelope Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Bucks Lake Storage",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Davis",
+                "code":"CA"
+            },
+            {
+                "name":"Frenchman Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Little Grass Valley",
+                "code":"CA"
+            },
+            {
+                "name":"Sly Creek",
+                "code":"CA"
+            },
+            {
+                "name":"Oroville Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Thermalito  Total",
+                "code":"CA"
+            },
+            {
+                "name":"Bowman Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Spaulding S Yuba System",
+                "code":"CA"
+            },
+            {
+                "name":"French Lake",
+                "code":"CA"
+            },
+            {
+                "name":"New Bullards Bar",
+                "code":"CA"
+            },
+            {
+                "name":"Scotts Flat",
+                "code":"CA"
+            },
+            {
+                "name":"Englebright",
+                "code":"CA"
+            },
+            {
+                "name":"Rollins",
+                "code":"CA"
+            },
+            {
+                "name":"Bear River At Camp Far West Dam",
+                "code":"CA"
+            },
+            {
+                "name":"French Meadows",
+                "code":"CA"
+            },
+            {
+                "name":"Hell Hole",
+                "code":"CA"
+            },
+            {
+                "name":"Loon Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Union Valley",
+                "code":"CA"
+            },
+            {
+                "name":"Ice House",
+                "code":"CA"
+            },
+            {
+                "name":"Slab Creek",
+                "code":"CA"
+            },
+            {
+                "name":"Caples Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Folsom Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Natoma",
+                "code":"CA"
+            },
+            {
+                "name":"Indian Valley",
+                "code":"CA"
+            },
+            {
+                "name":"Clear Lk   Cache Creek",
+                "code":"CA"
+            },
+            {
+                "name":"Berryessa",
+                "code":"CA"
+            },
+            {
+                "name":"Los Vaqueros Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Jenkinson Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Lower Bear",
+                "code":"CA"
+            },
+            {
+                "name":"Salt Springs",
+                "code":"CA"
+            },
+            {
+                "name":"Pardee",
+                "code":"CA"
+            },
+            {
+                "name":"Camanche Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"New Hogan Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Spicer Meadows",
+                "code":"CA"
+            },
+            {
+                "name":"Donnells",
+                "code":"CA"
+            },
+            {
+                "name":"Relief",
+                "code":"CA"
+            },
+            {
+                "name":"Beardsley Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Strawberry",
+                "code":"CA"
+            },
+            {
+                "name":"New Melones Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Tulloch",
+                "code":"CA"
+            },
+            {
+                "name":"Cherry Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Eleanor",
+                "code":"CA"
+            },
+            {
+                "name":"Hetch Hetchy",
+                "code":"CA"
+            },
+            {
+                "name":"Don Pedro Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Modesto Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Turlock Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Mcclure",
+                "code":"CA"
+            },
+            {
+                "name":"Buchanan Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Hidden Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Thomas A Edison",
+                "code":"CA"
+            },
+            {
+                "name":"Mammoth Pool",
+                "code":"CA"
+            },
+            {
+                "name":"Crane Valley",
+                "code":"CA"
+            },
+            {
+                "name":"Florence Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Huntington Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Shaver Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Redinger Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Friant Dam",
+                "code":"CA"
+            },
+            {
+                "name":"San Luis Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Oneill Forebay",
+                "code":"CA"
+            },
+            {
+                "name":"San Luis Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Los Banos",
+                "code":"CA"
+            },
+            {
+                "name":"Courtright",
+                "code":"CA"
+            },
+            {
+                "name":"Wishon",
+                "code":"CA"
+            },
+            {
+                "name":"Pine Flat Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Terminus Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Success Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Isabella Dam",
+                "code":"CA"
+            },
+            {
+                "name":"Stampede",
+                "code":"CA"
+            },
+            {
+                "name":"Boca Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Prosser Creek Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Tahoe",
+                "code":"CA"
+            },
+            {
+                "name":"Bridgeport Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Saddlebag Lake Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Grant Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Gem  Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Crowley",
+                "code":"CA"
+            },
+            {
+                "name":"South Lake",
+                "code":"CA"
+            },
+            {
+                "name":"Tinemaha Reservoir",
+                "code":"CA"
+            },
+            {
+                "name":"Haiwee",
+                "code":"CA"
+            },
+            {
+                "name":"Lake Silverwood",
+                "code":"CA"
+            },
+            {
+                "name":"Abilene",
+                "code":"TX"
+            },
+            {
+                "name":"Addicks",
+                "code":"TX"
+            },
+            {
+                "name":"Alan Henry",
+                "code":"TX"
+            },
+            {
+                "name":"Amistad",
+                "code":"TX"
+            },
+            {
+                "name":"Amon G Carter",
+                "code":"TX"
+            },
+            {
+                "name":"Aquilla",
+                "code":"TX"
+            },
+            {
+                "name":"Arlington",
+                "code":"TX"
+            },
+            {
+                "name":"Arrowhead",
+                "code":"TX"
+            },
+            {
+                "name":"Athens",
+                "code":"TX"
+            },
+            {
+                "name":"Austin",
+                "code":"TX"
+            },
+            {
+                "name":"B A Steinhagen",
+                "code":"TX"
+            },
+            {
+                "name":"Bardwell",
+                "code":"TX"
+            },
+            {
+                "name":"Belton",
+                "code":"TX"
+            },
+            {
+                "name":"Benbrook",
+                "code":"TX"
+            },
+            {
+                "name":"Bob Sandlin",
+                "code":"TX"
+            },
+            {
+                "name":"Bonham",
+                "code":"TX"
+            },
+            {
+                "name":"Brady Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Bridgeport",
+                "code":"TX"
+            },
+            {
+                "name":"Brownwood",
+                "code":"TX"
+            },
+            {
+                "name":"Buchanan",
+                "code":"TX"
+            },
+            {
+                "name":"Caddo",
+                "code":"TX"
+            },
+            {
+                "name":"Canyon",
+                "code":"TX"
+            },
+            {
+                "name":"Cedar Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Champion Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Choke Canyon",
+                "code":"TX"
+            },
+            {
+                "name":"Cisco",
+                "code":"TX"
+            },
+            {
+                "name":"Coleman",
+                "code":"TX"
+            },
+            {
+                "name":"Coleto Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Colorado City",
+                "code":"TX"
+            },
+            {
+                "name":"Conroe",
+                "code":"TX"
+            },
+            {
+                "name":"Corpus Christi",
+                "code":"TX"
+            },
+            {
+                "name":"Crook",
+                "code":"TX"
+            },
+            {
+                "name":"Cypress Springs",
+                "code":"TX"
+            },
+            {
+                "name":"E V Spence",
+                "code":"TX"
+            },
+            {
+                "name":"Eagle Mountain",
+                "code":"TX"
+            },
+            {
+                "name":"Elephant Butte",
+                "code":"TX"
+            },
+            {
+                "name":"Falcon",
+                "code":"TX"
+            },
+            {
+                "name":"Fork",
+                "code":"TX"
+            },
+            {
+                "name":"Fort Phantom Hill",
+                "code":"TX"
+            },
+            {
+                "name":"Georgetown",
+                "code":"TX"
+            },
+            {
+                "name":"Graham",
+                "code":"TX"
+            },
+            {
+                "name":"Granbury",
+                "code":"TX"
+            },
+            {
+                "name":"Granger",
+                "code":"TX"
+            },
+            {
+                "name":"Grapevine",
+                "code":"TX"
+            },
+            {
+                "name":"Greenbelt",
+                "code":"TX"
+            },
+            {
+                "name":"Halbert",
+                "code":"TX"
+            },
+            {
+                "name":"Hords Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Houston",
+                "code":"TX"
+            },
+            {
+                "name":"Houston County",
+                "code":"TX"
+            },
+            {
+                "name":"Hubbard Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Hubert H Moss",
+                "code":"TX"
+            },
+            {
+                "name":"Inks",
+                "code":"TX"
+            },
+            {
+                "name":"J B Thomas",
+                "code":"TX"
+            },
+            {
+                "name":"Jacksonville",
+                "code":"TX"
+            },
+            {
+                "name":"Jim Chapman",
+                "code":"TX"
+            },
+            {
+                "name":"Joe Pool",
+                "code":"TX"
+            },
+            {
+                "name":"Kemp",
+                "code":"TX"
+            },
+            {
+                "name":"Kickapoo",
+                "code":"TX"
+            },
+            {
+                "name":"Lake O The Pines",
+                "code":"TX"
+            },
+            {
+                "name":"Lavon",
+                "code":"TX"
+            },
+            {
+                "name":"Leon",
+                "code":"TX"
+            },
+            {
+                "name":"Lewisville",
+                "code":"TX"
+            },
+            {
+                "name":"Limestone",
+                "code":"TX"
+            },
+            {
+                "name":"Livingston",
+                "code":"TX"
+            },
+            {
+                "name":"Lost Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Lyndon B Johnson",
+                "code":"TX"
+            },
+            {
+                "name":"Mackenzie",
+                "code":"TX"
+            },
+            {
+                "name":"Martin",
+                "code":"TX"
+            },
+            {
+                "name":"Medina",
+                "code":"TX"
+            },
+            {
+                "name":"Meredith",
+                "code":"TX"
+            },
+            {
+                "name":"Millers Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Mineral Wells",
+                "code":"TX"
+            },
+            {
+                "name":"Monticello",
+                "code":"TX"
+            },
+            {
+                "name":"Mountain Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Murvaul",
+                "code":"TX"
+            },
+            {
+                "name":"Nacogdoches",
+                "code":"TX"
+            },
+            {
+                "name":"Natural Dam",
+                "code":"TX"
+            },
+            {
+                "name":"Navarro Mills",
+                "code":"TX"
+            },
+            {
+                "name":"New Terrell City",
+                "code":"TX"
+            },
+            {
+                "name":"Nocona",
+                "code":"TX"
+            },
+            {
+                "name":"North Fork Buffalo Creek",
+                "code":"TX"
+            },
+            {
+                "name":"O C Fisher",
+                "code":"TX"
+            },
+            {
+                "name":"O H Ivie",
+                "code":"TX"
+            },
+            {
+                "name":"Oak Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Palestine",
+                "code":"TX"
+            },
+            {
+                "name":"Palo Duro",
+                "code":"TX"
+            },
+            {
+                "name":"Palo Pinto",
+                "code":"TX"
+            },
+            {
+                "name":"Pat Cleburne",
+                "code":"TX"
+            },
+            {
+                "name":"Pat Mayse",
+                "code":"TX"
+            },
+            {
+                "name":"Possum Kingdom",
+                "code":"TX"
+            },
+            {
+                "name":"Proctor",
+                "code":"TX"
+            },
+            {
+                "name":"Ray Hubbard",
+                "code":"TX"
+            },
+            {
+                "name":"Ray Roberts",
+                "code":"TX"
+            },
+            {
+                "name":"Red Bluff",
+                "code":"TX"
+            },
+            {
+                "name":"Richland Chambers",
+                "code":"TX"
+            },
+            {
+                "name":"Sam Rayburn",
+                "code":"TX"
+            },
+            {
+                "name":"Somerville",
+                "code":"TX"
+            },
+            {
+                "name":"Squaw Creek",
+                "code":"TX"
+            },
+            {
+                "name":"Stamford",
+                "code":"TX"
+            },
+            {
+                "name":"Stillhouse Hollow",
+                "code":"TX"
+            },
+            {
+                "name":"Sulphur Springs",
+                "code":"TX"
+            },
+            {
+                "name":"Sweetwater",
+                "code":"TX"
+            },
+            {
+                "name":"Tawakoni",
+                "code":"TX"
+            },
+            {
+                "name":"Texana",
+                "code":"TX"
+            },
+            {
+                "name":"Texoma",
+                "code":"TX"
+            },
+            {
+                "name":"Toledo Bend",
+                "code":"TX"
+            },
+            {
+                "name":"Travis",
+                "code":"TX"
+            },
+            {
+                "name":"Twin Buttes",
+                "code":"TX"
+            },
+            {
+                "name":"Tyler",
+                "code":"TX"
+            },
+            {
+                "name":"Waco",
+                "code":"TX"
+            },
+            {
+                "name":"Waxahachie",
+                "code":"TX"
+            },
+            {
+                "name":"Weatherford",
+                "code":"TX"
+            },
+            {
+                "name":"White River",
+                "code":"TX"
+            },
+            {
+                "name":"Whitney",
+                "code":"TX"
+            },
+            {
+                "name":"Worth",
+                "code":"TX"
+            },
+            {
+                "name":"Wright Patman",
+                "code":"TX"
+            },
+            {
+                "name":"Big Sandy",
+                "code":"WY"
+            },
+            {
+                "name":"Blue Mesa",
+                "code":"CO"
+            },
+            {
+                "name":"Caballo",
+                "code":"NM"
+            },
+            {
+                "name":"Causey",
+                "code":"UT"
+            },
+            {
+                "name":"Crystal",
+                "code":"CO"
+            },
+            {
+                "name":"Currant Creek",
+                "code":"UT"
+            },
+            {
+                "name":"Deer Creek",
+                "code":"UT"
+            },
+            {
+                "name":"Echo",
+                "code":"UT"
+            },
+            {
+                "name":"Vallecito",
+                "code":"CO"
+            },
+            {
+                "name":"Moon Lake",
+                "code":"UT"
+            },
+            {
+                "name":"Lake Powell",
+                "code":"AZ & UT"
+            },
+            {
+                "name":"Flaming Gorge",
+                "code":"UT"
+            },
+            {
+                "name":"Rifle Gap",
+                "code":"CO"
+            },
+            {
+                "name":"Rockport",
+                "code":"UT"
+            },
+            {
+                "name":"Scofield",
+                "code":"UT"
+            },
+            {
+                "name":"Taylor Park",
+                "code":"CO"
+            },
+            {
+                "name":"Fontenelle",
+                "code":"WY"
+            },
+            {
+                "name":"Hyrum",
+                "code":"UT"
+            },
+            {
+                "name":"Jackson Gulch Reservoir",
+                "code":"CO"
+            },
+            {
+                "name":"Steinaker",
+                "code":"UT"
+            },
+            {
+                "name":"Santa Rosa",
+                "code":"NM"
+            },
+            {
+                "name":"Lemon",
+                "code":"CO"
+            },
+            {
+                "name":"Morrow Point",
+                "code":"CO"
+            },
+            {
+                "name":"Navajo",
+                "code":"CO"
+            },
+            {
+                "name":"Starvation",
+                "code":"UT"
+            },
+            {
+                "name":"Vega",
+                "code":"CO"
+            },
+            {
+                "name":"Upper Stillwater",
+                "code":"UT"
+            },
+            {
+                "name":"Strawberry",
+                "code":"UT"
+            },
+            {
+                "name":"codeline",
+                "code":"UT"
+            },
+            {
+                "name":"Silver Jack",
+                "code":"CO"
+            },
+            {
+                "name":"Ridgway",
+                "code":"CO"
+            },
+            {
+                "name":"Red Fleet",
+                "code":"UT"
+            },
+            {
+                "name":"Pineview",
+                "code":"UT"
+            },
+            {
+                "name":"Paonia",
+                "code":"CO"
+            },
+            {
+                "name":"Newton",
+                "code":"UT"
+            },
+            {
+                "name":"Meeks Cabin",
+                "code":"WY"
+            },
+            {
+                "name":"McPhee",
+                "code":"CO"
+            },
+            {
+                "name":"Lost Creek Reservoir",
+                "code":"UT"
+            },
+            {
+                "name":"Lake Sumner",
+                "code":"NM"
+            },
+            {
+                "name":"Jordanelle",
+                "code":"UT"
+            },
+            {
+                "name":"Joes Valley",
+                "code":"UT"
+            },
+            {
+                "name":"Huntington North",
+                "code":"UT"
+            },
+            {
+                "name":"Elephant Butte",
+                "code":"NM"
+            },
+            {
+                "name":"Fruitgrowers",
+                "code":"CO"
+            },
+            {
+                "name":"East Canyon",
+                "code":"UT"
+            },
+            {
+                "name":"Lake Mohave",
+                "code":"AZ & NV"
+            },
+            {
+                "name":"Lake Havasu",
+                "code":"AZ & CA"
+            },
+            {
+                "name":"Lake Mead",
+                "code":"AZ & NV"
+            },
+            {
+                "name":"Agate",
+                "code":"OR"
+            },
+            {
+                "name":"American Falls",
+                "code":"ID"
+            },
+            {
+                "name":"Anderson Ranch",
+                "code":"ID"
+            },
+            {
+                "name":"Arrowrock",
+                "code":"ID"
+            },
+            {
+                "name":"Beulah",
+                "code":"OR"
+            },
+            {
+                "name":"Banks Lake",
+                "code":"WA"
+            },
+            {
+                "name":"Bully Creek",
+                "code":"OR"
+            },
+            {
+                "name":"Cold Springs",
+                "code":"OR"
+            },
+            {
+                "name":"Crane Prairie",
+                "code":"OR"
+            },
+            {
+                "name":"Crescent Lake",
+                "code":"OR"
+            },
+            {
+                "name":"Lake Cascade",
+                "code":"ID"
+            },
+            {
+                "name":"Deadwood",
+                "code":"ID"
+            },
+            {
+                "name":"Emigrant Lake",
+                "code":"OR"
+            },
+            {
+                "name":"Black Canyon",
+                "code":"ID"
+            },
+            {
+                "name":"Fish Lake",
+                "code":"OR"
+            },
+            {
+                "name":"Fourmile Lake",
+                "code":"OR"
+            },
+            {
+                "name":"Grand Coulee/FDR Lake",
+                "code":"WA"
+            },
+            {
+                "name":"Grassy Lake",
+                "code":"WY"
+            },
+            {
+                "name":"Haystack",
+                "code":"OR"
+            },
+            {
+                "name":"Howard Prairie Lake",
+                "code":"OR"
+            },
+            {
+                "name":"Hyatt",
+                "code":"OR"
+            },
+            {
+                "name":"Island Park",
+                "code":"ID"
+            },
+            {
+                "name":"Jackson Lake",
+                "code":"WY"
+            },
+            {
+                "name":"Lake Lowell",
+                "code":"ID"
+            },
+            {
+                "name":"Lucky Peak Lake",
+                "code":"ID"
+            },
+            {
+                "name":"Mann Creek",
+                "code":"ID"
+            },
+            {
+                "name":"McKay",
+                "code":"OR"
+            },
+            {
+                "name":"Milner",
+                "code":"ID"
+            },
+            {
+                "name":"Lake Walcott",
+                "code":"ID"
+            },
+            {
+                "name":"Ochoco",
+                "code":"OR"
+            },
+            {
+                "name":"Lake Owyhee",
+                "code":"OR"
+            },
+            {
+                "name":"Palisades",
+                "code":"ID"
+            },
+            {
+                "name":"Phillips Lake",
+                "code":"OR"
+            },
+            {
+                "name":"Prineville",
+                "code":"OR"
+            },
+            {
+                "name":"Reservoir A",
+                "code":"ID"
+            },
+            {
+                "name":"Ririe Lake",
+                "code":"ID"
+            },
+            {
+                "name":"Henry Hagg Lake",
+                "code":"OR"
+            },
+            {
+                "name":"Soldiers Meadow",
+                "code":"ID"
+            },
+            {
+                "name":"Thief Valley",
+                "code":"OR"
+            },
+            {
+                "name":"Unity",
+                "code":"OR"
+            },
+            {
+                "name":"Warm Springs Reservoir",
+                "code":"OR"
+            },
+            {
+                "name":"Clear Lake",
+                "code":"OR"
+            },
+            {
+                "name":"Wickiup",
+                "code":"OR"
+            },
+            {
+                "name":"Wildhorse",
+                "code":"NV"
+            },
+            {
+                "name":"Little Wood",
+                "code":"ID"
+            },
+            {
+                "name":"Horseshoe",
+                "code":"AZ"
+            },
+            {
+                "name":"San Carlos",
+                "code":"AZ"
+            },
+            {
+                "name":"C. C. Cragin",
+                "code":"AZ"
+            },
+            {
+                "name":"Bartlett",
+                "code":"AZ"
+            },
+            {
+                "name":"Lyman Lake",
+                "code":"AZ"
+            },
+            {
+                "name":"Roosevelt",
+                "code":"AZ"
+            },
+            {
+                "name":"Horse Mesa",
+                "code":"AZ"
+            },
+            {
+                "name":"Mormon Flat",
+                "code":"AZ"
+            },
+            {
+                "name":"Stewart Mtn",
+                "code":"AZ"
+            },
+            {
+                "name":"Henrys Lake",
+                "code":"ID"
+            },
+            {
+                "name":"Dillon",
+                "code":"CO"
+            },
+            {
+                "name":"Williams Fork",
+                "code":"CO"
+            },
+            {
+                "name":"Antero",
+                "code":"CO"
+            },
+            {
+                "name":"Cheesman",
+                "code":"CO"
+            },
+            {
+                "name":"Eleven Mile",
+                "code":"CO"
+            },
+            {
+                "name":"Gross",
+                "code":"CO"
+            },
+            {
+                "name":"Marston",
+                "code":"CO"
+            },
+            {
+                "name":"Lake Coeur D'Alene",
+                "code":"ID"
+            },
+            {
+                "name":"Lake Pend Oreille",
+                "code":"ID"
+            },
+            {
+                "name":"Priest Lake",
+                "code":"ID"
+            },
+            {
+                "name":"Dworshak",
+                "code":"ID"
+            },
+            {
+                "name":"Magic",
+                "code":"ID"
+            },
+            {
+                "name":"Blackfoot",
+                "code":"ID"
+            },
+            {
+                "name":"Oakley",
+                "code":"ID"
+            },
+            {
+                "name":"Salmon Falls",
+                "code":"ID"
+            },
+            {
+                "name":"Brownlee",
+                "code":"ID"
+            },
+            {
+                "name":"Bear Lake",
+                "code":"ID"
+            },
+            {
+                "name":"Montpelier",
+                "code":"ID"
+            },
+            {
+                "name":"Conconully",
+                "code":"WA"
+            },
+            {
+                "name":"Lake Chelan",
+                "code":"WA"
+            },
+            {
+                "name":"Keechelus",
+                "code":"WA"
+            },
+            {
+                "name":"Kachess",
+                "code":"WA"
+            },
+            {
+                "name":"Cle Elum",
+                "code":"WA"
+            },
+            {
+                "name":"Bumping Lake",
+                "code":"WA"
+            },
+            {
+                "name":"Rimrock",
+                "code":"WA"
+            },
+            {
+                "name":"Ross",
+                "code":"WA"
+            },
+            {
+                "name":"Diablo",
+                "code":"WA"
+            },
+            {
+                "name":"Wallowa Lake",
+                "code":"OR"
+            },
+            {
+                "name":"Wolf Creek",
+                "code":"OR"
+            },
+            {
+                "name":"Willow Creek",
+                "code":"OR"
+            },
+            {
+                "name":"Blue River",
+                "code":"OR"
+            },
+            {
+                "name":"Cottage Grove",
+                "code":"OR"
+            },
+            {
+                "name":"Cougar",
+                "code":"OR"
+            },
+            {
+                "name":"Detroit",
+                "code":"OR"
+            },
+            {
+                "name":"Dorena",
+                "code":"OR"
+            },
+            {
+                "name":"Fall Creek",
+                "code":"OR"
+            },
+            {
+                "name":"Fern Ridge",
+                "code":"OR"
+            },
+            {
+                "name":"Applegate",
+                "code":"OR"
+            },
+            {
+                "name":"Lost Creek Res",
+                "code":"OR"
+            },
+            {
+                "name":"Cottonwood",
+                "code":"OR"
+            },
+            {
+                "name":"Abiquiu",
+                "code":"NM"
+            },
+            {
+                "name":"Bluewater Lake",
+                "code":"NM"
+            },
+            {
+                "name":"Brantley Lake",
+                "code":"NM"
+            },
+            {
+                "name":"Cochiti Lake",
+                "code":"NM"
+            },
+            {
+                "name":"Conchas Lake",
+                "code":"NM"
+            },
+            {
+                "name":"Costilla",
+                "code":"NM"
+            },
+            {
+                "name":"Eagle Nest Lake",
+                "code":"NM"
+            },
+            {
+                "name":"El Vado",
+                "code":"NM"
+            },
+            {
+                "name":"Heron",
+                "code":"NM"
+            },
+            {
+                "name":"Lake Avalon",
+                "code":"NM"
+            },
+            {
+                "name":"Lahontan",
+                "code":"NV"
+            },
+            {
+                "name":"Rye Patch",
+                "code":"NV"
+            },
+            {
+                "name":"Big Sand Wash",
+                "code":"UT"
+            },
+            {
+                "name":"Cleveland Lake",
+                "code":"UT"
+            },
+            {
+                "name":"Grantsville",
+                "code":"UT"
+            },
+            {
+                "name":"Gunlock",
+                "code":"UT"
+            },
+            {
+                "name":"Gunnison",
+                "code":"UT"
+            },
+            {
+                "name":"Ken's Lake",
+                "code":"UT"
+            },
+            {
+                "name":"Kolob",
+                "code":"UT"
+            },
+            {
+                "name":"Lower Enterprise",
+                "code":"UT"
+            },
+            {
+                "name":"Miller Flat",
+                "code":"UT"
+            },
+            {
+                "name":"Millsite",
+                "code":"UT"
+            },
+            {
+                "name":"Minersville",
+                "code":"UT"
+            },
+            {
+                "name":"Otter Creek",
+                "code":"UT"
+            },
+            {
+                "name":"Panguitch Lake",
+                "code":"UT"
+            },
+            {
+                "name":"Piute",
+                "code":"UT"
+            },
+            {
+                "name":"Porcupine",
+                "code":"UT"
+            },
+            {
+                "name":"Quail Creek",
+                "code":"UT"
+            },
+            {
+                "name":"Sand Hollow",
+                "code":"UT"
+            },
+            {
+                "name":"Sevier Bridge",
+                "code":"UT"
+            },
+            {
+                "name":"Smith And Morehouse",
+                "code":"UT"
+            },
+            {
+                "name":"Upper Enterprise",
+                "code":"UT"
+            },
+            {
+                "name":"Utah Lake",
+                "code":"UT"
+            },
+            {
+                "name":"Willard Bay",
+                "code":"UT"
+            },
+            {
+                "name":"Woodruff Creek",
+                "code":"UT"
+            },
+            {
+                "name":"Woodruff Narrows",
+                "code":"WY"
+            },
+            {
+                "name":"Bull Lake",
+                "code":"WY"
+            },
+            {
+                "name":"Boysen",
+                "code":"WY"
+            },
+            {
+                "name":"Pilot Butte",
+                "code":"WY"
+            },
+            {
+                "name":"Buffalo Bill",
+                "code":"WY"
+            },
+            {
+                "name":"Keyhole",
+                "code":"WY"
+            },
+            {
+                "name":"Seminoe",
+                "code":"WY"
+            },
+            {
+                "name":"Pathfinder",
+                "code":"WY"
+            },
+            {
+                "name":"Alcova",
+                "code":"WY"
+            },
+            {
+                "name":"Glendo",
+                "code":"WY"
+            },
+            {
+                "name":"Guernsey",
+                "code":"WY"
+            },
+            {
+                "name":"High Savery",
+                "code":"WY"
+            },
+            {
+                "name":"Viva Naughton",
+                "code":"WY"
+            },
+            {
+                "name":"Wheatland #2",
+                "code":"WY"
+            },
+            {
+                "name":"Adobe Creek",
+                "code":"CO"
+            },
+            {
+                "name":"Barr Lake",
+                "code":"CO"
+            },
+            {
+                "name":"Boyd Lake",
+                "code":"CO"
+            },
+            {
+                "name":"Carter Lake",
+                "code":"CO"
+            },
+            {
+                "name":"Clear Creek",
+                "code":"CO"
+            },
+            {
+                "name":"Cobb Lake",
+                "code":"CO"
+            },
+            {
+                "name":"Continental",
+                "code":"CO"
+            },
+            {
+                "name":"Crawford",
+                "code":"CO"
+            },
+            {
+                "name":"Cucharas",
+                "code":"CO"
+            },
+            {
+                "name":"Empire",
+                "code":"CO"
+            },
+            {
+                "name":"Fossil Creek",
+                "code":"CO"
+            },
+            {
+                "name":"Green Mtn",
+                "code":"CO"
+            },
+            {
+                "name":"Groundhog",
+                "code":"CO"
+            },
+            {
+                "name":"Homestake",
+                "code":"CO"
+            },
+            {
+                "name":"Horse Creek",
+                "code":"CO"
+            },
+            {
+                "name":"Horsecreek",
+                "code":"CO"
+            },
+            {
+                "name":"Horsetooth",
+                "code":"CO"
+            },
+            {
+                "name":"Jackson Lk",
+                "code":"CO"
+            },
+            {
+                "name":"John Martin",
+                "code":"CO"
+            },
+            {
+                "name":"Julesberg",
+                "code":"CO"
+            },
+            {
+                "name":"Lake Granby",
+                "code":"CO"
+            },
+            {
+                "name":"Lake Loveland",
+                "code":"CO"
+            },
+            {
+                "name":"Marshall",
+                "code":"CO"
+            },
+            {
+                "name":"Meredith Reservoir",
+                "code":"CO"
+            },
+            {
+                "name":"Milton",
+                "code":"CO"
+            },
+            {
+                "name":"Mountain Home",
+                "code":"CO"
+            },
+            {
+                "name":"Narraguinnep",
+                "code":"CO"
+            },
+            {
+                "name":"Platoro",
+                "code":"CO"
+            },
+            {
+                "name":"Point Of Rocks",
+                "code":"CO"
+            },
+            {
+                "name":"Prewitt",
+                "code":"CO"
+            },
+            {
+                "name":"Pueblo",
+                "code":"CO"
+            },
+            {
+                "name":"Ralph Price",
+                "code":"CO"
+            },
+            {
+                "name":"Rio Grande",
+                "code":"CO"
+            },
+            {
+                "name":"Riverside",
+                "code":"CO"
+            },
+            {
+                "name":"Ruedi",
+                "code":"CO"
+            },
+            {
+                "name":"Sanchez",
+                "code":"CO"
+            },
+            {
+                "name":"Santa Maria",
+                "code":"CO"
+            },
+            {
+                "name":"Shadow Mountain",
+                "code":"CO"
+            },
+            {
+                "name":"Spinney Mountain",
+                "code":"CO"
+            },
+            {
+                "name":"Stagecoach",
+                "code":"CO"
+            },
+            {
+                "name":"Standley",
+                "code":"CO"
+            },
+            {
+                "name":"Terrace",
+                "code":"CO"
+            },
+            {
+                "name":"Trinidad Lake",
+                "code":"CO"
+            },
+            {
+                "name":"Turquoise Lake",
+                "code":"CO"
+            },
+            {
+                "name":"Twin Lakes",
+                "code":"CO"
+            },
+            {
+                "name":"Union",
+                "code":"CO"
+            },
+            {
+                "name":"Windsor",
+                "code":"CO"
+            },
+            {
+                "name":"Wolford Mountain",
+                "code":"CO"
+            }
+        ];
     };
 });

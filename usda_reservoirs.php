@@ -37,7 +37,7 @@ $reservoirs = array(
     "Dorena" => array("station_id" => "14155000", "capacity" => 70500, "state" => "OR"),
     "Fall Creek" => array("station_id" => "14150900", "capacity" => 115500, "state" => "OR"),
     "Fern Ridge" => array("station_id" => "14168000", "capacity" => 109600, "state" => "OR"),
-    "Foster" => array("station_id" => "14186600", "capacity" => 29700, "state" => "OR"),
+   // "Foster" => array("station_id" => "14186600", "capacity" => 29700, "state" => "OR"),
     "Applegate" => array("station_id" => "14361900", "capacity" => 75200, "state" => "OR"),
     "Lost Creek Res" => array("station_id" => "14335040", "capacity" => 315000, "state" => "OR"),
     "Cottonwood" => array("station_id" => "11340000", "capacity" => 8700, "state" => "OR"),
