@@ -73,7 +73,10 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                    .data(stations)
                    .enter()
                    .append("circle")
-                   .attr("class", "map-circle")
+                   .attr("class", function(d) {
+                        var full = chartService.resColors(d.pct_capacity);
+                        return chartService.resColorClass(full) + " map-circle";
+                   })
                    .attr("cx", function(d) {
                        return projection([d.lng, d.lat])[0]; })
                    .attr("cy", function(d) {
@@ -576,7 +579,10 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     .data(stations)
                     .enter()
                     .append("circle")
-                    .attr("class", "map-circle")
+                    .attr("class", function(d) {
+                        var full = chartService.resColors(d.pct_capacity);
+                        return chartService.resColorClass(full) + " map-circle";
+                    })
                     .attr("cx", function(d) {
                         return projection([d.lng, d.lat])[0]; })
                     .attr("cy", function(d) {

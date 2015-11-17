@@ -600,7 +600,9 @@ angular.module('westernWaterApp').service('tipService', function() {
 });
 
 angular.module('westernWaterApp').service('chartService', function() {
-    this.chart = function(selector, graph_height, graph_width, margin, xAxis, yAxis, y_text) {
+    var self = this;
+
+    self.chart = function(selector, graph_height, graph_width, margin, xAxis, yAxis, y_text) {
         var chart = d3.select(selector).append("svg")
             .attr("width", graph_width + margin.left + margin.right)
             .attr("height", graph_height + margin.top + margin.bottom);
@@ -632,14 +634,15 @@ angular.module('westernWaterApp').service('chartService', function() {
         return chart;
     };
 
-    this.legend = function(selector, is_map, check) {
+    self.legend = function(selector, is_map, check) {
         var compare = document.querySelectorAll('#compare_legend .legend');
         if(check && compare.length) return;
 
-        var keys, colors, width;
+        var keys, colors, width, classes;
         if(is_map) {
             keys = ['75%+', '50%+', 'Less than 50%  ', 'Current Level Unavailable'];
             colors = ['green', '#FCE883', 'red', 'gray'];
+            classes = '.full,.low,.okay,.unavailable';
             width = 450;
         } else {
             keys = ['Capacity', 'Avg Levels', 'Current Storage'];
@@ -657,9 +660,11 @@ angular.module('westernWaterApp').service('chartService', function() {
 
         legend.selectAll('g').data(keys)
             .enter()
-            .append('g').attr("width",width)
+            .append('g')
+            .attr("width", width)
             .each(function(d, i) {
                 var g = d3.select(this);
+                g.attr("class", colors[i] + " legend_value")
 
                 g.append("rect")
                     .attr("x", j)
@@ -676,10 +681,18 @@ angular.module('westernWaterApp').service('chartService', function() {
                     .text(d);
 
                 j += (d.length * 5) + 40;
+            }).on("mouseover", function(d) {
+                var selected_class = self.resColorClass(d3.select(this).attr('class'));
+                var hidden = classes.replace('.'+ selected_class + ',', '');
+
+                d3.selectAll(hidden).style('opacity', 0);
+            })
+            .on("mouseout", function(d) {
+               d3.selectAll(classes).style('opacity', 0.7);
             });
     };
 
-    this.resColors = function(d) {
+    self.resColors = function(d) {
         if(d >= 75) {
             return 'green';
         } else if (d >= 50) {
@@ -691,7 +704,19 @@ angular.module('westernWaterApp').service('chartService', function() {
         }
     };
 
-    this.focus = function(chart, single) {
+    self.resColorClass = function(full) {
+        if(/green/.test(full)) {
+            return 'full';
+        } else if(/#FCE883/.test(full)) {
+            return 'okay';
+        } else if(/red/.test(full)) {
+            return 'low';
+        } else {
+            return 'unavailable'
+        }
+    };
+
+    self.focus = function(chart, single) {
         if(single !== undefined) false;
       /*  var focus = chart.selectAll(".focus")
             .data(key_values).enter().append("g")
@@ -726,20 +751,20 @@ angular.module('westernWaterApp').service('chartService', function() {
         return focus;
     };
 
-    this.graphPadding = function(formatting) {
+    self.graphPadding = function(formatting) {
         var graph_padding = moment().add(8, 'month');
         var date_string = (formatting !== undefined) ? 'MM/YY' : 'MM/YYYY';
 
         return graph_padding.format(date_string);
     };
 
-    this.rotate = function() {
+    self.rotate = function() {
         d3.selectAll("g.x text").attr('transform', "rotate(35)")
             .attr('dx', 27)
             .attr('dy', 10);
     };
 
-    this.histAvg = function(data, type) {
+    self.histAvg = function(data, type) {
         var avg = d3.mean(data, function(d) {
             if(type === 'map-graph') {
                 return +d.storage;
@@ -755,13 +780,13 @@ angular.module('westernWaterApp').service('chartService', function() {
         return data;
     };
 
-    this.displayMonth = function() {
+    self.displayMonth = function() {
         var current_date = moment().subtract(1, 'month');
         var today = current_date.format('MM/YYYY');
         return current_date.format('MMMM YYYY');
     };
 
-    this.mapPctFull = function(data, stations, key_used) {
+    self.mapPctFull = function(data, stations, key_used) {
         var sorted = d3.nest()
             .key(function(d) {
                 var res = (!key_used) ? d.reservoir : reservoir_names[d.reservoir];
@@ -771,7 +796,7 @@ angular.module('westernWaterApp').service('chartService', function() {
 
         stations.forEach(function(d) {
             var res_total = _.last(sorted[d.reservoir]); //console.log(res_total)
-      //      if(res_total === undefined) console.log(d.reservoir, d.state);
+           if(res_total === undefined) console.log(d.reservoir, d.state);
             d.pct_capacity = (res_total !== undefined) ? res_total.pct_capacity : undefined;
             d.capacity = (res_total !== undefined) ? res_total.capacity : undefined;
         });
@@ -779,7 +804,7 @@ angular.module('westernWaterApp').service('chartService', function() {
         return stations;
     };
 
-    this.mapScale = function(data, state) {
+    self.mapScale = function(data, state) {
         var vals;
 
         if(state === 'CA') {

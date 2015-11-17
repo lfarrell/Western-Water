@@ -122,3 +122,7 @@ path.snow_avg {
 .hide {
     display: none;
 }
+
+g.legend_value:hover, g.legend_value:focus {
+    cursor: pointer;
+}
