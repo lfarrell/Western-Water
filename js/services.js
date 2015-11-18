@@ -682,13 +682,18 @@ angular.module('westernWaterApp').service('chartService', function() {
 
                 j += (d.length * 5) + 40;
             }).on("mouseover", function(d) {
-                var selected_class = self.resColorClass(d3.select(this).attr('class'));
-                var hidden = classes.replace('.'+ selected_class + ',', '');
+                if(is_map) {
+                    var selected_class = self.resColorClass(d3.select(this).attr('class'));
+                    var hidden = classes.replace('.'+ selected_class + ',', '');
 
-                d3.selectAll(hidden).style('opacity', 0);
+                    d3.selectAll(hidden).style('opacity', 0);
+                }
+
             })
             .on("mouseout", function(d) {
-               d3.selectAll(classes).style('opacity', 0.7);
+               if(is_map) {
+                   d3.selectAll(classes).style('opacity', 0.7);
+               }
             });
     };
 
