@@ -323,7 +323,7 @@ $reservoir_names = [
     "Taylor Park",
     "Fontenelle",
     "Hyrum",
-    "Jackson Gulch",
+    "Jackson Gulch Reservoir",
     "Steinaker",
     "Santa Rosa",
     "Lemon",
