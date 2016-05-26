@@ -801,7 +801,7 @@ angular.module('westernWaterApp').service('chartService', function() {
 
         stations.forEach(function(d) {
             var res_total = _.last(sorted[d.reservoir]); //console.log(res_total)
-           if(res_total === undefined) console.log(d.reservoir, d.state);
+        //   if(res_total === undefined) console.log(d.reservoir, d.state);
             d.pct_capacity = (res_total !== undefined) ? res_total.pct_capacity : undefined;
             d.capacity = (res_total !== undefined) ? res_total.capacity : undefined;
         });
