@@ -892,7 +892,7 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
                     .tspans([
                         "Date: " + d.key,
                         "Snow Water Eqv: " + d.value.toFixed(1) + " inches",
-                        "Pct of 21st Cent. Hist. Avg: " + (d.value / snow_water[0].mean * 100).toFixed(1) + "%"
+                        "Pct of Hist. Avg: " + (d.value / snow_water[0].mean * 100).toFixed(1) + "%"
                     ]);
             }
         });
