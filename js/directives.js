@@ -430,7 +430,7 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     .attr("class", "capacity")
                     .attr("transform", "translate(" + margin.left + "," + margin.top +")");
 
-                var focus = chartService.focus(chart, height - margin.bottom - margin.top);
+                var focus = chartService.focus(chart, height);
 
                 chart.append("rect")
                     .attr("class", "overlay")
@@ -705,17 +705,6 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 /**
                  * Show values on mouseover
                  */
-                var focus = chartService.focus(chart);
-
-                chart.append("rect")
-                    .attr("class", "overlay")
-                    .attr("width", graph_width)
-                    .attr("height", graph_height)
-                    .on("mouseover", function() { focus.style("display", null); })
-                    .on("mouseout", function() { focus.style("display", "none"); })
-                    .on("mousemove", mousemove)
-                    .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
-
             function chart_update(datz) {
                 xScale.domain([
                     d3.min(datz, function(d) { return format(d.date); }),
@@ -735,7 +724,44 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                 chartService.rotate();
             }
 
+            var focus = chartService.focus(chart, graph_height);
+
+            chart.append("rect")
+                .attr("class", "overlay")
+                .attr("width", graph_width)
+                .attr("height", graph_height)
+                .on("mouseover touchstart", function() { focus.style("display", null); })
+                .on("mouseout touchend", function() {
+                    focus.style("display", "none");
+                    tipService.tipHide(tip);
+                })
+                .on("mousemove touchmove", mousemove)
+                .translate([margin.left, margin.top]);
+
             function mousemove() {
+                var x0 = xScale.invert(d3.mouse(this)[0]),
+                    i = bisectDate(state_data, x0, 1),
+                    d0 = state_data[i - 1],
+                    d1 = state_data[i];
+
+                if(d1 === undefined) d1 = Infinity;
+                var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+                var transform_values = [(xScale(format(d.date)) + margin.left), margin.top];
+                d3.select("#graph line.y0").translate(transform_values);
+
+                var date_bits = d.date.split('/');
+                var message = '<h4 class="text-center">' + chartService.stringDate(date_bits[0]) + ', ' + date_bits[1] + '</h4>' +
+                    '<ul class="list-unstyled"' +
+                    '<li>Capacity: ' + StatsService.numFormat(d.capacity) + ' acre ft</li>' +
+                    '<li>Vol: ' + StatsService.numFormat(d.storage) + ' acre ft</li>' +
+                    '<li>Pct Full: ' + d.pct_capacity + '%</li>' +
+                    '<li>Pct of Hist. Avg: ' + (d.storage / state_data[0].mean * 100).toFixed(1) + '%</li>' +
+                    '</ul>';
+
+                tipService.tipShow(tip, message);
+            }
+
+         /*   function mousemove() {
                 var x0 = xScale.invert(d3.mouse(this)[0]),
                     i = bisectDate(state_data, x0, 1),
                     d0 = state_data[i - 1],
@@ -761,7 +787,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                         "Date: " + d.date,
                         "Capacity: " + StatsService.numFormat(d.capacity) + " acre ft"
                     ], -15);
-            }
+            } */
 
         });
      }
