@@ -760,35 +760,6 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
 
                 tipService.tipShow(tip, message);
             }
-
-         /*   function mousemove() {
-                var x0 = xScale.invert(d3.mouse(this)[0]),
-                    i = bisectDate(state_data, x0, 1),
-                    d0 = state_data[i - 1],
-                    d1 = state_data[i];
-
-                if(d1 === undefined) d1 = Infinity;
-                var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-
-                var res_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")";
-                d3.select("circle.y0").attr("transform", res_transform);
-                d3.select("text.y0").attr("transform", res_transform)
-                    .tspans([
-                        "Date: " + d.date,
-                        "Vol: " + StatsService.numFormat(d.storage) + " acre ft",
-                        "Pct Full: " + d.pct_capacity + "%",
-                        "Pct of Hist. Avg: " + (d.storage / state_data[0].mean * 100).toFixed(1) + "%"
-                    ]);
-
-                var cap_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.capacity) + margin.top) + ")";
-                d3.select("#graph circle.y1").attr("transform", cap_transform);
-                d3.select("#graph text.y1").attr("transform", cap_transform)
-                    .tspans([
-                        "Date: " + d.date,
-                        "Capacity: " + StatsService.numFormat(d.capacity) + " acre ft"
-                    ], -15);
-            } */
-
         });
      }
 
@@ -894,18 +865,44 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
                 .attr("transform", "translate(" + margin.left + "," + margin.top +")")
                 .style("stroke-dasharray", "5,5");
 
-            var focus = chartService.focus(chart, true);
+            var focus = chartService.focus(chart, height);
 
             chart.append("rect")
                 .attr("class", "overlay")
                 .attr("width", width)
                 .attr("height", height)
-                .on("mouseover", function() { focus.style("display", null); })
-                .on("mouseout", function() { focus.style("display", "none"); })
-                .on("mousemove", mousemove)
-                .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
+                .on("mouseover touchstart", function() { focus.style("display", null); })
+                .on("mouseout touchend", function() {
+                    focus.style("display", "none");
+                    tipService.tipHide(tip);
+                })
+                .on("mousemove touchmove", mousemove)
+                .translate([margin.left, margin.top]);
 
             var bisectDate = d3.bisector(function(d) { return format(d.key); }).right;
+
+            function mousemove() {
+                var x0 = xScale.invert(d3.mouse(this)[0]),
+                    i = bisectDate(state_data, x0, 1),
+                    d0 = state_data[i - 1],
+                    d1 = state_data[i];
+
+                if(d1 === undefined) d1 = Infinity;
+                var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+                var transform_values = [(xScale(format(d.date)) + margin.left), margin.top];
+                d3.select("#graph line.y0").translate(transform_values);
+
+                var date_bits = d.date.split('/');
+                var message = '<h4 class="text-center">' + chartService.stringDate(date_bits[0]) + ', ' + date_bits[1] + '</h4>' +
+                    '<ul class="list-unstyled"' +
+                    '<li>Capacity: ' + StatsService.numFormat(d.capacity) + ' acre ft</li>' +
+                    '<li>Vol: ' + StatsService.numFormat(d.storage) + ' acre ft</li>' +
+                    '<li>Pct Full: ' + d.pct_capacity + '%</li>' +
+                    '<li>Pct of Hist. Avg: ' + (d.storage / state_data[0].mean * 100).toFixed(1) + '%</li>' +
+                    '</ul>';
+
+                tipService.tipShow(tip, message);
+            }
 
             function mousemove() {
                 var x0 = xScale.invert(d3.mouse(this)[0]),
@@ -915,14 +912,17 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
                 if(d1 === undefined) d1 = Infinity;
                 var d = x0 - d0.key > d1.key - x0 ? d1 : d0;
 
-                var snow_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")";
-                d3.select("#snow_level circle.y0").attr("transform", snow_transform);
-                d3.select("#snow_level text.y0").attr("transform", snow_transform)
-                    .tspans([
-                        "Date: " + d.key,
-                        "Snow Water Eqv: " + d.value.toFixed(1) + " inches",
-                        "Pct of Hist. Avg: " + (d.value / snow_water[0].mean * 100).toFixed(1) + "%"
-                    ]);
+                var snow_transform = [xScale(format(d.key)) + margin.left, margin.top];
+                d3.select("#snow_level line.y0").translate(snow_transform);
+
+                var date_bits = d.key.split('/');
+                var message = '<h4 class="text-center">' + chartService.stringDate(date_bits[0]) + ', ' + date_bits[1] + '</h4>' +
+                    '<ul class="list-unstyled"' +
+                    '<li>Snow Water Eqv: ' + d.value.toFixed(1) + ' inches</li>' +
+                    '<li>Pct of Hist. Avg: ' + (d.value / snow_water[0].mean * 100).toFixed(1) + '%</li>' +
+                    '</ul>';
+
+                tipService.tipShow(tip, message);
             }
         });
     }
@@ -936,11 +936,3 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
         }
     }
 }]);
-/*
-function drawMapForMonth(m){
-    var circle = map.selectAll("circle")
-        .sort(function(a,b){
-            return Math.abs(b[m]) - Math.abs(a[m]);
-        })
-    // etc
-} */
