@@ -9,9 +9,8 @@ The scripts should be run in the following order by hand or as a cron job to pro
 6. usgs_az.php
 7. lower_colorado_az.php
 8. usda_reservoirs.php
-9. state_all.php
-10. merge_all.php
-11. snow_data.php
-12. snow_state_merge.php
-
-Issues with: 193,367,368, 374
+9. lower_colorado.php
+10. state_all.php
+11. merge_all.php
+12. snow_data.php
+13. snow_state_merge.php
