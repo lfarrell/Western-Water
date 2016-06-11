@@ -167,17 +167,6 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     /**
                      * Show values on mouseover
                      */
-                    var focus = chartService.focus(chart);
-
-                    chart.append("rect")
-                        .attr("class", "overlay")
-                        .attr("width", graph_width)
-                        .attr("height", graph_height)
-                        .on("mouseover", function() { focus.style("display", null); })
-                        .on("mouseout", function() { focus.style("display", "none"); })
-                        .on("mousemove", mousemove)
-                        .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
-
                     chart.append("g")
                            .append("path")
                            .attr("d", avg_storage(datz))
@@ -228,34 +217,48 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 d3.select(this).attr("x", d.x = d3.event.x).attr("y", d.y = d3.event.y);
             }
 
+            /**
+             * Add overlay circle & text
+             * @param chart
+             * @returns {CSSStyleDeclaration}
+             */
+
+            var focus = chartService.focus(chart, height - margin.bottom - margin.top);
+
+            chart.append("rect")
+                    .attr("class", "overlay")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .on("mouseover touchstart", function() { focus.style("display", null); })
+                    .on("mouseout touchend", function() {
+                        focus.style("display", "none");
+                        tipService.tipHide(tip);
+                    })
+                    .on("mousemove touchmove", mousemove)
+                    .translate([margin.left, margin.top]);
+
             function mousemove() {
                 var x0 = xScale.invert(d3.mouse(this)[0]),
                     i = bisectDate(datz, x0, 1),
                     d0 = datz[i - 1],
                     d1 = datz[i];
 
-                 if(d1 === undefined) d1 = Infinity;
-                 var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+                if(d1 === undefined) d1 = Infinity;
+                var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+                var transform_values = [(xScale(format(d.date)) + margin.left), margin.top];
+                d3.select("#graph line.y0").translate(transform_values);
 
-                var res_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.storage) + margin.top) + ")";
-                d3.select("#graph circle.y0").attr("transform", res_transform);
-                d3.select("#graph text.y0").attr("transform", res_transform)
-                    .tspans([
-                        "Date: " + d.date,
-                        "Vol: " + StatsService.numFormat(d.storage) + " acre ft",
-                        "Pct Full: " + d.pct_capacity + "%",
-                        "Pct of Hist. Avg: " + (d.storage / d.mean * 100).toFixed(1) + "%"
-                    ]);
+                var date_bits = d.date.split('/');
+                var message = '<h4 class="text-center">' + chartService.stringDate(date_bits[0]) + ', 20' + date_bits[1] + '</h4>' +
+                    '<ul class="list-unstyled"' +
+                    '<li>Capacity: ' + StatsService.numFormat(d.capacity) + ' acre ft</li>' +
+                    '<li>Vol: ' + StatsService.numFormat(d.storage) + ' acre ft</li>' +
+                    '<li>Pct Full: ' + d.pct_capacity + '%</li>' +
+                    '<li>Pct of Hist. Avg: ' + (d.storage / d.mean * 100).toFixed(1) + '%</li>' +
+                    '</ul>';
 
-                var cap_transform = "translate(" + (xScale(format(d.date)) + margin.left) + "," + (yScale(d.capacity) + margin.top) + ")";
-                d3.select("#graph circle.y1").attr("transform", cap_transform);
-                d3.select("#graph text.y1").attr("transform", cap_transform)
-                    .tspans([
-                        "Date: " + d.date,
-                        "Capacity: " + StatsService.numFormat(d.capacity) + " acre ft"
-                    ], -15);
+                tipService.tipShow(tip, message);
             }
-
         });
     }
 

@@ -721,37 +721,31 @@ angular.module('westernWaterApp').service('chartService', function() {
         }
     };
 
-    self.focus = function(chart, single) {
-        if(single !== undefined) false;
-      /*  var focus = chart.selectAll(".focus")
-            .data(key_values).enter().append("g")
-            .attr("class", "focus")
-            .attr("id", function (d) { return "focus-" + d; })
-            .style("display", "none"); */
+    self.stringDate = function(month) {
+        var month_names = ["Jan", "Feb", "Mar",
+            "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep",
+            "Oct", "Nov", "Dec"];
 
+        var month_num = parseInt(month, 10) - 1;
+
+        return month_names[month_num];
+    };
+
+    self.focus = function(chart, height) {
         var focus = chart.append("g")
             .attr("class", "focus")
             .style("display", "none");
 
-        focus.append("circle")
+        focus.append("line")
             .attr("class", "y0")
-            .attr("r", 4.5);
+            .attr({
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2:height
 
-        focus.append("text")
-            .attr("class", "y0")
-            .attr("x", 9)
-            .attr("dy", ".35em");
-
-        if(!single) {
-            focus.append("circle")
-                .attr("class", "y1")
-                .attr("r", 4.5);
-
-            focus.append("text")
-                .attr("class", "y1")
-                .attr("x", 9)
-                .attr("dy", ".35em");
-        }
+            });
 
         return focus;
     };
