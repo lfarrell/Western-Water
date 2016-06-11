@@ -278,7 +278,8 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
         var margin = {top: 20, right: 130, left: 100, bottom: 80},
             width = 600 - margin.left - margin.right,
             height = 550 - margin.top - margin.bottom,
-            format = d3.time.format("%m/%y").parse;
+            format = d3.time.format("%m/%y").parse,
+            tip = tipService.tipDiv();
 
         chartService.legend('#compare_legend', false, true);
 
@@ -419,17 +420,6 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                 /**
                  * Show values on mouseover
                  */
-                var focus = chartService.focus(chart);
-
-                chart.append("rect")
-                    .attr("class", "overlay")
-                    .attr("width", width)
-                    .attr("height", height)
-                    .on("mouseover", function() { focus.style("display", null); })
-                    .on("mouseout", function() { focus.style("display", "none"); })
-                    .on("mousemove", mousemove)
-                    .attr("transform", "translate(" + margin.left+ "," + margin.top + ")");
-
                 var capacity = d3.svg.line()
                     .x(function(d) { return xScale(format(d.key)); })
                     .y(function(d) { return yScale(d.value); });
@@ -439,6 +429,20 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     .attr("d", capacity(each_capacity))
                     .attr("class", "capacity")
                     .attr("transform", "translate(" + margin.left + "," + margin.top +")");
+
+                var focus = chartService.focus(chart, height - margin.bottom - margin.top);
+
+                chart.append("rect")
+                    .attr("class", "overlay")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .on("mouseover touchstart", function() { focus.style("display", null); })
+                    .on("mouseout touchend", function() {
+                        focus.style("display", "none");
+                        tipService.tipHide(tip);
+                    })
+                    .on("mousemove touchmove", mousemove)
+                    .translate([margin.left, margin.top]);
 
                 function mousemove() {
                     var x0 = xScale.invert(d3.mouse(this)[0]),
@@ -452,23 +456,19 @@ angular.module('westernWaterApp').directive('totalsCharts', ['tipService', 'Stat
                     // Get total capacity for the month/year moused over
                     var total_cap = _.filter(each_capacity, function(g) { return g.key === d.key; });
 
-                    var res_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.value) + margin.top) + ")";
-                    d3.select(selector + " circle.y0").attr("transform", res_transform);
-                    d3.select(selector + " text.y0").attr("transform", res_transform)
-                        .tspans([
-                            "Date: " + d.key,
-                            "Vol: " + StatsService.numFormat(d.value) + " acre ft",
-                            "Pct Full: " + (d.value / total_cap[0].value * 100).toFixed(1) + "%",
-                            "Pct of Hist. Avg: " + (d.value / each_res[0].mean * 100).toFixed(1) + "%"
-                        ]);
+                    var transform_values = [(xScale(format(d.key)) + margin.left), margin.top];
+                    d3.select(selector + " line.y0").translate(transform_values);
 
-                    var cap_transform = "translate(" + (xScale(format(d.key)) + margin.left) + "," + (yScale(d.cap) + margin.top) + ")";
-                    d3.select(selector + " circle.y1").attr("transform", cap_transform);
-                    d3.select(selector + " text.y1").attr("transform", cap_transform)
-                        .tspans([
-                            "Date: " + d.key,
-                            "Vol: " + StatsService.numFormat(d.cap) + " acre ft"
-                        ], -15);
+                    var date_bits = d.key.split('/');
+                    var message = '<h4 class="text-center">' + chartService.stringDate(date_bits[0]) + ', 20' + date_bits[1] + '</h4>' +
+                        '<ul class="list-unstyled"' +
+                        '<li>Capacity: ' +  StatsService.numFormat(d.cap) + ' acre ft</li>' +
+                        '<li>Vol: ' + StatsService.numFormat(d.value) + ' acre ft</li>' +
+                        '<li>Pct Full: ' + (d.value / total_cap[0].value * 100).toFixed(1) + '%</li>' +
+                        '<li>Pct of Hist. Avg: ' + (d.value / each_res[0].mean * 100).toFixed(1) + '%</li>' +
+                        '</ul>';
+
+                    tipService.tipShow(tip, message);
                 }
             }
         });
