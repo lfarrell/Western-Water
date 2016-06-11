@@ -583,7 +583,7 @@ angular.module('westernWaterApp').service('tipService', function() {
 
     this.tipShow = function(tip, text) {
         tip.transition()
-            .duration(200)
+            .duration(100)
             .style("opacity", .9);
 
         tip.html(text)
