@@ -785,7 +785,7 @@ angular.module('westernWaterApp').service('chartService', function() {
         return current_date.format('MMMM YYYY');
     };
 
-    self.mapPctFull = function(data, stations, key_used) {
+    self.mapPctFull = function(data, stations, key_used, filter) {
         var sorted = d3.nest()
             .key(function(d) {
                 var res = (!key_used) ? d.reservoir : reservoir_names[d.reservoir];
@@ -793,8 +793,22 @@ angular.module('westernWaterApp').service('chartService', function() {
             })
             .map(data);
 
+        function lastValue(array_values) {
+            return _.last(array_values);
+        }
+
         stations.forEach(function(d) {
-            var res_total = _.last(sorted[d.reservoir]); //console.log(res_total)
+            var res_total;
+
+            if(filter) {
+                res_total = _.findWhere(sorted[d.reservoir], { date: filter});
+                if(typeof res_total === 'undefined') {
+                    res_total = lastValue(sorted[d.reservoir]);
+                }
+            } else {
+                res_total = lastValue(sorted[d.reservoir]);
+            }
+
         //   if(res_total === undefined) console.log(d.reservoir, d.state);
             d.pct_capacity = (res_total !== undefined) ? res_total.pct_capacity : undefined;
             d.capacity = (res_total !== undefined) ? res_total.capacity : undefined;

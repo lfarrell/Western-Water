@@ -14,8 +14,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             var map_data = values[0];
             var stations = values[1];
             var data = values[2];
-
-            stations = chartService.mapPctFull(data, stations, true);
+            var full_date = scope.$root.full_date;
 
             stations.sort(function(a,b) {
                 var a_cap = +a.capacity;
@@ -28,6 +27,8 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     return 0;
                 }
             });
+
+            stations = chartService.mapPctFull(data, stations, true, full_date);
 
             chartService.legend('#map_legend', true);
 

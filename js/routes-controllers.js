@@ -8,6 +8,10 @@ angular.module('westernWaterApp').config(function($routeProvider) {
             templateUrl: 'partials/main.html',
             controller: 'mainController'
         })
+        .when('/year/:year/month/:month', {
+            templateUrl: 'partials/main.html',
+            controller: 'mainController'
+        })
         .when('/arizona', {
             templateUrl: 'partials/arizona.html',
             controller: 'arizonaController'
@@ -64,7 +68,10 @@ angular.module('westernWaterApp').config(function($routeProvider) {
 angular.module('westernWaterApp').controller('aboutController', ['$scope', function($scope) {
 }]);
 
-angular.module('westernWaterApp').controller('mainController', ['$scope', 'LoadService', function($scope, LoadService) {
+angular.module('westernWaterApp').controller('mainController', ['$scope', '$rootScope', '$routeParams', 'LoadService', function($scope, $rootScope, $routeParams, LoadService) {
+
+    $rootScope.full_date = (typeof $routeParams.month !== 'undefined' && typeof $routeParams.year !== 'undefined') ?
+        $routeParams.month + '/' + $routeParams.year : false;
     LoadService.data_load(
         $scope,
         'js/maps/contig_us.geo.json',
