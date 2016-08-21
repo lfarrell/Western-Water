@@ -697,6 +697,49 @@ angular.module('westernWaterApp').service('chartService', function() {
             });
     };
 
+    self.capLegend = function(selector) {
+        var compare = document.querySelectorAll('#capacity_legend .legend');
+        if(compare.length) return;
+
+        var vals = _.range(3, 25, 5);
+        var width = 350;
+        var spacing = [60, 80, 110, 150, 200];
+
+        var legend = d3.select(selector)
+            .append("svg")
+            .attr("width", width)
+            .attr("height", 55)
+            .attr("class", "legend");
+
+        legend.append("text")
+            .attr("x", 1)
+            .attr("y", 35)
+            .attr("height",30)
+            .attr("width", 25)
+            .text("Smaller");
+
+        legend.selectAll('g').data(vals)
+            .enter()
+            .append('g')
+            .attr("width", width)
+            .each(function(d, i) {
+                var g = d3.select(this);
+
+                g.append("circle")
+                    .attr("cx", spacing[i])
+                    .attr("cy", 15)
+                    .attr("r", function(d) { return d; })
+                    .translate([0, 15]);
+            });
+
+        legend.append("text")
+            .attr("x", 233)
+            .attr("y", 35)
+            .attr("height",30)
+            .attr("width", 25)
+            .text("Greater");
+    };
+
     self.resColors = function(d) {
         if(d >= 75) {
             return 'green';
@@ -795,7 +838,7 @@ angular.module('westernWaterApp').service('chartService', function() {
 
         stations.forEach(function(d) {
             var res_total = _.last(sorted[d.reservoir]); //console.log(res_total)
-        //   if(res_total === undefined) console.log(d.reservoir, d.state);
+         //  if(res_total === undefined) console.log(d.reservoir, d.state);
             d.pct_capacity = (res_total !== undefined) ? res_total.pct_capacity : undefined;
             d.capacity = (res_total !== undefined) ? res_total.capacity : undefined;
         });

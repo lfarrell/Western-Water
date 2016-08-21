@@ -29,19 +29,20 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 }
             });
 
+            var mapScale = chartService.mapScale(data);
+
             chartService.legend('#map_legend', true);
+            chartService.capLegend('#capacity_legend');
 
             var today_words = chartService.displayMonth();
             d3.select("#map_month").html('(' + today_words + ')');
-
-            var mapScale = chartService.mapScale(data);
 
             var projection = d3.geo.albers()
                         .rotate([96, 0])
                         .center([-.6, 38.7])
                         .parallels([29.5, 45.5])
                             .scale(925)
-                        .translate([width / 2, height / 2])
+                        .translate([width / 2, height / 2.3])
                         .precision(.1),
                     path = d3.geo.path().projection(projection);
 
@@ -517,6 +518,8 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             });
 
             chartService.legend('#map_legend', true);
+            chartService.capLegend('#capacity_legend');
+
             var today_words = chartService.displayMonth();
             d3.select("#map_month").html('(' + today_words + ')');
 
@@ -546,6 +549,10 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
                     offset = 350;
                 } else if(state === 'utah' || state === 'ca') {
                     offset = 288;
+                } else if(state === 'wa') {
+                    offset = 180;
+                } else if(state === 'nv') {
+                    offset = 200;
                 } else {
                     offset = 250;
                 }

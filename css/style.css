@@ -29,8 +29,18 @@ h1, h2 {
     text-align: center;
 }
 
-h3, #res_legend, #compare_legend, #map_legend, .center {
+h3, #res_legend, #compare_legend, #map_legend, #capacity_legend, .center {
     text-align: center;
+}
+
+#cap_legend_text {
+    margin-top: -20px;
+}
+
+#capacity_legend circle {
+    fill: none;
+    stroke: white;
+    stroke-width: 1.5;
 }
 
 .axis path,
