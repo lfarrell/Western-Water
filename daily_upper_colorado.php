@@ -5,88 +5,86 @@ date_default_timezone_set('America/New_York');
 
 /**
  * Upper Colorado Basin Reservoirs
- * http://www.usbr.gov/uc/water/rsvrs/ops/r40day.html
+ * http://www.usbr.gov/rsvrWater/faces/rsvr40Day.xhtml?siteid=918
  */
 
-//$base = "http://www.usbr.gov/uc/water/rsvrs/ops/crsp_40_bmr.html";
-
 $reservoirs = array(
-    "Blue Mesa Reservoir"=>array("940800","CO","bmr"),
-    "Big Sandy Reservoir"=>array("38300","WY","bsr"),
+    "Blue Mesa Reservoir"=>array("940800","CO","913"),
+    "Big Sandy Reservoir"=>array("38300","WY","936"),
     // "Brantley Reservoir" => "bt",
-    "Caballo Reservoir"=>array("343990","NM","ca"),
-    "Causey Reservoir"=>array("8730","UT","cy"),
-    "Currant Creek Reservoir"=>array("15670","UT","cc"),
-    "Crystal Reservoir"=>array("17540","CO","cr"),
-    "Deer Creek Reservoir"=>array("152570","UT","dc"),
-    "East Canyon Reservoir"=>array("51200","UT","ec"),
-    "Echo Reservoir"=>array("74000","UT","eo"),
+    "Caballo Reservoir"=>array("343990","NM","1094"),
+    "Causey Reservoir"=>array("8730","UT","938"),
+    "Currant Creek Reservoir"=>array("15670","UT","952"),
+    "Crystal Reservoir"=>array("17540","CO","915"),
+    "Deer Creek Reservoir"=>array("152570","UT","953"),
+    "East Canyon Reservoir"=>array("51200","UT","940"),
+    "Echo Reservoir"=>array("74000","UT","941"),
     //   "Eden Reservoir" => "er",
-    "Elephant Butte Reservoir"=>array("2065010","NM","eb"),
-    "Flaming Gorge Reservoir"=>array("3788700","UT","fgd"),
-    "Fontenelle Reservoir"=>array("345360","WY","fn"),
-    "Fruitgrowers Reservoir"=>array("4540","CO","fgc"),
-    "Huntington North Reservoir"=>array("5420","UT","hn"),
-    "Hyrum Reservoir"=>array("18685","UT","hy"),
-    "Jordanelle Reservoir"=>array("320300","UT","jr"),
-    "Lake Powell"=>array("24322000","AZ&UT","gc"),
-    "Lemon Reservoir"=>array("39792","CO","lr"),
-    "Lost Creek Reservoir"=>array("22510","UT","lc"),
+    "Elephant Butte Reservoir"=>array("2065010","NM","1119"),
+    "Flaming Gorge Reservoir"=>array("3788700","UT","917"),
+    "Fontenelle Reservoir"=>array("345360","WY","916"),
+    "Fruitgrowers Reservoir"=>array("4540","CO","955"),
+    "Huntington North Reservoir"=>array("5420","UT","956"),
+    "Hyrum Reservoir"=>array("18685","UT","957"),
+    "Jordanelle Reservoir"=>array("320300","UT","964"),
+    "Lake Powell"=>array("24322000","AZ&UT","919"),
+    "Lemon Reservoir"=>array("39792","CO","934"),
+    "Lost Creek Reservoir"=>array("22510","UT","942"),
     //  "Lost Lake" => "ll",*/
-    "McPhee Reservoir"=>array("381100","CO","mr"),
-    "Meeks Cabin Reservoir"=>array("32470","WY","mc"),
-    "Morrow Point Reservoir"=>array("117025","CO","mpr"),
-    "Moon Lake Reservoir"=>array("49500","UT","ml"),
-    "Navajo Reservoir"=>array("1708600","CO","nr"),
-    "Newton Reservoir"=>array("5600","UT","nw"),
-    "Paonia Reservoir"=>array("20950","CO","po"),
-    "Pineview Reservoir"=>array("110150","UT","pv"),
-    "Red Fleet Reservoir"=>array("26000","UT","rf"),
-    "Rifle Gap Reservoir"=>array("12168","CO","rg"),
-    "Rockport Reservoir"=>array("62100","UT","rp"),
-    "Ridgway Reservoir"=>array("84230","CO","rw"),
-    "Scofield Reservoir"=>array("73600","UT","sf"),
-    "Silver Jack Reservoir"=>array("12820","CO","sj"),
-    "Stateline Reservoir"=>array("12000","UT","sl"),
-    "Strawberry Reservoir"=>array("1106500","UT","sw"),
-    "Starvation Reservoir"=>array("167310","UT","sv"),
-    "Steinaker Reservoir"=>array("38173","UT","sk"),
-    "Taylor Park Reservoir"=>array("106200","CO","tpr"),
+    "McPhee Reservoir"=>array("381100","CO","958"),
+    "Meeks Cabin Reservoir"=>array("32470","WY","944"),
+    "Morrow Point Reservoir"=>array("117025","CO","914"),
+    "Moon Lake Reservoir"=>array("49500","UT","930"),
+    "Navajo Reservoir"=>array("1708600","CO","920"),
+    "Newton Reservoir"=>array("5600","UT","959"),
+    "Paonia Reservoir"=>array("20950","CO","945"),
+    "Pineview Reservoir"=>array("110150","UT","946"),
+    "Red Fleet Reservoir"=>array("26000","UT","960"),
+    "Rifle Gap Reservoir"=>array("12168","CO","961"),
+    "Rockport Reservoir"=>array("62100","UT","947"),
+    "Ridgway Reservoir"=>array("84230","CO","948"),
+    "Scofield Reservoir"=>array("73600","UT","931"),
+    "Silver Jack Reservoir"=>array("12820","CO","939"),
+    "Stateline Reservoir"=>array("12000","UT","949"),
+    "Strawberry Reservoir"=>array("1106500","UT","929"),
+    "Starvation Reservoir"=>array("167310","UT","928"),
+    "Steinaker Reservoir"=>array("38173","UT","927"),
+    "Taylor Park Reservoir"=>array("106200","CO","912"),
     //   "Trial Lake" => "tl",
-    "Upper Stillwater Reservoir"=>array("33123","UT","us"),
-    "Vallecito Reservoir"=>array("125400","CO","vr"),
+    "Upper Stillwater Reservoir"=>array("33123","UT","963"),
+    "Vallecito Reservoir"=>array("125400","CO","933"),
     //  "Washington Lake" => "wl",
     //  "Willard Bay Reservoir" => "wb"
 );
 
-$last_month = date("m", strtotime("first day of previous month"));
+$last_month = date("M", strtotime("first day of previous month"));
 $last_month_full = date("m/Y", strtotime("first day of previous month"));
+
 foreach($reservoirs as $key => $reservoir) {
-    $url = "http://www.usbr.gov/uc/water/rsvrs/ops/crsp_40_" . $reservoir[2] . ".html";
+    $url = "http://www.usbr.gov/rsvrWater/faces/rsvr40Day.xhtml?siteid=" . $reservoir[2];
     $html = file_get_html($url);
 
-    $full_data = $html->find('pre');
+    $full_data = $html->find('tbody tr');
     $file_base = str_replace(' ', '_', strtolower($key));
     $fh = fopen('data/uc_daily/' . $file_base . '.csv', 'wb');
-   // fputcsv($fh, array('reservoir', 'storage', 'capacity', 'pct_full', 'date', 'state'));
+    fputcsv($fh, array('reservoir', 'storage', 'capacity', 'pct_full', 'date', 'state'));
+
     foreach($full_data as $row) {
-        $updated_row = preg_replace('/\s{2,}/', '@@', $row);
-        $chunked_datas = array_chunk(explode('@@', $updated_row), 5);
+       $date = $row->find('td',0)->plaintext;
+       $date_parts = preg_split('/-/', $date);
+       $af = $row->find('td',2)->plaintext;
 
-        foreach($chunked_datas as $chunked_data) {
-            $needed_month = preg_split('/-/', $chunked_data[1]);
-            if(preg_match('/\d{2}-\w{3}/', $chunked_data[1]) && months($needed_month[1]) == $last_month) {
-                $date_format = explode('-', $chunked_data[1]);
-                $formatted_date = months($date_format[1]) . '/' . $date_format[0] . '/' . $date_format[2];
-                if($key != 'Lost Creek Reservoir') {
-                    $res_name = str_ireplace('reservoir', '', $key);
-                } else {
-                    $res_name = $key;
-                }
+       if($date_parts[1] == $last_month) {
+           $acre_feet = $row->find('td',2)->plaintext;
+           $formatted_date = months($date_parts[1]) . '/' . $date_parts[0] . '/' . $date_parts[2];
+           if($key != 'Lost Creek Reservoir') {
+               $res_name = str_ireplace('reservoir', '', $key);
+           } else {
+               $res_name = $key;
+           }
 
-                fputcsv($fh, array(trim($res_name), $chunked_data[3], $reservoir[0], '', $formatted_date, $reservoir[1]));
-            }
-        }
+           fputcsv($fh, array(trim($res_name), $af, $reservoir[0], '', $formatted_date, $reservoir[1]));
+       }
     }
     fclose($fh);
     echo $key . " processed\n";
@@ -122,40 +120,40 @@ foreach($files as $file) {
 
 function months($date) {
     switch($date) {
-        case 'JAN':
+        case 'Jan':
             return '01';
             break;
-        case 'FEB':
+        case 'Feb':
             return '02';
             break;
-        case 'MAR':
+        case 'Mar':
             return '03';
             break;
-        case 'APR':
+        case 'Apr':
             return '04';
             break;
-        case 'MAY':
+        case 'May':
             return '05';
             break;
-        case 'JUN':
+        case 'Jun':
             return '06';
             break;
-        case 'JUL':
+        case 'Jul':
             return '07';
             break;
-        case 'AUG':
+        case 'Aug':
             return '08';
             break;
-        case 'SEP':
+        case 'Sep':
             return '09';
             break;
-        case 'OCT':
+        case 'Oct':
             return '10';
             break;
-        case 'NOV':
+        case 'Nov':
             return '11';
             break;
-        case 'DEC':
+        case 'Dec':
             return '12';
             break;
     }
