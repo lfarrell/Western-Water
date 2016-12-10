@@ -149,6 +149,9 @@ $reservoirs = array(
     "Wolford Mountain" => array("station_id" => "09041395", "capacity" => 65900, "state" => "CO")
 );
 
+$current_month = date('m', strtotime('this month'));
+$current_year = date('Y', strtotime('this month'));
+
 foreach($reservoirs as $res_name => $res) {
     $url = "http://www.wcc.nrcs.usda.gov/reportGenerator/view_csv/customCalendarYearGroupByMonthReport/monthly/" . $res['station_id'] . ":" . $res['state'] .":BOR|id=%22%22|name/POR_BEGIN,POR_END/RESC::value";
     $res_name_format = preg_replace('/(\s+|\'|#)/', '_', $res_name);
@@ -168,9 +171,9 @@ foreach($reservoirs as $res_name => $res) {
                     $pct_capacity = round(($data[$c] / $res['capacity']) * 100, 1);
                     $month = ($c < 10) ? '0' . $c : $c;
 
+                    if($month == $current_month && $data[0] == $current_year) continue;
                     fputcsv($fh, array($res_name, $data[$c], $res['capacity'], $pct_capacity, $month . '/' . $data[0], $res['state']));
                 }
-
             }
         }
         fclose($handle);
