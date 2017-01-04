@@ -61,8 +61,8 @@ $last_month = date("M", strtotime("first day of previous month"));
 $last_month_full = date("m/Y", strtotime("first day of previous month"));
 
 foreach($reservoirs as $key => $reservoir) {
-    $url = "http://www.usbr.gov/rsvrWater/faces/rsvr40Day.xhtml?siteid=" . $reservoir[2];
-    $html = file_get_html($url);
+    $url = "https://www.usbr.gov/rsvrWater/rsv40Day.html?siteid=" . $reservoir[2] . "&reservoirtype=Reservoir";
+    $html = file_get_html($url, true);
 
     $full_data = $html->find('tbody tr');
     $file_base = str_replace(' ', '_', strtolower($key));

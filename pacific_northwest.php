@@ -62,8 +62,8 @@ foreach($stations as $station_code => $station) {
     $fh = fopen('data/pn/' . $station_code . '.csv', 'a');
   //  fputcsv($fh, array('reservoir', 'storage' ,'capacity' ,'pct_capacity', 'date', 'state'));
 
-    $url = "http://www.usbr.gov/pn-bin/webarccsv.pl?station=$station_code&format=3&year=" . $date_bits[1] . "&month=+" . $month_num . "&day=+1&year=" . $date_bits[1] . "&month=+$month_num&day=$days&pcode=AF";
-    $html = file_get_html($url);
+    $url = "https://www.usbr.gov/pn-bin/webarccsv.pl?station=$station_code&format=3&year=" . $date_bits[1] . "&month=+" . $month_num . "&day=+1&year=" . $date_bits[1] . "&month=+$month_num&day=$days&pcode=AF";
+    $html = file_get_html($url, true);
 
     foreach($html->find('tr') as $row) {
         $full_date = $row->find('td',0);
