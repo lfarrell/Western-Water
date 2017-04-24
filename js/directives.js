@@ -782,7 +782,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
         }
     }
 }]);
-
+/*
 angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'chartService', 'tipService', function(StatsService, chartService, tipService) {
     function link(scope, element, attrs) {
         var margin = {top: 20, right: 150, left: 100, bottom: 80},
@@ -942,4 +942,4 @@ angular.module('westernWaterApp').directive('snowCharts', ['StatsService', 'char
             'state': '@'
         }
     }
-}]);
+}]); */

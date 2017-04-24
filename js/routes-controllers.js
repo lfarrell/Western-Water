@@ -80,7 +80,7 @@ angular.module('westernWaterApp').controller('arizonaController', ['$scope', 'Lo
         'js/maps/az.counties.json',
         'station_data/az.csv',
         'data/states_all/az_all.csv',
-        'data/az_snow/all_az.csv'
+        false
     );
 }]);
 
@@ -90,7 +90,7 @@ angular.module('westernWaterApp').controller('californiaController', ['$scope', 
         'js/maps/ca.counties.json',
         'station_data/ca.csv',
         'data/states_all/ca_all.csv',
-        'data/cal_snow/all_cal.csv'
+        false
     );
 }]);
 
@@ -100,7 +100,7 @@ angular.module('westernWaterApp').controller('coloradoController', ['$scope', 'L
         'js/maps/co.counties.json',
         'station_data/co.csv',
         'data/states_all/co_all.csv',
-        'data/co_snow/all_co.csv'
+        false
     );
 }]);
 
@@ -110,7 +110,7 @@ angular.module('westernWaterApp').controller('idahoController', ['$scope','LoadS
         'js/maps/id.counties.json',
         'station_data/id.csv',
         'data/states_all/id_all.csv',
-        'data/id_snow/all_id.csv'
+        false
     );
 }]);
 
@@ -120,7 +120,7 @@ angular.module('westernWaterApp').controller('nevadaController', ['$scope', 'Loa
         'js/maps/nv.counties.json',
         'station_data/nv.csv',
         'data/states_all/nv_all.csv',
-        'data/nv_snow/all_nv.csv'
+        false
     );
 }]);
 
@@ -130,7 +130,7 @@ angular.module('westernWaterApp').controller('newmexicoController', ['$scope', '
         'js/maps/nm.counties.json',
         'station_data/nm.csv',
         'data/states_all/nm_all.csv',
-        'data/nm_snow/all_nm.csv'
+        false
     );
 }]);
 
@@ -140,7 +140,7 @@ angular.module('westernWaterApp').controller('oregonController', ['$scope', 'Loa
         'js/maps/or.counties.json',
         'station_data/or.csv',
         'data/states_all/or_all.csv',
-        'data/or_snow/all_or.csv'
+        false
     );
 }]);
 
@@ -160,7 +160,7 @@ angular.module('westernWaterApp').controller('utahController', ['$scope', 'LoadS
         'js/maps/ut.counties.json',
         'station_data/utah.csv',
         'data/states_all/utah_all.csv',
-        'data/utah_snow/all_utah.csv'
+        false
     );
 }]);
 
@@ -170,7 +170,7 @@ angular.module('westernWaterApp').controller('washingtonController', ['$scope', 
         'js/maps/wa.counties.json',
         'station_data/wa.csv',
         'data/states_all/wa_all.csv',
-        'data/wa_snow/all_wa.csv'
+        false
     );
 }]);
 
@@ -180,6 +180,6 @@ angular.module('westernWaterApp').controller('wyomingController', ['$scope', 'Lo
         'js/maps/wy.counties.json',
         'station_data/wy.csv',
         'data/states_all/wy_all.csv',
-        'data/wy_snow/all_wy.csv'
+        false
     );
 }]);
