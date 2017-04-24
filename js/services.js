@@ -641,12 +641,12 @@ angular.module('westernWaterApp').service('chartService', function() {
         var keys, colors, width, classes;
         if(is_map) {
             keys = ['75%+', '50%+', 'Less than 50%  ', 'Current Level Unavailable'];
-            colors = ['green', '#FCE883', 'red', 'gray'];
+            colors = ['#1a9641', '#FCE883', '#d7191c', 'gray'];
             classes = '.full,.low,.okay,.unavailable';
             width = 450;
         } else {
             keys = ['Capacity', 'Avg Levels', 'Current Storage'];
-            colors = ['green', '#FCE883', 'steelblue'];
+            colors = ['#1a9641', '#FCE883', 'steelblue'];
             width = 300;
         }
 
@@ -742,22 +742,22 @@ angular.module('westernWaterApp').service('chartService', function() {
 
     self.resColors = function(d) {
         if(d >= 75) {
-            return 'green';
+            return '#1a9641';
         } else if (d >= 50) {
             return '#FCE883';
         } else if (d < 50) {
-            return 'red';
+            return '#d7191c';
         } else {
             return 'lightgray';
         }
     };
 
     self.resColorClass = function(full) {
-        if(/green/.test(full)) {
+        if(/#1a9641/.test(full)) {
             return 'full';
         } else if(/#FCE883/.test(full)) {
             return 'okay';
-        } else if(/red/.test(full)) {
+        } else if(/#d7191c/.test(full)) {
             return 'low';
         } else {
             return 'unavailable'
@@ -846,17 +846,10 @@ angular.module('westernWaterApp').service('chartService', function() {
         return stations;
     };
 
-    self.mapScale = function(data, state) {
-        var vals;
-
-        if(state === 'CA') {
-            vals = [2, 7];
-        } else {
-            vals = [3, 8];
-        }
-        return d3.scale.linear()
+    self.mapScale = function(data) {
+        return d3.scale.sqrt()
             .domain(d3.extent(data, function(d) { return d.capacity * .2; }))
-            .range(vals);
+            .range([2, 12]);
     };
 });
 

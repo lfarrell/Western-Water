@@ -3,7 +3,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
         var margin = {top: 20, right: 130, left: 100, bottom: 80},
             height = 600 - margin.top - margin.bottom,
             width = 900 - margin.left - margin.right,
-            graph_width = 550 - margin.left - margin.right,
+            graph_width = 650 - margin.left - margin.right,
             graph_height = 500 - margin.top - margin.bottom,
             format = d3.time.format("%m/%y").parse,
             tip = tipService.tipDiv();
@@ -41,7 +41,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                         .rotate([96, 0])
                         .center([-.6, 38.7])
                         .parallels([29.5, 45.5])
-                            .scale(925)
+                            .scale(825)
                         .translate([width / 2, height / 2.3])
                         .precision(.1),
                     path = d3.geo.path().projection(projection);
@@ -523,7 +523,7 @@ angular.module('westernWaterApp').directive('stateGraph', ['tipService', 'StatsS
             var today_words = chartService.displayMonth();
             d3.select("#map_month").html('(' + today_words + ')');
 
-            var mapScale = chartService.mapScale(data, state);
+            var mapScale = chartService.mapScale(data);
 
             var filtered = data.filter(function(d) { return d.reservoir === res; });
             state_data = chartService.histAvg(filtered, 'map-graph');
