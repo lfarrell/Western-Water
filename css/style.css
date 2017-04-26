@@ -53,8 +53,10 @@ h3, #res_legend, #compare_legend, #map_legend, #capacity_legend, .center {
 
 #map path {
     /* fill: #d7c7ad; */
-    fill: none;
+    fill-opacity: 0.1;
+    fill: white;
     stroke: white;
+    stroke-opacity: 0.4;
     stroke-width: 1;
 }
 
