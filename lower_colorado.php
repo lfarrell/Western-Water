@@ -14,6 +14,9 @@ $reservoirs = array(
     'HVS' => array('capacity' => 619400, 'state' => 'AZ'),
 );
 
+// http://bit.ly/2prLxRL Persistent link to get acre feet data from USBR for above reservoirs
+// http://bit.ly/2prIt8p Persistent link for all other reservoirs AF plus AF evaporated
+
 $day = date('d-M-Y+H:i');
 $last_month = date("m/Y", strtotime("first day of previous month"));
 $date_bits = preg_split('/\//', $last_month);
