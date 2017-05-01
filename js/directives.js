@@ -15,21 +15,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
             var stations = values[1];
             var data = values[2];
 
-            stations = chartService.mapPctFull(data, stations, true);
-
-            stations.sort(function(a,b) {
-                var a_cap = +a.capacity;
-                var b_cap = +b.capacity;
-                if(b_cap < a_cap) {
-                    return -1;
-                } else if(b_cap > a_cap) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            });
-
-            var mapScale = chartService.mapScale(data);
+            var mapScale = chartService.mapScale(stations);
 
             chartService.legend('#map_legend', true);
             chartService.capLegend('#capacity_legend');
@@ -74,18 +60,16 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                    .data(stations)
                    .enter()
                    .append("circle")
-                   .attr("class", function(d) {
-                        var full = chartService.resColors(d.pct_capacity);
+                   .attr("class", function(d,i) {
+                        var full = chartService.resColors(stations[i].capacity);
                         return chartService.resColorClass(full) + " map-circle";
                    })
                    .attr("cx", function(d) {
                        return projection([d.lng, d.lat])[0]; })
                    .attr("cy", function(d) {
                         return projection([d.lng, d.lat])[1]; })
-                   .attr("r", function(d) {
-                      //  console.log(map_scale(d.capacity))
-                      //  return map_scale(d.capacity);
-                        return mapScale(d.capacity);
+                   .attr("r", function(d, i) {
+                        return mapScale(stations[i].capacity);
                    })
                    .style("fill", function(d) {
                         return chartService.resColors(d.pct_capacity);
@@ -99,19 +83,19 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
 
                         chart_update(datz);
                     })
-                    .on("mouseover", function(d) {
+                    .on("mouseover", function(d,i) {
                         var text =  d.reservoir;
                         tipService.tipShow(tip, text);
 
                         d3.select(this).attr('r', function(d) {
-                            return mapScale(d.capacity) * 1.5;
+                            return mapScale(stations[i].capacity) * 1.5;
                         });
                     })
-                    .on("mouseout", function(d) {
+                    .on("mouseout", function(d,i) {
                         tipService.tipHide(tip);
 
                         d3.select(this).attr('r', function(d) {
-                            return mapScale(d.capacity);
+                            return mapScale(stations[i].capacity);
                         });
                     });
 
@@ -125,7 +109,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 ]);
 
                 var yScale = d3.scale.linear()
-                    .domain([d3.max(datz, function(d) { return d.capacity; }) * 1.2, 0])
+                    .domain([d3.max(datz, function(d,i) { return stations[d.reservoir].capacity; }) * 1.2, 0])
                     .range([0, graph_height]);
 
                 var bisectDate = d3.bisector(function(d) { return format(d.date); }).right;
@@ -151,7 +135,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
 
                 var capacity = d3.svg.line()
                     .x(function(d) { return xScale(format(d.date)); })
-                    .y(function(d) { return yScale(d.capacity); });
+                    .y(function(d) { return yScale(stations[d.reservoir].capacity); });
 
                 chartService.legend('#res_legend');
                 var chart = chartService.chart("#graph", graph_height, graph_width, margin, xAxis, yAxis, 'Acre Feet');
@@ -192,7 +176,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                     d3.min(datz, function(d) { return format(d.date); }),
                     d3.max(datz, function(d) { return format(chartService.graphPadding(true)); })
                 ]);
-                yScale.domain([d3.max(datz, function(d) { return d.capacity; }) * 1.2, 0]);
+                yScale.domain([d3.max(datz, function(d) { return stations[d.reservoir].capacity; }) * 1.2, 0]);
 
                 d3.select("g.x").transition().duration(1000).ease("sin-in-out").call(xAxis);
                 d3.select("g.y").transition().duration(1000).ease("sin-in-out").call(yAxis);
@@ -252,7 +236,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
                 var date_bits = d.date.split('/');
                 var message = '<h4 class="text-center">' + chartService.stringDate(date_bits[0]) + ', 20' + date_bits[1] + '</h4>' +
                     '<ul class="list-unstyled"' +
-                    '<li>Capacity: ' + StatsService.numFormat(d.capacity) + ' acre ft</li>' +
+                    '<li>Capacity: ' + StatsService.numFormat(stations[d.reservoir].capacity) + ' acre ft</li>' +
                     '<li>Vol: ' + StatsService.numFormat(d.storage) + ' acre ft</li>' +
                     '<li>Pct Full: ' + d.pct_capacity + '%</li>' +
                     '<li>Pct of Hist. Avg: ' + (d.storage / d.mean * 100).toFixed(1) + '%</li>' +

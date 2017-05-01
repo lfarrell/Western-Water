@@ -68,8 +68,8 @@ angular.module('westernWaterApp').controller('mainController', ['$scope', 'LoadS
     LoadService.data_load(
         $scope,
         'js/maps/contig_us.geo.json',
-        'station_data/all_resv.csv',
-        'data/all.csv',
+        'station_data/enhanced_stations.csv',
+        'data/all2.csv',
         false
     );
 }]);
