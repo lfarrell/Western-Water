@@ -3,7 +3,7 @@ angular.module('westernWaterApp').directive('mapGraph', ['tipService', 'StatsSer
         var margin = {top: 20, right: 130, left: 100, bottom: 80},
             height = 600 - margin.top - margin.bottom,
             width = 900 - margin.left - margin.right,
-            graph_width = 650 - margin.left - margin.right,
+            graph_width = 550 - margin.left - margin.right,
             graph_height = 500 - margin.top - margin.bottom,
             format = d3.time.format("%m/%y").parse,
             tip = tipService.tipDiv();
