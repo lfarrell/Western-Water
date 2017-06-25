@@ -560,6 +560,12 @@ $reservoir_names = [
                     $res_value = ucwords(implode(' ', $res));
                     $res_key = array_search($res_value, $reservoir_names);
                     $data[0] = $res_key;
+
+                    // Remove Texas version of Elephant Butte data
+                    if(($res_key == 193 && $state == 'TX') || $res_key == '') {
+                        continue;
+                    }
+
                     $data[4] = preg_replace('/\/20/', '/', $data[4]);
                   //  $data[2] = '';
                     echo $data[0] . "\n";
