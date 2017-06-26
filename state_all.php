@@ -16,6 +16,18 @@ foreach($states as $state) {
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     $date = preg_split('/\//', $data[4]);
                     if(!preg_match('/reservoir/', $data[0]) && $date[1] >= 2000) {
+                        if($data[0] == "Coyote Res-sta Clara") {
+                            $data[0] = "Coyote Res Sta Clara";
+                        }
+
+                        if($data[0] == "Clear Lk - Cache Creek") {
+                            $data[0] = "Clear Lk   Cache Creek";
+                        }
+
+                        if($data[0] == "Clear Lk - Klamath R") {
+                            $data[0] = "Clear Lk   Klamath R";
+                        }
+
                         fputcsv($fh, $data);
                     }
                 }
